@@ -12,7 +12,7 @@ static bool	write_compiled_instruction(t_file* file, uint32_t compiled_instructi
 	fwrite(&compiled_instruction, 1, sizeof(uint32_t), file->stream);
 	if (ferror(file->stream) != 0)
 	{
-		fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_FPRINTF,
+		fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_FWRITE,
 			ERROR_WRITE_FILE, file->name);
 		return (1);
 	}

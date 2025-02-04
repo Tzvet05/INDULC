@@ -7,7 +7,7 @@
 #define FUNC_FOPEN	"fopen()"
 #define FUNC_GETLINE	"getline()"
 #define FUNC_MALLOC	"malloc()"
-#define FUNC_FPRINTF	"fprintf()"
+#define FUNC_FWRITE	"fwrite()"
 
 // Error strings
 //	Argument
