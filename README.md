@@ -11,15 +11,13 @@ make
 ```
 
 Then, you can run the compiler using
-```bash
-./indulc [program infile] ([compiled outfile]) ([isa infile])
-```
+`./indulc [program infile] ([compiled outfile]) ([isa infile])`
 
 `[program infile]` is the input text file containing the program to compile. You must have reading permissions for it.
 
-`[compiled outfile]` is the output text file to write the compiled program in. You must have writing permissions for it.
+`[compiled outfile]` is the output text file to write the compiled program in. You must have writing permissions for it. This argument is optional and will be replaced by a default argument `a.out` if left empty.
 
-`[isa infile]` is the input Json file containing the ISA used for compilation. You must have reading permissions for it.
+`[isa infile]` is the input Json file containing the ISA used for compilation. You must have reading permissions for it. This argument is optional and will be replaced by a default argument `isa.json` if left empty.
 
 ### Makefile rules
 
