@@ -62,7 +62,6 @@ bool	argument_checking(int argc, char** argv)
 		fprintf(stderr, "%s: %s\n", EXECUTABLE_NAME, ERROR_TOO_MANY_ARGS);
 		return (1);
 	}
-	else if (check_files_access(argc - 1, &argv[1]) == 1)
-		return (1);
-	return (0);
+	else
+		return (check_files_access(argc - 1, &argv[1]));
 }

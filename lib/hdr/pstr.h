@@ -1,5 +1,9 @@
 #pragma once
 
+/* ----- INCLUDES ----- */
+
+#include <stddef.h>
+
 /* ----- STRUCTURES ----- */
 
 // Pascal-type string
