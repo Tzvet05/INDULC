@@ -113,7 +113,7 @@ loop:	SUB	r1,	r2,	r1	; r1 = r1 - r2
 2: Preprocessing (%define and macro substitution)
 3: Symbol Table (label: and address substitution)
 4: Syntax Analysis (syntax compliance (errors & warnings))
-5: Mahinde Code Generation (encoding & binary machine code)
+5: Machine Code Generation (encoding & binary machine code)
 
 ## WIP FEATURES
 
