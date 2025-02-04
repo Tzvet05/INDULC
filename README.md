@@ -1,6 +1,7 @@
 # INDULC
 
 **Indu**strious **L**anguage **C**ompiler
+
 Compiler for INDUL (**Indu**strious **L**anguage), an ASM-like language designed to be executed on the Industrious CPUs, a series of RISC Factorio CPUs
 
 ## USAGE
