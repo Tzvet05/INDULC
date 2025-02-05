@@ -118,7 +118,7 @@ static bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 		return (0);
 	bool	error = 0;
 	size_t	i = 0;
-	while (tokens->next != NULL || i + 1 < instr->n_opwords)
+	while (tokens->next != NULL && i + 1 < instr->n_opwords)
 	{
 		tokens = tokens->next;
 		i++;
