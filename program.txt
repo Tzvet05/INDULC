@@ -1,8 +1,0 @@
-%define START	10			; starting value
-%define STEP	2			; step value
-
-	ILD	r1,	START		; initialize r1
-	ILD	r2,	STEP		; initialize r2
-loop:	SUB	r1,	r2,	r1	; r1 = r1 - r2
-	BRH	nz,	loop		; jump to loop label if result of substraction is not 0
-	HLT				; stop program execution
