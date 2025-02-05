@@ -53,6 +53,6 @@
 #define WARNING_SYNTAX		"syntax warning"
 #define WARNING_OVERFLOW	"immediate does not fit in designated space and will overflow or underflow"
 //		Type
-#define WARNING_DEFINE		"label statement"
+#define WARNING_DEFINE		"define statement"
 //		Type
 #define WARNING_INSTRUCTION	"instruction"
