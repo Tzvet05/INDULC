@@ -41,6 +41,7 @@ SRC =	main.c \
 	$(ARG_DIR)argument_checking.c \
 	$(ISA_DIR)isa_loading.c \
 	$(FIL_DIR)file_opening.c \
+	$(FIL_DIR)init_filename.c \
 	$(TOK_DIR)tokenization.c \
 	$(PRE_DIR)preprocessing.c \
 	$(SYM_DIR)symbol_table_building.c \

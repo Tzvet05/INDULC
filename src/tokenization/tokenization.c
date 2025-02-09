@@ -118,7 +118,7 @@ bool	tokenization(t_data* data)
 	while (1)
 	{
 		free(line);
-		if (get_next_line(&((t_file *)data->files.arr)[INFILE_PROGRAM], &line) == 1)
+		if (get_next_line(&data->files[INFILE_PROGRAM], &line) == 1)
 			return (1);
 		if (line == NULL)
 			return (0);

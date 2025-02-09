@@ -81,8 +81,7 @@ static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr
 			tokens = tokens->next;
 		i++;
 	}
-	return (write_compiled_instruction(&((t_file *)data->files.arr)[OUTFILE_PROGRAM],
-		compiled_instruction));
+	return (write_compiled_instruction(&data->files[OUTFILE_PROGRAM], compiled_instruction));
 }
 
 bool	machine_code_generation(t_data* data)

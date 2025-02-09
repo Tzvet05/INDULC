@@ -4,6 +4,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "file.h"
 #include "lst.h"
 #include "isa.h"
 #include "parr.h"
@@ -13,7 +14,7 @@
 // Generic data storage
 typedef struct data
 {
-	t_parr	files;
+	t_file	files[3];
 	t_lst*	tokens;
 	t_lst*	macro_table;
 	t_lst*	symbol_table;
@@ -51,7 +52,10 @@ bool	isa_loading(t_data* data);
 
 // file/
 //	file_opening.c
-bool	file_opening(t_data* data, char** argv);
+bool	input_file_opening(t_data* data);
+bool	output_file_opening(t_data* data);
+//	init_filename.c
+void	init_filename(t_data* data, char** file_names);
 
 // tokenization/
 //	tokenization.c

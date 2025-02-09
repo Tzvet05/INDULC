@@ -32,14 +32,9 @@ void	free_isa(t_isa* isa)
 
 void	close_files(t_data* data)
 {
-	size_t	i = 0;
-	while (i < data->files.len)
-	{
-		if (((t_file *)data->files.arr)[i].stream != NULL)
-			fclose(((t_file *)data->files.arr)[i].stream);
-		i++;
-	}
-	free(data->files.arr);
+	for (size_t i = 0; i < 3; i++)
+		if (data->files[i].stream != NULL)
+			fclose(data->files[i].stream);
 }
 
 void	free_label(void *label)
