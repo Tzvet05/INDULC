@@ -44,13 +44,11 @@ void	close_files(t_data* data)
 
 void	free_label(void *label)
 {
-	free(((t_label *)label)->name);
 	free(label);
 }
 
 void	free_macro(void *macro)
 {
-	free(((t_macro *)macro)->identifier);
 	free(((t_macro *)macro)->value);
 	free(macro);
 }

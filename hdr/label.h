@@ -5,6 +5,6 @@
 // Label
 typedef struct label
 {
-	char*	name;
-	size_t	line;
+	t_token*	name;
+	size_t		line;
 }	t_label;

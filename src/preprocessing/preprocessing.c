@@ -28,6 +28,7 @@ static bool	add_macro(t_lst* tokens, t_lst** macro_table)
 		((t_token *)tokens->next->content)->str, cmp_macro);
 	if (existing_macro != NULL)
 	{
+		((t_macro *)existing_macro->content)->identifier = (t_token *)tokens->next->content;
 		free(((t_macro *)existing_macro->content)->value);
 		((t_macro *)existing_macro->content)->value =
 			strdup(((t_token *)tokens->next->next->content)->str);
@@ -39,18 +40,14 @@ static bool	add_macro(t_lst* tokens, t_lst** macro_table)
 		t_macro*	new_macro = malloc(sizeof(t_macro));
 		if (new_macro == NULL)
 			return (1);
-		size_t	len_identifier = strlen(((t_token *)tokens->next->content)->str),
-			len_value = strlen(((t_token *)tokens->next->next->content)->str);
-		new_macro->identifier = malloc((len_identifier + 1) * sizeof(char));
+		new_macro->identifier = (t_token *)tokens->next->content;
+		size_t	len_value = strlen(((t_token *)tokens->next->next->content)->str);
 		new_macro->value = malloc((len_value + 1) * sizeof(char));
-		if (new_macro->identifier == NULL || new_macro->value == NULL)
+		if (new_macro->value == NULL)
 		{
 			free_macro(new_macro);
 			return (1);
 		}
-		new_macro->identifier[len_identifier] = '\0';
-		new_macro->value[len_value] = '\0';
-		strcpy(new_macro->identifier, ((t_token *)tokens->next->content)->str);
 		strcpy(new_macro->value, ((t_token *)tokens->next->next->content)->str);
 		if (lst_new_back(macro_table, new_macro) == 1)
 		{

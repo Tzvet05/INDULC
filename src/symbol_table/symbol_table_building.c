@@ -24,10 +24,12 @@ static bool	add_label(t_lst* tokens, t_lst** symbol_table, size_t line)
 		((t_token *)tokens->content)->str, cmp_label);
 	if (existing_label != NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: \"%s\" (previously declared at %zu:%zu)\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, ((t_token *)tokens->content)->lin,
 			((t_token *)tokens->content)->col, ERROR_LABEL_DUPLICATE,
-			((t_token *)tokens->content)->str);
+			((t_token *)tokens->content)->str,
+			((t_label *)existing_label->content)->name->lin,
+			((t_label *)existing_label->content)->name->col);
 		return (1);
 	}
 	else
@@ -35,15 +37,7 @@ static bool	add_label(t_lst* tokens, t_lst** symbol_table, size_t line)
 		t_label*	label = malloc(sizeof(t_label));
 		if (label == NULL)
 			return (1);
-		size_t	len_name = strlen(((t_token *)tokens->content)->str);
-		label->name = malloc((len_name + 1) * sizeof(char));
-		if (label->name == NULL)
-		{
-			free_label(label);
-			return (1);
-		}
-		label->name[len_name] = '\0';
-		strcpy(label->name, ((t_token *)tokens->content)->str);
+		label->name = (t_token *)tokens->content;
 		if (tokens->next->next == NULL)
 			label->line = line + 1;
 		else

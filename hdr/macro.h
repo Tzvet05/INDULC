@@ -5,6 +5,6 @@
 // Macro
 typedef struct macro
 {
-	char*	identifier;
-	char*	value;
+	t_token*	identifier;
+	char*		value;
 }	t_macro;
