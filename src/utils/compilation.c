@@ -6,8 +6,7 @@
 
 uint64_t	build_mask(size_t len)
 {
-	uint64_t	mask = (uint64_t)pow(2.0, (double)len) - 1;
-	return (mask);
+	return ((uint64_t)pow(2.0, (double)len) - 1);
 }
 
 t_bitfield*	get_bitfield(t_instruction* instr, size_t i_operand)
