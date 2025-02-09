@@ -1,5 +1,3 @@
-[TODO] - add chars support
-
 [TODO] - move a.out creation right before its filling (not created until machine code starts getting written)
 
 [TODO] - warnings for overflowing program addresses (including labels) ?
