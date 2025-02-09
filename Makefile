@@ -8,7 +8,7 @@ CFLAG =		-Wall -Wextra -Werror
 
 LFLAG =		-lm
 
-LIB =		indulclib.a
+LIB =		libindulc.a
 
 # Directories
 

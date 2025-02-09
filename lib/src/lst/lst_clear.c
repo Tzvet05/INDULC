@@ -3,7 +3,6 @@
 void	lst_clear(t_lst** lst, void (*del)(void *))
 {
 	t_lst*	current = *lst, *next;
-
 	*lst = NULL;
 	while (current != NULL)
 	{

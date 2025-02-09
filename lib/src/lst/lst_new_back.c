@@ -3,7 +3,6 @@
 bool	lst_new_back(t_lst** lst, void* content)
 {
 	t_lst*	new;
-
 	new = malloc(sizeof(t_lst));
 	if (new == NULL)
 		return (1);

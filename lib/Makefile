@@ -1,6 +1,6 @@
 # Make parameters
 
-NAME =		indulclib.a
+NAME =		libindulc.a
 
 COMPILER =	clang
 
