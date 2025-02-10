@@ -49,7 +49,7 @@ An instruction follows this syntax :
 
 #### Registers
 
-A register can be either a macro or a number that can start with the character `'r'` (case doesn't matter). Its index must be in range of the amount of registers specified by the provided ISA.
+A register can be either a macro or a number that can start with the character `'r'` (case doesn't matter). Its index must be in range of the amount of registers specified by the provided ISA, starting at `r0`.
 
 #### Immediates
 
@@ -57,7 +57,7 @@ An immediate can be either a number, a macro or a label.
 
 #### Flags
 
-A flag can be either a number or a mnemonic string. The mnemonic string must be supported by the provided ISA. Its value must be in range of the amount of flags supported by the provided ISA.
+A flag can be either a number or a mnemonic string. The mnemonic string must be supported by the provided ISA. Its value must be in range of the amount of flags supported by the provided ISA, starting at `0`.
 
 ### Defines
 
