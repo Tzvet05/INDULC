@@ -10,6 +10,12 @@ LFLAG =		-lm
 
 LIB =		libindulc.a
 
+# Optional compilation macros
+
+ifeq ($(COMP_BIN_CHAR), 1)
+	CFLAG += -D COMP_BIN_CHAR
+endif
+
 # Directories
 
 LIB_DIR =	lib/

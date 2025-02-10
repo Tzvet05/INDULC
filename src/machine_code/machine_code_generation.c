@@ -9,7 +9,24 @@
 
 static bool	write_compiled_instruction(t_file* file, uint32_t compiled_instruction)
 {
-	fwrite(&compiled_instruction, 1, sizeof(uint32_t), file->stream);
+#ifdef COMP_BIN_CHAR
+	static char	buffer[36];
+	for (size_t i_opword = 4; i_opword > 0; i_opword--)
+	{
+		if (i_opword == 4)
+			buffer[(i_opword - 1) * 9 + 9 - 1] = '\n';
+		else
+			buffer[(i_opword - 1) * 9 + 9 - 1] = ' ';
+		for (size_t i_bit = 8; i_bit > 0; i_bit--)
+		{
+			buffer[(i_opword - 1) * 9 + i_bit - 1] = (compiled_instruction & 1) + '0';
+			compiled_instruction >>= 1;
+		}
+	}
+	fwrite(buffer, sizeof(*buffer), sizeof(buffer), file->stream);
+#else
+	fwrite(&compiled_instruction, sizeof(compiled_instruction), 1, file->stream);
+#endif
 	if (ferror(file->stream) != 0)
 	{
 		fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_FWRITE,

@@ -1,6 +1,4 @@
-[TODO] - warnings for overflowing program addresses (including labels) ?
-
-[TODO] - compilation in ascii binary with a flag (add compiler options) ?
+[TODO] - warnings for overflowing program addresses & out-of-bonds addresses (including labels) ?
 
 [TODO] - json file parser for isa ROM
 
