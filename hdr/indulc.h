@@ -7,7 +7,6 @@
 #include "file.h"
 #include "lst.h"
 #include "isa.h"
-#include "parr.h"
 
 /* ----- STRUCTURES ----- */
 
@@ -81,7 +80,7 @@ bool	machine_code_generation(t_data* data);
 // utils/
 //	compilation.c
 uint64_t	build_mask(size_t len);
-t_bitfield*	get_bitfield(t_instruction* instr, size_t i_operand);
+t_bitfield	get_bitfield(t_instruction* instr, size_t i_operand);
 void*		get_compilation_target(t_isa* isa, char* str, t_mnemonic_type type);
 //	nbr.c
 bool	is_number(char* str);

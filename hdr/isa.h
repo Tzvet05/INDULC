@@ -26,26 +26,27 @@ typedef enum mnemonic_type
 
 /* ----- STRUCTURES ----- */
 
-// Instruction bitfield
+// Bitfield
 typedef struct bitfield
 {
-	size_t		len;//	length (in bits) of the bitfield
-	t_bitfield_type	type;//	type of the bitfield
+	size_t		bit_len;
+	t_bitfield_type	type;
 }	t_bitfield;
+
+// Instruction format
+typedef struct format
+{
+	size_t	n_opwords;//		number of words in the instruction (operands + 1)
+	t_parr*	bitfield_lengths;//	pointer to array of bitfield lengths (size_t)
+	t_parr	bitfield_types;//	array of bitfield types (size_t)
+}	t_format;
 
 // Instruction
 typedef struct instruction
 {
-	size_t	n_opwords;//	number of words in the instruction (operands + 1)
-	t_parr	bitfields;//	array of bitfields inside this format
-	size_t	opcode;//	opcode of the instruction
+	t_format*	format;//	pointer to the instruction's format
+	size_t		opcode;//	opcode of the instruction
 }	t_instruction;
-
-// Flag
-typedef struct flag
-{
-	size_t	condition_code;//	condition code used by that flag
-}	t_flag;
 
 // Mnemonic
 typedef struct mnemonic
@@ -55,12 +56,14 @@ typedef struct mnemonic
 	t_mnemonic_type	type;//			type of the data to compile to
 }	t_mnemonic;
 
-// Whole ISA ROM
+// ISA ROM
 typedef struct isa
 {
-	size_t	n_registers;//	number of general-purpose registers of the CPU
-	size_t	n_flags;//	number of flags supported by the CPU
-	t_parr	instructions;//	array of all supported instructions
-	t_parr	flags;//	array of all supported flags
-	t_parr	mnemonics;//	array of all mnemonics and what they compile to
+	size_t	n_registers;//		number of general-purpose registers of the CPU
+	size_t	n_flags;//		number of flags supported by the CPU
+	t_parr	bitfield_lengths;//	array of bitfield lengths (size_t)
+	t_parr	formats;//		array of instruction formats
+	t_parr	instructions;//		array of all supported instructions
+	t_parr	flags;//		array of all supported flags (size_t)
+	t_parr	mnemonics;//		array of all mnemonics and what they compile to
 }	t_isa;

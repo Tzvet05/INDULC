@@ -62,10 +62,10 @@ static uint32_t	get_immediate_operand(t_lst* symbol_table, t_token* token)
 
 static uint32_t	get_condition_operand(t_isa* isa, t_token* token)
 {
-	t_flag*	flag = (t_flag *)get_compilation_target(isa, token->str, FLAG);
+	size_t*	flag = (size_t *)get_compilation_target(isa, token->str, FLAG);
 	int32_t	number;
 	if (flag != NULL)
-		number = (int32_t)flag->condition_code;
+		number = (int32_t)*flag;
 	else
 		number = (int32_t)get_number(token->str);
 	uint32_t	buffer;
@@ -77,24 +77,26 @@ static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr
 {
 	uint32_t	operand = instr->opcode;
 	uint32_t	compiled_instruction = operand
-		& (uint32_t)build_mask(((t_bitfield *)instr->bitfields.arr)[0].len);
+		& (uint32_t)build_mask(((size_t *)instr->format->bitfield_lengths->arr)[0]);
 	size_t	i = 1;
 	tokens = tokens->next;
-	while (i < instr->bitfields.len)
+	while (i < instr->format->bitfield_lengths->len)
 	{
-		t_bitfield*	bitfield = &((t_bitfield *)instr->bitfields.arr)[i];
-		if (bitfield->type == REGISTER)
+		t_bitfield	bitfield = (t_bitfield){.bit_len =
+			((size_t *)instr->format->bitfield_lengths->arr)[i],
+			.type = ((t_bitfield_type *)instr->format->bitfield_types.arr)[i]};
+		if (bitfield.type == REGISTER)
 			operand = get_register_operand((t_token *)tokens->content);
-		else if (bitfield->type == IMMEDIATE)
+		else if (bitfield.type == IMMEDIATE)
 			operand = get_immediate_operand(data->symbol_table,
 				(t_token *)tokens->content);
-		else if (bitfield->type == CONDITION)
+		else if (bitfield.type == CONDITION)
 			operand = get_condition_operand(&data->isa, (t_token *)tokens->content);
 		else
 			operand = 0;
-		compiled_instruction <<= bitfield->len;
-		compiled_instruction |= operand & (uint32_t)build_mask(bitfield->len);
-		if (bitfield->type != UNUSED)
+		compiled_instruction <<= bitfield.bit_len;
+		compiled_instruction |= operand & (uint32_t)build_mask(bitfield.bit_len);
+		if (bitfield.type != UNUSED)
 			tokens = tokens->next;
 		i++;
 	}

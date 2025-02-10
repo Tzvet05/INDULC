@@ -1,5 +1,5 @@
-[TODO] - warnings for overflowing program addresses & out-of-bonds addresses (including labels) ?
-
 [TODO] - json file parser for isa ROM
+
+[TODO] - warnings for overflowing program addresses & out-of-bonds addresses (including labels) ?
 
 [TODO] - configurable instruction length (other than 32 bits) ?

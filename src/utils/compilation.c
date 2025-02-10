@@ -9,17 +9,18 @@ uint64_t	build_mask(size_t len)
 	return ((uint64_t)pow(2.0, (double)len) - 1);
 }
 
-t_bitfield*	get_bitfield(t_instruction* instr, size_t i_opword_target)
+t_bitfield	get_bitfield(t_instruction* instr, size_t i_opword_target)
 {
 	size_t	i_bitfield = 0, i_opword = 0;
-	while (((t_bitfield *)instr->bitfields.arr)[i_bitfield].type == UNUSED
+	while (((t_bitfield_type *)instr->format->bitfield_types.arr)[i_bitfield] == UNUSED
 		|| i_opword < i_opword_target)
 	{
-		if (((t_bitfield *)instr->bitfields.arr)[i_bitfield].type != UNUSED)
+		if (((t_bitfield_type *)instr->format->bitfield_types.arr)[i_bitfield] != UNUSED)
 			i_opword++;
 		i_bitfield++;
 	}
-	return (&((t_bitfield *)instr->bitfields.arr)[i_bitfield]);
+	return ((t_bitfield){.bit_len = ((size_t *)instr->format->bitfield_lengths->arr)[i_bitfield],
+		.type = ((t_bitfield_type *)instr->format->bitfield_types.arr)[i_bitfield]});
 }
 
 void*	get_compilation_target(t_isa* isa, char* str, t_mnemonic_type type)

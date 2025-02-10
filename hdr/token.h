@@ -3,7 +3,6 @@
 /* ----- INCLUDES ----- */
 
 #include <stddef.h>
-#include "pstr.h"
 
 /* ----- STRUCTURES ----- */
 

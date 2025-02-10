@@ -8,11 +8,19 @@
 void	free_isa(t_isa* isa)
 {
 	size_t	i = 0;
-	while (i < isa->instructions.len)
+	while (i < isa->bitfield_lengths.len)
 	{
-		free(((t_instruction *)isa->instructions.arr)[i].bitfields.arr);
+		free(((t_parr *)isa->bitfield_lengths.arr)[i].arr);
 		i++;
 	}
+	free(isa->bitfield_lengths.arr);
+	i = 0;
+	while (i < isa->formats.len)
+	{
+		free(((t_format *)isa->formats.arr)[i].bitfield_types.arr);
+		i++;
+	}
+	free(isa->formats.arr);
 	free(isa->instructions.arr);
 	free(isa->flags.arr);
 	i = 0;
