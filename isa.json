@@ -1,0 +1,654 @@
+{
+	"nRegisters": 16,
+	"nFlags": 6,
+	"instructions": [
+		{
+			"mnemonics": [
+				"NOP"
+			],
+			"opcode": 0,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 24,
+					"type": "UNUSED"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"HLT"
+			],
+			"opcode": 1,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 24,
+					"type": "UNUSED"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"ADD"
+			],
+			"opcode": 2,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"SUB"
+			],
+			"opcode": 3,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"MUL"
+			],
+			"opcode": 4,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"DIV"
+			],
+			"opcode": 5,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"MOD"
+			],
+			"opcode": 6,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"EXP"
+			],
+			"opcode": 7,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"AND"
+			],
+			"opcode": 8,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"OR"
+			],
+			"opcode": 9,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"XOR"
+			],
+			"opcode": 10,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"LBS"
+			],
+			"opcode": 11,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"RBS"
+			],
+			"opcode": 12,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"NAND"
+			],
+			"opcode": 13,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"NOR"
+			],
+			"opcode": 14,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"XNOR"
+			],
+			"opcode": 15,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"ILD"
+			],
+			"opcode": 16,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 16,
+					"type": "IMMEDIATE"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"IADD"
+			],
+			"opcode": 17,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 16,
+					"type": "IMMEDIATE"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"JMP"
+			],
+			"opcode": 18,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "UNUSED"
+				},
+				{
+					"bit_len": 16,
+					"type": "IMMEDIATE"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"BRH"
+			],
+			"opcode": 19,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "CONDITION"
+				},
+				{
+					"bit_len": 16,
+					"type": "IMMEDIATE"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"CAL"
+			],
+			"opcode": 20,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "UNUSED"
+				},
+				{
+					"bit_len": 16,
+					"type": "IMMEDIATE"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"RET"
+			],
+			"opcode": 21,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 24,
+					"type": "UNUSED"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"LOD"
+			],
+			"opcode": 22,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "UNUSED"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"STR"
+			],
+			"opcode": 23,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "UNUSED"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"PLOD"
+			],
+			"opcode": 24,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "UNUSED"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"PSTR"
+			],
+			"opcode": 25,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "UNUSED"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"CMP"
+			],
+			"opcode": 3,
+			"format": [
+				{
+					"bit_len": 8,
+					"type": "OPCODE"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "REGISTER"
+				},
+				{
+					"bit_len": 8,
+					"type": "UNUSED"
+				}
+			]
+		}
+	],
+	"flags": [
+		{
+			"mnemonics": [
+				"s",
+				"sign"
+			],
+			"condition_code": 0
+		},
+		{
+			"mnemonics": [
+				"ns",
+				"notsign"
+			],
+			"condition_code": 1
+		},
+		{
+			"mnemonics": [
+				"ev",
+				"even"
+			],
+			"condition_code": 2
+		},
+		{
+			"mnemonics": [
+				"nev",
+				"noteven"
+			],
+			"condition_code": 3
+		},
+		{
+			"mnemonics": [
+				"z",
+				"zero"
+			],
+			"condition_code": 4
+		},
+		{
+			"mnemonics": [
+				"nz",
+				"notzero"
+			],
+			"condition_code": 5
+		}
+	]
+}

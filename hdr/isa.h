@@ -26,7 +26,7 @@ typedef enum mnemonic_type
 
 /* ----- STRUCTURES ----- */
 
-// Bitfield
+// Operand bitfield
 typedef struct bitfield
 {
 	size_t		bit_len;
@@ -36,7 +36,7 @@ typedef struct bitfield
 // Instruction format
 typedef struct format
 {
-	size_t	n_opwords;//		number of words in the instruction (operands + 1)
+	size_t	n_opwords;//		number of words in the instruction (operands + opcode)
 	t_parr*	bitfield_lengths;//	pointer to array of bitfield lengths (size_t)
 	t_parr	bitfield_types;//	array of bitfield types (size_t)
 }	t_format;
