@@ -1,5 +1,9 @@
 #pragma once
 
+/* ----- INCLUDES ----- */
+
+#include "token.h"
+
 /* ----- STRUCTURES ----- */
 
 // Macro

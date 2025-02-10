@@ -1,5 +1,10 @@
 #pragma once
 
+/* ----- INCLUDES ----- */
+
+#include <stddef.h>
+#include "token.h"
+
 /* ----- STRUCTURES ----- */
 
 // Label

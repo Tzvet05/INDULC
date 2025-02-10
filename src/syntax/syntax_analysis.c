@@ -97,9 +97,9 @@ static bool	check_condition_operand_syntax(t_isa* isa, t_token* token, t_bitfiel
 	return (0);
 }
 
-static bool	check_operand_syntax(t_data* data, t_instruction* instr, t_token* token, size_t i_operand)
+static bool	check_operand_syntax(t_data* data, t_instruction* instr, t_token* token, size_t i_opword)
 {
-	t_bitfield*	bitfield = get_bitfield(instr, i_operand);
+	t_bitfield*	bitfield = get_bitfield(instr, i_opword);
 	if (bitfield->type == REGISTER)
 		return (check_register_operand_syntax(&data->isa, token, bitfield));
 	else if (bitfield->type == IMMEDIATE)
@@ -117,16 +117,16 @@ static bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 	if (instr == NULL)
 		return (0);
 	bool	error = 0;
-	size_t	i = 0;
-	while (tokens->next != NULL && i + 1 < instr->n_opwords)
+	size_t	i_opword = 0;
+	while (tokens->next != NULL && i_opword + 1 < instr->n_opwords)
 	{
 		tokens = tokens->next;
-		i++;
-		if (check_operand_syntax(data, instr, (t_token *)tokens->content, i) == 1)
+		i_opword++;
+		if (check_operand_syntax(data, instr, (t_token *)tokens->content, i_opword) == 1)
 			error = 1;
 	}
 	*tokens_ptr = tokens->next;
-	if (i + 1 < instr->n_opwords)
+	if (i_opword + 1 < instr->n_opwords)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n", EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col
