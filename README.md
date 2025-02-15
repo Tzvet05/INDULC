@@ -58,7 +58,7 @@ An instruction follows this syntax :
 
 #### Registers
 
-A register can be either a macro or a number that can start with the character `r` (case doesn't matter). Its index must be in range of the amount of registers specified by the provided ISA, starting at `r0`.
+A register can be either a macro or a number that can start with the character `r` or `R`. Its index must be in range of the amount of registers specified by the provided ISA, starting at `r0`.
 
 #### Immediates
 
@@ -66,7 +66,7 @@ An immediate can be either a number, a macro or a label.
 
 #### Flags
 
-A flag can be either a number or a mnemonic string. The mnemonic string must be supported by the provided ISA. Its value must be supported by the provided ISA.
+A flag can be either a number or a mnemonic string. Its mnemonic string or value must be supported by the provided ISA.
 
 ### Defines
 
@@ -80,7 +80,7 @@ A define statement follows this syntax :
 
 A define statement must be on its own line.
 
-If a redefinition occurs (a define statement specifies an already used identifier), the value associated to that identifier is replaced by the new value moving forward (but the previously substituted identifiers are not updated retroactively).
+If a redefinition occurs (a define statement specifies an already used identifier), the value associated to that identifier is replaced by the new value moving forward (but the previously substituted identifiers are not replaced retroactively).
 
 ### Labels
 
@@ -120,11 +120,11 @@ loop:	SUB	r1,	r2,	r1	; definition of label "loop", r1 = r1 - r2
 ## JSON ISA SYNTAX
 
 The Json file providing the ISA must follow a strict syntax.
-Whitespace characters are ignored.
+Whitespace characters are ignored during parsing.
 
-### The Json object
+### The main object
 
-The Json object must contain 3 items :
+The main object must contain 3 items :
 - `"n_registers"`, whose value (number) is the number of registers of the CPU.
 - `"instructions"`, whose value (array of instruction objects) is the array of all the supported instructions.
 - `"flags"`, whose value (array of flag objects) is the array of all the supported flags.
@@ -157,6 +157,7 @@ The instruction `JMP 5` with only mnemonic `JMP` and opcode `18` can be made of 
 - one opcode of 8 bits (mnemonic `JMP`).
 - one unused field of 8 bits (padding).
 - one immediate of 16 bits (immediate `5`).
+
 It can therefore be stored as :
 ```json
 {
@@ -201,6 +202,6 @@ Refer to the `isa.json` file located at the root of the repository for an exampl
 
 1. Tokenization
 2. Preprocessing (macro saving & substitution)
-3. Symbol table management (label saving & substitution)
+3. Symbol table management (label saving)
 4. Syntax analysis (syntax verification)
-5. Machine code generation
+5. Machine code generation (label substitution & encoding)
