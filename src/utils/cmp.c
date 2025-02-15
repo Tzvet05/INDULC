@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include "token.h"
 #include "macro.h"
 #include "label.h"
@@ -17,4 +18,9 @@ bool	cmp_macro(void* macro, void* str)
 bool	cmp_token(void* token, void* str)
 {
 	return (strcmp(((t_token *)token)->str, (char *)str) == 0);
+}
+
+bool	cmp_flag(void* flag, void *ptr)
+{
+	return ((ssize_t)(*(size_t *)flag) == *(ssize_t *)ptr);
 }

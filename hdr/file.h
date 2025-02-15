@@ -16,8 +16,13 @@ enum
 
 /* ----- MACROS ----- */
 
+// Default file names
 #define DEFAULT_OUTFILE_PROGRAM	"a.out"
 #define DEFAULT_INFILE_ISA	"isa.json"
+
+// fopen() modes
+#define READ_MODE	"r"
+#define WRITE_MODE	"w"
 
 /* ----- STRUCTURES ----- */
 

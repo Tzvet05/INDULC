@@ -2,7 +2,7 @@
 #include "file.h"
 #include "error.h"
 
-void	init_filename(t_data* data, char** file_names)
+void	init_filenames(t_data* data, char** file_names)
 {
 	data->files[INFILE_PROGRAM].name = file_names[INFILE_PROGRAM];
 	if (file_names[OUTFILE_PROGRAM] != NULL)

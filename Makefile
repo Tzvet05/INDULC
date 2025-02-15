@@ -4,11 +4,13 @@ NAME =		indulc
 
 COMPILER =	clang
 
-CFLAG =		-Wall -Wextra -Werror
+CFLAG =		-Wall -Wextra -g
 
 LFLAG =		-lm
 
 LIB =		libindulc.a
+
+MOD =		libcjson.so
 
 # Optional compilation macros
 
@@ -18,10 +20,12 @@ endif
 
 # Directories
 
-LIB_DIR =	lib/
 HDR_DIR =	hdr/
 SRC_DIR =	src/
 OBJ_DIR =	obj/
+LIB_DIR =	lib/
+MOD_DIR =	submodule/cJSON/
+MOD_BUILD_DIR =	build/
 
 ARG_DIR =	arguments/
 FIL_DIR =	file/
@@ -47,7 +51,7 @@ SRC =	main.c \
 	$(ARG_DIR)argument_checking.c \
 	$(ISA_DIR)isa_loading.c \
 	$(FIL_DIR)file_opening.c \
-	$(FIL_DIR)init_filename.c \
+	$(FIL_DIR)init_filenames.c \
 	$(TOK_DIR)tokenization.c \
 	$(PRE_DIR)preprocessing.c \
 	$(SYM_DIR)symbol_table_building.c \
@@ -64,12 +68,12 @@ OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
 # Compilation
 
-$(NAME) : $(LIB_DIR)$(LIB) $(OBJ)
+$(NAME) : $(OBJ) $(LIB_DIR)$(LIB) $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD)
+	@ $(COMPILER) $(CFLAG) $(LFLAG) $(OBJ) $(LIB_DIR)$(LIB) $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD) -Wl,-rpath,$(MOD_DIR)$(MOD_BUILD_DIR) -o $(NAME)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_GREEN)Executable ($(NAME)) compiled.$(COLOR_DEFAULT)"
-	@ $(COMPILER) $(CFLAG) $(LFLAG) $(OBJ) $(LIB_DIR)$(LIB) -o $(NAME)
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(ARG_DIR) $(ISA_DIR) $(FIL_DIR) $(TOK_DIR) $(PRE_DIR) $(SYM_DIR) $(SYN_DIR) $(MAC_DIR) $(UTI_DIR) $(FRE_DIR))
-	@ $(COMPILER) $(CFLAG) -I $(HDR_DIR) -I $(LIB_DIR)$(HDR_DIR) -c $^ -o $@
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(ARG_DIR) $(ISA_DIR) $(FIL_DIR) $(TOK_DIR) $(PRE_DIR) $(SYM_DIR) $(SYN_DIR) $(MAC_DIR) $(UTI_DIR) $(FRE_DIR)) $(MOD_DIR)$(MOD_BUILD_DIR)
+	@ $(COMPILER) $(CFLAG) -I$(HDR_DIR) -I$(LIB_DIR)$(HDR_DIR) -I$(MOD_DIR) -c $^ -o $@
 
 # Build directories
 
@@ -106,27 +110,48 @@ $(OBJ_DIR)$(UTI_DIR) :
 $(OBJ_DIR)$(FRE_DIR) :
 	@ mkdir -p $(OBJ_DIR)$(FRE_DIR)
 
+$(MOD_DIR)$(MOD_BUILD_DIR) :
+	@ mkdir -p $(MOD_DIR)$(MOD_BUILD_DIR)
+
 # Library
 
 $(LIB_DIR)$(LIB) :
 	@ make -s -C $(LIB_DIR)
+
+# Submodule
+
+$(MOD_DIR)$(MOD_BUILD_DIR)$(MOD) :
+	@ cmake -DENABLE_CJSON_TEST=Off -B$(MOD_DIR)$(MOD_BUILD_DIR) -S$(MOD_DIR) > /dev/null
+	@ make -s -C $(MOD_DIR)$(MOD_BUILD_DIR) > /dev/null
+	@ echo "$(COLOR_WHITE)[$(MOD)] - $(COLOR_GREEN)Dynamic library ($(MOD)) compiled.$(COLOR_DEFAULT)"
 
 # Rules
 
 all : $(NAME)
 
 fclean :
-	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 	@ rm -rf $(OBJ_DIR)
+	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
+	@ rm -f $(NAME)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Executable ($(NAME)) cleaned.$(COLOR_DEFAULT)"
 	@ make fclean -s -C $(LIB_DIR)
-	@ rm -f $(NAME)
+	@ rm -rf $(MOD_DIR)$(MOD_BUILD_DIR)
+	@ echo "$(COLOR_WHITE)[$(MOD)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
+	@ echo "$(COLOR_WHITE)[$(MOD)] - $(COLOR_BLUE)Dynamic library ($(MOD)) cleaned.$(COLOR_DEFAULT)"
 
 clean :
-	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
-	@ make clean -s -C $(LIB_DIR)
 	@ rm -rf $(OBJ_DIR)
+	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
+	@ make fclean -s -C $(LIB_DIR)
+	@ find $(MOD_DIR)$(MOD_BUILD_DIR) -name "*" | tail -n +2 | grep -v "\.so" | xargs rm -rf
+	@ echo "$(COLOR_WHITE)[$(MOD)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
+
+cleanindulc :
+	@ rm -rf $(OBJ_DIR)
+	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 
 re : fclean all
+
+reindulc : cleanindulc all	
 
 .PHONY : all fclean clean re

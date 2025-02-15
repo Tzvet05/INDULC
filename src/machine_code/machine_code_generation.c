@@ -77,26 +77,24 @@ static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr
 {
 	uint32_t	operand = instr->opcode;
 	uint32_t	compiled_instruction = operand
-		& (uint32_t)build_mask(((size_t *)instr->format->bitfield_lengths->arr)[0]);
+		& (uint32_t)build_mask(((t_bitfield *)instr->format.bitfields.arr)[0].len);
 	size_t	i = 1;
 	tokens = tokens->next;
-	while (i < instr->format->bitfield_lengths->len)
+	while (i < instr->format.bitfields.len)
 	{
-		t_bitfield	bitfield = (t_bitfield){.bit_len =
-			((size_t *)instr->format->bitfield_lengths->arr)[i],
-			.type = ((t_bitfield_type *)instr->format->bitfield_types.arr)[i]};
-		if (bitfield.type == REGISTER)
+		t_bitfield*	bitfield = &((t_bitfield *)instr->format.bitfields.arr)[i];
+		if (bitfield->type == REGISTER)
 			operand = get_register_operand((t_token *)tokens->content);
-		else if (bitfield.type == IMMEDIATE)
+		else if (bitfield->type == IMMEDIATE)
 			operand = get_immediate_operand(data->symbol_table,
 				(t_token *)tokens->content);
-		else if (bitfield.type == CONDITION)
+		else if (bitfield->type == CONDITION)
 			operand = get_condition_operand(&data->isa, (t_token *)tokens->content);
 		else
 			operand = 0;
-		compiled_instruction <<= bitfield.bit_len;
-		compiled_instruction |= operand & (uint32_t)build_mask(bitfield.bit_len);
-		if (bitfield.type != UNUSED)
+		compiled_instruction <<= bitfield->len;
+		compiled_instruction |= operand & (uint32_t)build_mask(bitfield->len);
+		if (bitfield->type != UNUSED)
 			tokens = tokens->next;
 		i++;
 	}

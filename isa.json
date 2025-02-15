@@ -1,20 +1,15 @@
 {
-	"nRegisters": 16,
-	"nFlags": 6,
+	"n_registers": 16,
 	"instructions": [
 		{
 			"mnemonics": [
 				"NOP"
 			],
 			"opcode": 0,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
-				},
-				{
-					"bit_len": 24,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "opcode"
 				}
 			]
 		},
@@ -23,14 +18,10 @@
 				"HLT"
 			],
 			"opcode": 1,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
-				},
-				{
-					"bit_len": 24,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "opcode"
 				}
 			]
 		},
@@ -39,22 +30,22 @@
 				"ADD"
 			],
 			"opcode": 2,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -63,22 +54,22 @@
 				"SUB"
 			],
 			"opcode": 3,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -87,22 +78,22 @@
 				"MUL"
 			],
 			"opcode": 4,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -111,22 +102,22 @@
 				"DIV"
 			],
 			"opcode": 5,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -135,22 +126,22 @@
 				"MOD"
 			],
 			"opcode": 6,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -159,22 +150,22 @@
 				"EXP"
 			],
 			"opcode": 7,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -183,22 +174,22 @@
 				"AND"
 			],
 			"opcode": 8,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -207,22 +198,22 @@
 				"OR"
 			],
 			"opcode": 9,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -231,22 +222,22 @@
 				"XOR"
 			],
 			"opcode": 10,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -255,22 +246,22 @@
 				"LBS"
 			],
 			"opcode": 11,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -279,22 +270,22 @@
 				"RBS"
 			],
 			"opcode": 12,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -303,22 +294,22 @@
 				"NAND"
 			],
 			"opcode": 13,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -327,22 +318,22 @@
 				"NOR"
 			],
 			"opcode": 14,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -351,22 +342,22 @@
 				"XNOR"
 			],
 			"opcode": 15,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -375,18 +366,18 @@
 				"ILD"
 			],
 			"opcode": 16,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 16,
-					"type": "IMMEDIATE"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
@@ -395,18 +386,18 @@
 				"IADD"
 			],
 			"opcode": 17,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 16,
-					"type": "IMMEDIATE"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
@@ -415,18 +406,18 @@
 				"JMP"
 			],
 			"opcode": 18,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "unused"
 				},
 				{
-					"bit_len": 16,
-					"type": "IMMEDIATE"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
@@ -435,18 +426,18 @@
 				"BRH"
 			],
 			"opcode": 19,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "CONDITION"
+					"len": 8,
+					"type": "condition"
 				},
 				{
-					"bit_len": 16,
-					"type": "IMMEDIATE"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
@@ -455,18 +446,18 @@
 				"CAL"
 			],
 			"opcode": 20,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "unused"
 				},
 				{
-					"bit_len": 16,
-					"type": "IMMEDIATE"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
@@ -475,14 +466,10 @@
 				"RET"
 			],
 			"opcode": 21,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
-				},
-				{
-					"bit_len": 24,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "opcode"
 				}
 			]
 		},
@@ -491,22 +478,18 @@
 				"LOD"
 			],
 			"opcode": 22,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
-				},
-				{
-					"bit_len": 8,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -515,22 +498,18 @@
 				"STR"
 			],
 			"opcode": 23,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
-				},
-				{
-					"bit_len": 8,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -539,22 +518,18 @@
 				"PLOD"
 			],
 			"opcode": 24,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
-				},
-				{
-					"bit_len": 8,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -563,22 +538,18 @@
 				"PSTR"
 			],
 			"opcode": 25,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
-				},
-				{
-					"bit_len": 8,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		},
@@ -587,22 +558,18 @@
 				"CMP"
 			],
 			"opcode": 3,
-			"format": [
+			"bitfields": [
 				{
-					"bit_len": 8,
-					"type": "OPCODE"
+					"len": 8,
+					"type": "opcode"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
+					"len": 8,
+					"type": "register"
 				},
 				{
-					"bit_len": 8,
-					"type": "REGISTER"
-				},
-				{
-					"bit_len": 8,
-					"type": "UNUSED"
+					"len": 8,
+					"type": "register"
 				}
 			]
 		}

@@ -1,8 +1,9 @@
 #include "indulc.h"
+#include "file.h"
 
-static bool	compiling(t_data *data)
+static bool	compilation(t_data *data)
 {
-	if (input_file_opening(data) == 1)
+	if (open_file(&data->files[INFILE_PROGRAM], READ_MODE) == 1)
 		return (1);
 	else if (tokenization(data) == 1)
 		return (1);
@@ -12,7 +13,7 @@ static bool	compiling(t_data *data)
 		return (1);
 	else if (syntax_analysis(data) == 1)
 		return (1);
-	else if (output_file_opening(data) == 1)
+	else if (open_file(&data->files[OUTFILE_PROGRAM], WRITE_MODE) == 1)
 		return (1);
 	else 
 		return (machine_code_generation(data));
@@ -23,13 +24,14 @@ int	main(int argc, char** argv)
 	if (argument_checking(argc, argv) == 1)
 		return (1);
 	t_data	data = {0};
-	if (isa_loading(&data) == 1)
+	init_filenames(&data, &argv[1]);
+	if (open_file(&data.files[INFILE_ISA], READ_MODE) == 1 || isa_loading(&data) == 1)
 	{
 		free_isa(&data.isa);
+		close_files(&data);
 		return (1);
 	}
-	init_filename(&data, &argv[1]);
-	bool	error = compiling(&data);
+	bool	error = compilation(&data);
 	free_isa(&data.isa);
 	close_files(&data);
 	free_tokens(data.tokens);

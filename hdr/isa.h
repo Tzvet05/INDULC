@@ -5,6 +5,30 @@
 #include <stddef.h>
 #include "parr.h"
 
+/* ----- MACROS ----- */
+
+// ISA Json file keys
+//	ISA
+#define JSON_ISA_KEY_NB_REGISTERS	"n_registers"
+#define JSON_ISA_KEY_INSTRUCTIONS	"instructions"
+#define JSON_ISA_KEY_FLAGS		"flags"
+//		Instruction
+#define JSON_ISA_KEY_INSTRUCTION_MNEMONICS	"mnemonics"
+#define JSON_ISA_KEY_INSTRUCTION_OPCODE		"opcode"
+#define JSON_ISA_KEY_INSTRUCTION_BITFIELDS	"bitfields"
+//			Format
+#define JSON_ISA_KEY_INSTRUCTION_BITFIELD_LEN	"len"
+#define JSON_ISA_KEY_INSTRUCTION_BITFIELD_TYPE	"type"
+//		Flag
+#define JSON_ISA_KEY_FLAG_MNEMONICS		"mnemonics"
+#define JSON_ISA_KEY_FLAG_CONDITION_CODE	"condition_code"
+
+// Bitfield types strings
+#define BITFIELD_TYPES	((const char* const[]){"opcode", "register", "immediate", "condition", "unused"})
+
+// Number of different bitfield types
+#define N_BITFIELD_TYPES	5
+
 /* ----- ENUMERATIONS ----- */
 
 // Bitfield type
@@ -26,44 +50,40 @@ typedef enum mnemonic_type
 
 /* ----- STRUCTURES ----- */
 
-// Operand bitfield
+// Instruction format bitfield
 typedef struct bitfield
 {
-	size_t		bit_len;
-	t_bitfield_type	type;
+	size_t		len;//	Length of the bitfield
+	t_bitfield_type	type;//	Type of the bitfield
 }	t_bitfield;
 
 // Instruction format
 typedef struct format
 {
-	size_t	n_opwords;//		number of words in the instruction (operands + opcode)
-	t_parr*	bitfield_lengths;//	pointer to array of bitfield lengths (size_t)
-	t_parr	bitfield_types;//	array of bitfield types (size_t)
+	size_t	n_opwords;//	Number of words in the instruction (operands + opcode)
+	t_parr	bitfields;//	Array of bitfields
 }	t_format;
 
 // Instruction
 typedef struct instruction
 {
-	t_format*	format;//	pointer to the instruction's format
-	size_t		opcode;//	opcode of the instruction
+	size_t		opcode;//	Opcode of the instruction
+	t_format	format;//	Format of the instruction
 }	t_instruction;
 
 // Mnemonic
 typedef struct mnemonic
 {
-	char**		mnemonic;//		array of all valid mnemonic strings
-	void*		compilation_target;//	pointer to the data to compile to
-	t_mnemonic_type	type;//			type of the data to compile to
+	t_parr		mnemonics;//		Array of all mnemonic strings
+	void*		compilation_target;//	Pointer to the data to compile to
+	t_mnemonic_type	type;//			Type of the data to compile to
 }	t_mnemonic;
 
-// ISA ROM
+// ISA
 typedef struct isa
 {
-	size_t	n_registers;//		number of general-purpose registers of the CPU
-	size_t	n_flags;//		number of flags supported by the CPU
-	t_parr	bitfield_lengths;//	array of bitfield lengths (size_t)
-	t_parr	formats;//		array of instruction formats
-	t_parr	instructions;//		array of all supported instructions
-	t_parr	flags;//		array of all supported flags (size_t)
-	t_parr	mnemonics;//		array of all mnemonics and what they compile to
+	size_t	n_registers;//		Number of registers of the CPU
+	t_parr	instructions;//		Array of all supported instructions
+	t_parr	flags;//		Array of all supported flags
+	t_parr	mnemonics;//		Array of all mnemonics and what they compile to
 }	t_isa;

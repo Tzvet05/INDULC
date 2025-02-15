@@ -1,4 +1,6 @@
-[TODO] - json file parser for isa ROM
+possibly :
+
+[TODO] - rework registers syntax check -> exhaustive list of all supported registers indexes (array of nbrs) ?
 
 [TODO] - warnings for overflowing program addresses & out-of-bonds addresses (including labels) ?
 

@@ -6,8 +6,13 @@ Compiler for INDUL (**Indu**strious **L**anguage), an ASM-like language designed
 
 ## SETUP
 
-Go into the cloned INDULC/ directory and compile the program using
+Clone and go into the repository using
+```sh
+git clone --recursive-submodules git@github.com:Tzvet05/INDULC.git && cd INDULC/
 ```
+
+Compile the program using
+```sh
 make
 ```
 
@@ -24,18 +29,22 @@ Run the compiler using
 
 ### Makefile rules
 
-`make (all)` compiles the program.
+`make (all)` compiles the libraries and the program.
 
-`make clean` removes the object files.
+`make fclean` removes everything that got compiled.
 
-`make fclean` removes the executable and the object files.
+`make clean` removes everything that got compiled except the executable and its dynamic library.
 
-`make re` removes the executable, the object files, and recompiles.
+`make cleanindulc` removes the program's object files.
 
-## SYNTAX
+`make re` removes everything that got compiled and recompiles the libraries and the program.
+
+`make reindulc` removes the program's object files and recompiles the program.
+
+## INDUL SYNTAX
 
 Whitespace characters and commas (`,`) are ignored by the tokenizer.
-All numeric values can be specified in base 10, base 2 with prefix `0b` or base 16 with prefix `0x` or `0X`.
+All numeric values can be specified in base 10, base 2 using prefix `0b` or base 16 using prefixes `0x` or `0X`.
 
 ### Instructions
 
@@ -45,11 +54,11 @@ An instruction follows this syntax :
 
 `[mnemonic]` is the mnemonic string of the instruction. It must be supported by the provided ISA.
 
-`[operand]` is an operand of the instruction. It can be a register, an immediate, a macro, a label or a flag. Each instruction has a specific number and types of operands, specified by the provided ISA.
+`[operand]` is an operand of the instruction. It can be a register, an immediate, a flag, a macro or a label. Each instruction has a specific number and types of operands, specified by the provided ISA.
 
 #### Registers
 
-A register can be either a macro or a number that can start with the character `'r'` (case doesn't matter). Its index must be in range of the amount of registers specified by the provided ISA, starting at `r0`.
+A register can be either a macro or a number that can start with the character `r` (case doesn't matter). Its index must be in range of the amount of registers specified by the provided ISA, starting at `r0`.
 
 #### Immediates
 
@@ -57,7 +66,7 @@ An immediate can be either a number, a macro or a label.
 
 #### Flags
 
-A flag can be either a number or a mnemonic string. The mnemonic string must be supported by the provided ISA. Its value must be in range of the amount of flags supported by the provided ISA, starting at `0`.
+A flag can be either a number or a mnemonic string. The mnemonic string must be supported by the provided ISA. Its value must be supported by the provided ISA.
 
 ### Defines
 
@@ -101,12 +110,92 @@ This is an example of a valid block of INDUL code :
 %define START	10			; starting value
 %define STEP	2			; step value
 
-	ILD	r1,	START		; initialize r1
-	ILD	r2,	STEP		; initialize r2
+	ILD	r1,	START		; initialize r1 with START
+	ILD	r2,	STEP		; initialize r2 with STEP
 loop:	SUB	r1,	r2,	r1	; definition of label "loop", r1 = r1 - r2
 	BRH	nz,	loop		; jump to label "loop" if the result of the substraction is not 0
 	HLT				; stop program execution
 ```
+
+## JSON ISA SYNTAX
+
+The Json file providing the ISA must follow a strict syntax.
+Whitespace characters are ignored.
+
+### The Json object
+
+The Json object must contain 3 items :
+- `"n_registers"`, whose value (number) is the number of registers of the CPU.
+- `"instructions"`, whose value (array of instruction objects) is the array of all the supported instructions.
+- `"flags"`, whose value (array of flag objects) is the array of all the supported flags.
+
+#### The instruction object
+
+The instruction object must contain 3 items :
+- `"mnemonics"`, whose value (array of strings) is the array of all of the instruction's mnemonics.
+- `"opcode"`, whose value (number) is the opcode of the instruction.
+- `"bitfields"`, whose value (array of bitfield objects) is the array of all of the instruction's bitfields.
+
+##### The bitfield object
+
+The bitfield object must contain 2 items :
+- `"len"`, whose value (number) is the length (in bits) of the bitfield.
+- `"type"`, whose value (string) is the type of the bitfield. The type can be `"opcode"`, `"register"`, `"immediate"`, `"condition"` or `"unused"`.
+
+As the instructions are encoded on 32 bits, the sum of the lengths of an instruction's bitfields must not exceed 32. If it is inferior to 32 bits, all the remaining bits up to the 32nd are considered unused.
+The `"unused"` type is used to add padding inside an instruction.
+
+#### The flag object
+
+The flag object must contain 2 items :
+- `"mnemonics"`, whose value (array of strings) is the array of all of the flag's mnemonics.
+- `"condition_code"`, whose value (number) is the code of the flag.
+
+### Example
+
+The instruction `JMP 5` with only mnemonic `JMP` and opcode `18` can be made of 3 bitfields:
+- one opcode of 8 bits (mnemonic `JMP`).
+- one unused field of 8 bits (padding).
+- one immediate of 16 bits (immediate `5`).
+It can therefore be stored as :
+```json
+{
+	"mnemonics":
+	[
+		"JMP"
+	],
+	"opcode": 18,
+	"bitfields":
+	[
+		{
+			"len": 8,
+			"type": "opcode"
+		},
+		{
+			"len": 8,
+			"type": "unused"
+		},
+		{
+			"len": 16,
+			"type": "immediate"
+		}
+	]
+}
+```
+
+The flag `even` with multiple mnemonics `even` and `ev` and code `2` can be stored as :
+```json
+{
+	"mnemonics":
+	[
+		"ev",
+		"even"
+	],
+	"condition_code": 2
+}
+```
+
+Refer to the `isa.json` file located at the root of the repository for an example of a full ISA.
 
 ## COMPILATION PROCESS
 
@@ -115,7 +204,3 @@ loop:	SUB	r1,	r2,	r1	; definition of label "loop", r1 = r1 - r2
 3. Symbol table management (label saving & substitution)
 4. Syntax analysis (syntax verification)
 5. Machine code generation
-
-## WIP FEATURES
-
-- Custom ISA provided by a Json file

@@ -13,6 +13,7 @@ OBJ_DIR =	obj/
 SRC_DIR =	src/
 
 LST_DIR = 	lst/
+PAR_DIR =	parr/
 
 # Colors
 
@@ -29,7 +30,9 @@ SRC =	$(LST_DIR)lst_size.c \
 	$(LST_DIR)lst_last.c \
 	$(LST_DIR)lst_find_index.c \
 	$(LST_DIR)lst_get_node.c \
-	$(LST_DIR)lst_find.c
+	$(LST_DIR)lst_find.c \
+	$(LST_DIR)lst_to_parr.c \
+	$(PAR_DIR)parr_find.c
 
 # Compiled objects
 
@@ -38,11 +41,11 @@ OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 # Compilation
 
 $(NAME) : $(OBJ)
-	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_GREEN)Archive ($(NAME)) compiled.$(COLOR_DEFAULT)"
 	@ ar rcs $(NAME) $(OBJ)
+	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_GREEN)Archive ($(NAME)) compiled.$(COLOR_DEFAULT)"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(LST_DIR))
-	@ $(COMPILER) $(CFLAG) -I $(HDR_DIR) -c $^ -o $@
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(LST_DIR) $(PAR_DIR))
+	@ $(COMPILER) $(CFLAG) -I$(HDR_DIR) -c $^ -o $@
 
 # Build directories
 
@@ -52,17 +55,20 @@ $(OBJ_DIR) :
 $(OBJ_DIR)$(LST_DIR) :
 	@ mkdir -p $(OBJ_DIR)$(LST_DIR)
 
+$(OBJ_DIR)$(PAR_DIR) :
+	@ mkdir -p $(OBJ_DIR)$(PAR_DIR)
+
 # Rules
 
 all : $(NAME)
 
 fclean : clean
-	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Archive ($(NAME)) cleaned.$(COLOR_DEFAULT)"
 	@ rm -f $(NAME)
+	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Archive ($(NAME)) cleaned.$(COLOR_DEFAULT)"
 
 clean :
-	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 	@ rm -rf $(OBJ_DIR)
+	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 
 re : fclean all
 

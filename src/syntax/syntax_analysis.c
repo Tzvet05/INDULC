@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "indulc.h"
+#include "parr.h"
 #include "error.h"
 #include "token.h"
 
@@ -10,8 +11,9 @@ static bool	check_remaining_tokens_syntax(t_lst** tokens_ptr)
 	t_lst*	tokens = *tokens_ptr;
 	while (tokens != NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
-			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX, ((t_token *)tokens->content)->lin,
+			((t_token *)tokens->content)->col,
 			ERROR_UNRECOGNIZED_TOKEN, ((t_token *)tokens->content)->str);
 		tokens = tokens->next;
 	}
@@ -26,27 +28,30 @@ static bool	check_register_operand_syntax(t_isa* isa, t_token* token, size_t bit
 		i++;
 	if (is_number(&token->str[i]) == 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
-			token->lin, token->col, ERROR_INSTRUCTION, ERROR_NOT_NUMBER, token->str);
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
+			ERROR_INSTRUCTION, ERROR_NOT_NUMBER, token->str);
 		return (1);
 	}
-	else if (will_overflow(&token->str[i], bit_len) == 1)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, WARNING_SYNTAX,
-			token->lin, token->col, WARNING_INSTRUCTION, WARNING_OVERFLOW, token->str);
 	ssize_t	number = get_number(&token->str[i]);
 	if (number < 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
-			token->lin, token->col, ERROR_INSTRUCTION, ERROR_NEGATIVE_NUMBER, token->str);
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
+			ERROR_INSTRUCTION, ERROR_NEGATIVE_NUMBER, token->str);
 		return (1);
 	}
 	else if (number >= (ssize_t)isa->n_registers)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
-			token->lin, token->col, ERROR_INSTRUCTION, ERROR_INSTRUCTION_REGISTER,
-			token->str);
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_REGISTER, token->str);
 		return (1);
 	}
+	else if (will_overflow(&token->str[i], bit_len) == 1)
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, WARNING_SYNTAX, token->lin, token->col,
+			WARNING_INSTRUCTION, WARNING_OVERFLOW, token->str);
 	return (0);
 }
 
@@ -56,13 +61,15 @@ static bool	check_immediate_operand_syntax(t_lst* symbol_table, t_token* token, 
 		return (0);
 	if (is_number(token->str) == 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
-			token->lin, token->col, ERROR_INSTRUCTION, ERROR_NOT_NUMBER, token->str);
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
+			ERROR_INSTRUCTION, ERROR_NOT_NUMBER, token->str);
 		return (1);
 	}
 	else if (will_overflow(token->str, bit_len) == 1)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, WARNING_SYNTAX,
-			token->lin, token->col, WARNING_INSTRUCTION, WARNING_OVERFLOW, token->str);
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, WARNING_SYNTAX, token->lin, token->col,
+			WARNING_INSTRUCTION, WARNING_OVERFLOW, token->str);
 	return (0);
 }
 
@@ -73,39 +80,36 @@ static bool	check_condition_operand_syntax(t_isa* isa, t_token* token, size_t bi
 		return (0);
 	else if (is_number(token->str) == 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
-			token->lin, token->col, ERROR_INSTRUCTION, ERROR_NOT_NUMBER, token->str);
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
+			ERROR_INSTRUCTION, ERROR_NOT_NUMBER, token->str);
+		return (1);
+	}
+	ssize_t	number = get_number(token->str);
+	if (parr_find(&isa->flags, (void *)&number, cmp_flag, sizeof(size_t)) == NULL)
+	{
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_FLAG, token->str);
 		return (1);
 	}
 	else if (will_overflow(token->str, bit_len) == 1)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, WARNING_SYNTAX,
-			token->lin, token->col, WARNING_INSTRUCTION, WARNING_OVERFLOW, token->str);
-	ssize_t	number = get_number(token->str);
-	if (number < 0)
-	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
-			token->lin, token->col, ERROR_INSTRUCTION, ERROR_NEGATIVE_NUMBER, token->str);
-		return (1);
-	}
-	else if (number >= (ssize_t)isa->n_flags)
-	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
-			token->lin, token->col, ERROR_INSTRUCTION, ERROR_INSTRUCTION_FLAG,
-			token->str);
-		return (1);
-	}
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, WARNING_SYNTAX, token->lin, token->col,
+			WARNING_INSTRUCTION, WARNING_OVERFLOW, token->str);
 	return (0);
 }
 
-static bool	check_operand_syntax(t_data* data, t_instruction* instr, t_token* token, size_t i_opword)
+static bool	check_operand_syntax(t_data* data, t_instruction* instr, t_token* token,
+	size_t i_opword)
 {
-	t_bitfield	bitfield = get_bitfield(instr, i_opword);
-	if (bitfield.type == REGISTER)
-		return (check_register_operand_syntax(&data->isa, token, bitfield.bit_len));
-	else if (bitfield.type == IMMEDIATE)
-		return (check_immediate_operand_syntax(data->symbol_table, token, bitfield.bit_len));
-	else if (bitfield.type == CONDITION)
-		return (check_condition_operand_syntax(&data->isa, token, bitfield.bit_len));
+	t_bitfield*	bitfield = get_bitfield(instr, i_opword);
+	if (bitfield->type == REGISTER)
+		return (check_register_operand_syntax(&data->isa, token, bitfield->len));
+	else if (bitfield->type == IMMEDIATE)
+		return (check_immediate_operand_syntax(data->symbol_table, token, bitfield->len));
+	else if (bitfield->type == CONDITION)
+		return (check_condition_operand_syntax(&data->isa, token, bitfield->len));
 	return (0);
 }
 
@@ -118,7 +122,7 @@ static bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 		return (0);
 	bool	error = 0;
 	size_t	i_opword = 0;
-	while (tokens->next != NULL && i_opword + 1 < instr->format->n_opwords)
+	while (tokens->next != NULL && i_opword + 1 < instr->format.n_opwords)
 	{
 		tokens = tokens->next;
 		i_opword++;
@@ -126,7 +130,7 @@ static bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 			error = 1;
 	}
 	*tokens_ptr = tokens->next;
-	if (i_opword + 1 < instr->format->n_opwords)
+	if (i_opword + 1 < instr->format.n_opwords)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n", EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col

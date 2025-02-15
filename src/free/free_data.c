@@ -7,33 +7,18 @@
 
 void	free_isa(t_isa* isa)
 {
-	size_t	i = 0;
-	while (i < isa->bitfield_lengths.len)
-	{
-		free(((t_parr *)isa->bitfield_lengths.arr)[i].arr);
-		i++;
-	}
-	free(isa->bitfield_lengths.arr);
-	i = 0;
-	while (i < isa->formats.len)
-	{
-		free(((t_format *)isa->formats.arr)[i].bitfield_types.arr);
-		i++;
-	}
-	free(isa->formats.arr);
+	for (size_t i = 0; i < isa->instructions.len; i++)
+		free(((t_instruction *)isa->instructions.arr)[i].format.bitfields.arr);
 	free(isa->instructions.arr);
 	free(isa->flags.arr);
-	i = 0;
-	while (i < isa->mnemonics.len)
+	for (size_t i = 0; i < isa->mnemonics.len; i++)
 	{
-		size_t i_mnemonic = 0;
-		while (((t_mnemonic *)isa->mnemonics.arr)[i].mnemonic[i_mnemonic] != NULL)
-		{
-			free(((t_mnemonic *)isa->mnemonics.arr)[i].mnemonic[i_mnemonic]);
-			i_mnemonic++;
-		}
-		free(((t_mnemonic *)isa->mnemonics.arr)[i].mnemonic);
-		i++;
+		for (size_t i_mnemonic = 0; 
+			i_mnemonic < ((t_mnemonic *)isa->mnemonics.arr)[i].mnemonics.len;
+			i_mnemonic++)
+			free(((char **)((t_mnemonic *)isa->mnemonics.arr)[i]
+				.mnemonics.arr)[i_mnemonic]);
+		free(((t_mnemonic *)isa->mnemonics.arr)[i].mnemonics.arr);
 	}
 	free(isa->mnemonics.arr);
 }

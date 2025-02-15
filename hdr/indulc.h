@@ -38,6 +38,7 @@ typedef struct data
 // Syntax
 #define DEFINE_KEYWORD	"%define"
 #define LABEL_KEYWORD	":"
+#define COMMENT_KEYWORD	";"
 
 /* ----- PROTOTYPES ----- */
 
@@ -51,10 +52,9 @@ bool	isa_loading(t_data* data);
 
 // file/
 //	file_opening.c
-bool	input_file_opening(t_data* data);
-bool	output_file_opening(t_data* data);
-//	init_filename.c
-void	init_filename(t_data* data, char** file_names);
+bool	open_file(t_file* file, char* mode);
+//	init_filenames.c
+void	init_filenames(t_data* data, char** file_names);
 
 // tokenization/
 //	tokenization.c
@@ -80,7 +80,7 @@ bool	machine_code_generation(t_data* data);
 // utils/
 //	compilation.c
 uint64_t	build_mask(size_t len);
-t_bitfield	get_bitfield(t_instruction* instr, size_t i_operand);
+t_bitfield*	get_bitfield(t_instruction* instr, size_t i_operand);
 void*		get_compilation_target(t_isa* isa, char* str, t_mnemonic_type type);
 //	nbr.c
 bool	is_number(char* str);
@@ -90,6 +90,7 @@ ssize_t	get_number(char* str);
 bool	cmp_label(void* label, void* str);
 bool	cmp_macro(void* macro, void* str);
 bool	cmp_token(void* token, void* str);
+bool	cmp_flag(void* flag, void* ptr);
 
 // free/
 //	free_data.c
