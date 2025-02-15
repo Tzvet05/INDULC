@@ -4,7 +4,7 @@ NAME =		indulc
 
 COMPILER =	clang
 
-CFLAG =		-Wall -Wextra -g
+CFLAG =		-Wall -Wextra -Werror
 
 LFLAG =		-lm
 
