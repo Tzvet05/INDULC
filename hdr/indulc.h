@@ -26,13 +26,14 @@ typedef struct data
 #define EXECUTABLE_NAME	"indulc"
 
 // Number bases prefixes
-#define HEXA_PREFIX_UPPER	"0X"
-#define HEXA_PREFIX_LOWER	"0x"
-#define BIN_PREFIX		"0b"
+#define HEX_PREFIX	"0x"
+#define OCT_PREFIX	"0o"
+#define BIN_PREFIX	"0b"
 
 // Number bases charsets
-#define HEXA_CHARSET	"0123456789abcdef"
+#define HEX_CHARSET	"0123456789abcdef"
 #define DEC_CHARSET	"0123456789"
+#define OCT_CHARSET	"01234567"
 #define BIN_CHARSET	"01"
 
 // Syntax

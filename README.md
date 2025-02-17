@@ -44,7 +44,7 @@ Run the compiler using
 ## INDUL SYNTAX
 
 Whitespace characters and commas (`,`) are ignored by the tokenizer.
-All numeric values can be specified in base 10, base 2 using prefix `0b` or base 16 using prefixes `0x` or `0X`.
+All numeric values can be specified in base 10, base 2 using the prefix `0b` or base 16 using the prefixe `0x`.
 
 ### Instructions
 
