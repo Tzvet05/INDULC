@@ -363,7 +363,7 @@
 		},
 		{
 			"mnemonics": [
-				"ILD"
+				"ILOD"
 			],
 			"opcode": 16,
 			"bitfields": [
@@ -475,7 +475,7 @@
 		},
 		{
 			"mnemonics": [
-				"LOD"
+				"MLOD"
 			],
 			"opcode": 22,
 			"bitfields": [
@@ -495,7 +495,7 @@
 		},
 		{
 			"mnemonics": [
-				"STR"
+				"MSTR"
 			],
 			"opcode": 23,
 			"bitfields": [
@@ -566,6 +566,46 @@
 				{
 					"len": 8,
 					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"MOV"
+			],
+			"opcode": 2,
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "opcode"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "unused"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"UPD"
+			],
+			"opcode": 2,
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "opcode"
 				},
 				{
 					"len": 8,

@@ -154,4 +154,4 @@ re : fclean all
 
 reindulc : cleanindulc all	
 
-.PHONY : all fclean clean re cleanindulc reindulc
+.PHONY : all fclean clean cleanindulc re reindulc

@@ -1,3 +1,7 @@
+[TODO] - put constants in unused bitfields instead of always 0 (to put 1 as constant for INC & DEC)
+
+[TODO] - add INC & DEC to isa.json
+
 possibly :
 
 [TODO] - rework registers syntax check -> exhaustive list of all supported registers indexes (array of nbrs) ?
