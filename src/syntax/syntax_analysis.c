@@ -86,7 +86,7 @@ static bool	check_condition_operand_syntax(t_isa* isa, t_token* token, size_t bi
 		return (1);
 	}
 	ssize_t	number = get_number(token->str);
-	if (parr_find(&isa->flags, (void *)&number, cmp_flag, sizeof(size_t)) == NULL)
+	if (parr_find(&isa->flags, (void *)&number, cmp_flag) == NULL)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,

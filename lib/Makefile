@@ -31,7 +31,6 @@ SRC =	$(LST_DIR)lst_size.c \
 	$(LST_DIR)lst_find_index.c \
 	$(LST_DIR)lst_get_node.c \
 	$(LST_DIR)lst_find.c \
-	$(LST_DIR)lst_to_parr.c \
 	$(PAR_DIR)parr_find.c
 
 # Compiled objects
