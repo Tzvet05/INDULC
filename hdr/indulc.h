@@ -25,17 +25,6 @@ typedef struct data
 // Executable name
 #define EXECUTABLE_NAME	"indulc"
 
-// Number bases prefixes
-#define HEX_PREFIX	"0x"
-#define OCT_PREFIX	"0o"
-#define BIN_PREFIX	"0b"
-
-// Number bases charsets
-#define HEX_CHARSET	"0123456789abcdef"
-#define DEC_CHARSET	"0123456789"
-#define OCT_CHARSET	"01234567"
-#define BIN_CHARSET	"01"
-
 // Syntax
 #define DEFINE_KEYWORD	"%define"
 #define LABEL_KEYWORD	":"
@@ -83,10 +72,6 @@ bool	machine_code_generation(t_data* data);
 uint64_t	build_mask(size_t len);
 t_bitfield*	get_bitfield(t_instruction* instr, size_t i_operand);
 void*		get_compilation_target(t_isa* isa, char* str, t_mnemonic_type type);
-//	nbr.c
-bool	is_number(char* str);
-bool	will_overflow(char* str, size_t n_bits);
-ssize_t	get_number(char* str);
 //	cmp.c
 bool	cmp_label(void* label, void* str);
 bool	cmp_macro(void* macro, void* str);
@@ -97,6 +82,8 @@ bool	cmp_flag(void* flag, void* ptr);
 //	free_data.c
 void	free_isa(t_isa* isa);
 void	close_files(t_data* data);
+void	free_tokens(t_lst* token_col);
+//	free_struct.c
 void	free_label(void* label);
 void	free_macro(void* macro);
-void	free_tokens(t_lst* token_col);
+void	free_token(void* token);

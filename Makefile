@@ -50,8 +50,7 @@ COLOR_WHITE =		\033[1;38;5;15m
 SRC =	main.c \
 	$(ARG_DIR)argument_checking.c \
 	$(ISA_DIR)isa_loading.c \
-	$(FIL_DIR)file_opening.c \
-	$(FIL_DIR)init_filenames.c \
+	$(FIL_DIR)file.c \
 	$(TOK_DIR)tokenization.c \
 	$(PRE_DIR)preprocessing.c \
 	$(SYM_DIR)symbol_table_building.c \
@@ -59,8 +58,8 @@ SRC =	main.c \
 	$(MAC_DIR)machine_code_generation.c \
 	$(UTI_DIR)compilation.c \
 	$(UTI_DIR)cmp.c \
-	$(UTI_DIR)nbr.c \
-	$(FRE_DIR)free_data.c
+	$(FRE_DIR)free_data.c \
+	$(FRE_DIR)free_struct.c
 
 # Compiled objects
 

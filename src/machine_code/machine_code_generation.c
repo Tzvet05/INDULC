@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include <string.h>
 #include <ctype.h>
 #include "indulc.h"
@@ -6,6 +5,7 @@
 #include "error.h"
 #include "token.h"
 #include "label.h"
+#include "nbr.h"
 
 static bool	write_compiled_instruction(t_file* file, uint32_t compiled_instruction)
 {

@@ -5,6 +5,7 @@
 #include "parr.h"
 #include "error.h"
 #include "token.h"
+#include "nbr.h"
 
 static bool	check_remaining_tokens_syntax(t_lst** tokens_ptr)
 {
