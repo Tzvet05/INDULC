@@ -55,6 +55,7 @@
 //			Type
 #define ERROR_INSTRUCTION_REGISTER		"register operand"
 #define ERROR_INSTRUCTION_REGISTER_INDEX	"register index is not supported (refer to ISA)"
+#define ERROR_INSTRUCTION_REGISTER_PREFIX	"missing register prefix `r` before register index"
 //			Type
 #define ERROR_INSTRUCTION_IMMEDIATE	"immediate operand"
 //			Type

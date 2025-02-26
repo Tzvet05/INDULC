@@ -15,7 +15,11 @@ MOD =		libcjson.so
 # Optional compilation macros
 
 ifeq ($(COMP_BIN_CHAR), 1)
-	CFLAG += -D COMP_BIN_CHAR
+	CFLAG += -DCOMP_BIN_CHAR
+endif
+
+ifeq ($(COMP_STRICT_SYNTAX), 1)
+	CFLAG += -DCOMP_STRICT_SYNTAX
 endif
 
 # Directories

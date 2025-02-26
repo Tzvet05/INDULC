@@ -27,8 +27,20 @@ static bool	check_remaining_tokens_syntax(t_lst** tokens_ptr)
 static bool	check_register_operand_syntax(t_isa* isa, t_token* token, size_t bit_len)
 {
 	size_t	i = 0;
+#ifdef COMP_STRICT_SYNTAX
+	if (tolower(token->str[i]) != 'r')
+	{
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_REGISTER,
+			ERROR_INSTRUCTION_REGISTER_PREFIX, token->str);
+		return (1);
+	}
+	i++;
+#else
 	if (tolower(token->str[i]) == 'r')
 		i++;
+#endif
 	if (is_number(&token->str[i]) == 0)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
