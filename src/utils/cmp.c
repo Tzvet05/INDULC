@@ -24,3 +24,8 @@ bool	cmp_flag(void* flag, void *ptr)
 {
 	return ((ssize_t)(*(size_t *)flag) == *(ssize_t *)ptr);
 }
+
+bool	cmp_register(void* _register, void* ptr)
+{
+	return ((ssize_t)(*(size_t *)_register) == *(ssize_t *)ptr);
+}

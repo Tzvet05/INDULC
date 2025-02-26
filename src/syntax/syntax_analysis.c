@@ -1,10 +1,12 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <math.h>
 #include "indulc.h"
 #include "parr.h"
 #include "error.h"
 #include "token.h"
+#include "label.h"
 #include "nbr.h"
 
 static bool	check_remaining_tokens_syntax(t_lst** tokens_ptr)
@@ -29,48 +31,54 @@ static bool	check_register_operand_syntax(t_isa* isa, t_token* token, size_t bit
 		i++;
 	if (is_number(&token->str[i]) == 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
-			ERROR_INSTRUCTION, ERROR_NOT_NUMBER, token->str);
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_REGISTER,
+			ERROR_NOT_NUMBER, token->str);
 		return (1);
 	}
 	ssize_t	number = get_number(&token->str[i]);
-	if (number < 0)
+	if (parr_find(&isa->registers, &number, cmp_register) == NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
-			ERROR_INSTRUCTION, ERROR_NEGATIVE_NUMBER, token->str);
-		return (1);
-	}
-	else if (number >= (ssize_t)isa->n_registers)
-	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
-			ERROR_INSTRUCTION, ERROR_INSTRUCTION_REGISTER, token->str);
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_REGISTER,
+			ERROR_INSTRUCTION_REGISTER_INDEX, token->str);
 		return (1);
 	}
 	else if (will_overflow(&token->str[i], bit_len) == 1)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, token->lin, token->col,
-			WARNING_INSTRUCTION, WARNING_OVERFLOW, token->str);
+			WARNING_INSTRUCTION, WARNING_INSTRUCTION_REGISTER,
+			WARNING_OVERFLOW, token->str);
 	return (0);
 }
 
 static bool	check_immediate_operand_syntax(t_lst* symbol_table, t_token* token, size_t bit_len)
 {
-	if (lst_find(symbol_table, token->str, cmp_label) != NULL)
+	t_lst*	label = lst_find(symbol_table, token->str, cmp_label);
+	if (label != NULL)
+	{
+		if (((t_label *)label->content)->line >= (size_t)pow(2.0, (double)(bit_len - 1)))
+			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, WARNING_SYNTAX, token->lin, token->col,
+				WARNING_INSTRUCTION, WARNING_INSTRUCTION_LABEL,
+				WARNING_OVERFLOW, token->str);
 		return (0);
+	}
 	if (is_number(token->str) == 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
-			ERROR_INSTRUCTION, ERROR_NOT_NUMBER, token->str);
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_IMMEDIATE,
+			ERROR_NOT_NUMBER, token->str);
 		return (1);
 	}
 	else if (will_overflow(token->str, bit_len) == 1)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, token->lin, token->col,
-			WARNING_INSTRUCTION, WARNING_OVERFLOW, token->str);
+			WARNING_INSTRUCTION, WARNING_INSTRUCTION_IMMEDIATE,
+			WARNING_OVERFLOW, token->str);
 	return (0);
 }
 
@@ -81,24 +89,40 @@ static bool	check_condition_operand_syntax(t_isa* isa, t_token* token, size_t bi
 		return (0);
 	else if (is_number(token->str) == 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
-			ERROR_INSTRUCTION, ERROR_NOT_NUMBER, token->str);
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_CONDITION,
+			ERROR_NOT_NUMBER, token->str);
 		return (1);
 	}
 	ssize_t	number = get_number(token->str);
 	if (parr_find(&isa->flags, (void *)&number, cmp_flag) == NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
-			ERROR_INSTRUCTION, ERROR_INSTRUCTION_FLAG, token->str);
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_CONDITION,
+			ERROR_INSTRUCTION_CONDITION_FLAG, token->str);
 		return (1);
 	}
 	else if (will_overflow(token->str, bit_len) == 1)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, token->lin, token->col,
-			WARNING_INSTRUCTION, WARNING_OVERFLOW, token->str);
+			WARNING_INSTRUCTION, WARNING_INSTRUCTION_CONDITION,
+			WARNING_OVERFLOW, token->str);
 	return (0);
+}
+
+static t_bitfield*	get_bitfield(t_instruction* instr, size_t i_opword_target)
+{
+	size_t	i_bitfield = 0, i_opword = 0;
+	while (i_opword < i_opword_target
+		|| ((t_bitfield *)instr->bitfields.arr)[i_bitfield].type == CONSTANT)
+	{
+		if (((t_bitfield *)instr->bitfields.arr)[i_bitfield].type != CONSTANT)
+			i_opword++;
+		i_bitfield++;
+	}
+	return (&((t_bitfield *)instr->bitfields.arr)[i_bitfield]);
 }
 
 static bool	check_operand_syntax(t_data* data, t_instruction* instr, t_token* token,
@@ -123,17 +147,20 @@ static bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 		return (0);
 	bool	error = 0;
 	size_t	i_opword = 0;
-	while (tokens->next != NULL && i_opword + 1 < instr->format.n_opwords)
-	{
+	if (tokens->next != NULL)
 		tokens = tokens->next;
-		i_opword++;
+	while (tokens->next != NULL && i_opword + 1 < instr->n_opwords)
+	{
 		if (check_operand_syntax(data, instr, (t_token *)tokens->content, i_opword) == 1)
 			error = 1;
+		tokens = tokens->next;
+		i_opword++;
 	}
 	*tokens_ptr = tokens->next;
-	if (i_opword + 1 < instr->format.n_opwords)
+	if (i_opword + 1 < instr->n_opwords)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col
 				+ strlen(((t_token *)tokens->content)->str) + 1,
 			ERROR_INSTRUCTION, ERROR_INSTRUCTION_TOO_FEW_ARGS);
@@ -141,7 +168,8 @@ static bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 	}
 	else if (tokens->next != NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->next->content)->lin,
 			((t_token *)tokens->next->content)->col, ERROR_INSTRUCTION,
 			ERROR_INSTRUCTION_TOO_MANY_ARGS, ((t_token *)tokens->next->content)->str);
@@ -160,14 +188,16 @@ static bool	check_label_syntax(t_lst **tokens_ptr)
 	*tokens_ptr = lst_get_node(tokens, i + 1);
 	if (i < 1)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
 			ERROR_LABEL, ERROR_LABEL_TOO_FEW_ARGS);
 		return (1);
 	}
 	else if (isalpha(((t_token *)tokens->content)->str[0]) == 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
 			ERROR_LABEL, ERROR_LABEL_INVALID_NAME, ((t_token *)tokens->content)->str);
 		error = 1;
@@ -176,7 +206,8 @@ static bool	check_label_syntax(t_lst **tokens_ptr)
 	size_t	i_error = 1;
 	while (i_error < (size_t)i)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
 			ERROR_LABEL, ERROR_LABEL_TOO_MANY_ARGS, ((t_token *)tokens->content)->str);
 		error = 1;
@@ -195,7 +226,8 @@ static bool	check_define_syntax(t_lst **tokens_ptr)
 	*tokens_ptr = lst_get_node(tokens, 3);
 	if (tokens->next == NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin,
 			((t_token *)tokens->content)->col
 				+ strlen(((t_token *)tokens->content)->str) + 1,
@@ -205,14 +237,16 @@ static bool	check_define_syntax(t_lst **tokens_ptr)
 	tokens = tokens->next;
 	if (isalpha(((t_token *)tokens->content)->str[0]) == 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
 			ERROR_DEFINE, ERROR_DEFINE_INVALID_NAME, ((t_token *)tokens->content)->str);
 		error = 1;
 	}
 	if (tokens->next == NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin,
 			((t_token *)tokens->content)->col
 				+ strlen(((t_token *)tokens->content)->str) + 1,
@@ -222,21 +256,25 @@ static bool	check_define_syntax(t_lst **tokens_ptr)
 	tokens = tokens->next;
 	if (is_number(((t_token *)tokens->content)->str) == 0)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
 			ERROR_DEFINE, ERROR_NOT_NUMBER, ((t_token *)tokens->content)->str);
 		error = 1;
 	}
 	if (will_overflow(((t_token *)tokens->content)->str, 16) == 1)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, WARNING_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, WARNING_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
 			WARNING_DEFINE, WARNING_OVERFLOW, ((t_token *)tokens->content)->str);
 	tokens = tokens->next;
 	if (tokens != NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n", EXECUTABLE_NAME, ERROR_SYNTAX,
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
-			ERROR_DEFINE, ERROR_DEFINE_TOO_MANY_ARGS, ((t_token *)tokens->content)->str);
+			ERROR_DEFINE, ERROR_DEFINE_TOO_MANY_ARGS,
+			((t_token *)tokens->content)->str);
 		return (1);
 	}
 	return (error);

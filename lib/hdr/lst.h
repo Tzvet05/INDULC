@@ -2,11 +2,8 @@
 
 /* ----- INCLUDES ----- */
 
-// Libraries
 #include <stdlib.h>
 #include <stdbool.h>
-
-// Headers
 #include "parr.h"
 
 /* ----- STRUCTURES ----- */
@@ -20,7 +17,6 @@ typedef struct lst
 
 /* ----- PROTOTYPES ----- */
 
-// Linked list
 size_t	lst_size(t_lst* lst);
 t_lst*	lst_last(t_lst* lst);
 bool	lst_new_back(t_lst** lst, void* content);

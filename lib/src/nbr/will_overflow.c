@@ -20,6 +20,6 @@ bool	will_overflow(char* str, size_t n_bits)
 	ssize_t	n = (ssize_t)strtoll(&str[i], NULL, radix);
 	if (sign == 1)
 		n = -n;
-	return (n >= (ssize_t)pow(2.0, (double)(n_bits - 1))
-		|| n < -(ssize_t)pow(2.0, (double)(n_bits - 1)));
+	ssize_t	extremum = (ssize_t)pow(2.0, (double)(n_bits - 1));
+	return (n >= extremum || n < -extremum);
 }

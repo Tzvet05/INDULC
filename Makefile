@@ -50,6 +50,8 @@ COLOR_WHITE =		\033[1;38;5;15m
 SRC =	main.c \
 	$(ARG_DIR)argument_checking.c \
 	$(ISA_DIR)isa_loading.c \
+	$(ISA_DIR)check_isa_syntax.c \
+	$(ISA_DIR)get_isa.c \
 	$(FIL_DIR)file.c \
 	$(TOK_DIR)tokenization.c \
 	$(PRE_DIR)preprocessing.c \

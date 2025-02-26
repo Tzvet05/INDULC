@@ -2,7 +2,7 @@
 
 **Indu**strious **L**anguage **C**ompiler
 
-Compiler for INDUL (**Indu**strious **L**anguage), an ASM-like language designed to be executed on the Industrious CPUs, a series of RISC Factorio CPUs.
+Assembler for INDUL (**Indu**strious **L**anguage), an ASM-like language designed to be executed on the Industrious CPUs, a series of RISC Factorio CPUs.
 
 ## SETUP
 
@@ -21,11 +21,16 @@ make
 Run the compiler using
 `./indulc [program infile] ([compiled outfile]) ([isa infile])`
 
-`[program infile]` is the input text file containing the program to compile. You must have reading permissions for it.
+`[program infile]` is the input text file containing the program to compile.
+You must have reading permissions for it.
 
-`[compiled outfile]` is the output text file to write the compiled program in. You must have writing permissions for it. This argument is optional and will be replaced by a default argument `a.out` if left empty.
+`[compiled outfile]` is the output text file to write the compiled program in.
+You must have writing permissions for it.
+This argument is optional and will be replaced by a default argument `a.out` if left empty.
 
-`[isa infile]` is the input Json file containing the ISA used for compilation. You must have reading permissions for it. This argument is optional and will be replaced by a default argument `isa.json` if left empty.
+`[isa infile]` is the input Json file containing the ISA used for compilation.
+You must have reading permissions for it.
+This argument is optional and will be replaced by a default argument `isa.json` if left empty.
 
 ### Makefile rules
 
@@ -54,11 +59,13 @@ An instruction follows this syntax :
 
 `[mnemonic]` is the mnemonic string of the instruction. It must be supported by the provided ISA.
 
-`[operand]` is an operand of the instruction. It can be a register, an immediate, a flag, a macro or a label. Each instruction has a specific number and types of operands, specified by the provided ISA.
+`[operand]` is an operand of the instruction. It can be a register, an immediate, a flag, a macro or a label.
+Each instruction has a specific number and types of operands, specified by the provided ISA.
 
 #### Registers
 
-A register can be either a macro or a number that can start with the character `r` or `R`. Its index must be in range of the amount of registers specified by the provided ISA, starting at `r0`.
+A register can be either a macro or a number that can start with the character `r` or `R`.
+Its index must be supported by the provided ISA.
 
 #### Immediates
 
@@ -66,7 +73,8 @@ An immediate can be either a number, a macro or a label.
 
 #### Flags
 
-A flag can be either a number or a mnemonic string. Its mnemonic string or value must be supported by the provided ISA.
+A flag can be either a number or a mnemonic string.
+Its mnemonic string or value must be supported by the provided ISA.
 
 ### Defines
 
@@ -74,9 +82,12 @@ A define statement follows this syntax :
 
 `%define [identifier] [value]`
 
-`[identifier]` is the identifier of the macro. It is the string that will be replaced by the value associated with it. It must start with an alphabetic character.
+`[identifier]` is the identifier of the macro.
+It is the string that will be replaced by the value associated with it.
+It must start with an alphabetic character.
 
-`[value]` is the value of the macro. It is the string that will replace the identifier associated with it.
+`[value]` is the value of the macro.
+It is the string that will replace the identifier associated with it.
 
 A define statement must be on its own line.
 
@@ -88,7 +99,8 @@ A label statement follows this syntax :
 
 `[label]:`
 
-`[label]` is the name of the label. It must start with an alphabetic character.
+`[label]` is the name of the label.
+It must start with an alphabetic character.
 
 A label statement can either be on its own line (and will compile to the address following itself) or on the same line as an instruction, before the instruction's mnemonic (and will compile to its own address).
 
@@ -104,14 +116,13 @@ A comment follows this syntax :
 
 ### Example
 
-This is an example of a valid block of INDUL code :
-
+Here is an example of a valid block of INDUL code :
 ```
 %define START	10			; starting value
 %define STEP	2			; step value
 
-	ILD	r1,	START		; initialize r1 with START
-	ILD	r2,	STEP		; initialize r2 with STEP
+	ILOD	r1,	START		; initialize r1 with START
+	ILOD	r2,	STEP		; initialize r2 with STEP
 loop:	SUB	r1,	r2,	r1	; definition of label "loop", r1 = r1 - r2
 	BRH	nz,	loop		; jump to label "loop" if the result of the substraction is not 0
 	HLT				; stop program execution
@@ -124,26 +135,36 @@ Whitespace characters are ignored during parsing.
 
 ### The main object
 
-The main object must contain 3 items :
-- `"n_registers"`, whose value (number) is the number of registers of the CPU.
+The main object must contain 4 items :
+- `"instruction_length"`, whose value (number) is the maximum length (in bits) of the instructions.
+- `"registers"`, whose value (array of number) is the array of all the valid CPU register indexes.
 - `"instructions"`, whose value (array of instruction objects) is the array of all the supported instructions.
 - `"flags"`, whose value (array of flag objects) is the array of all the supported flags.
 
+`"instruction_length"` must be strictly greater than 0.
+It does not need to be a multiple of 8, and if it is not, all the bits up to the nearest multiple of 8 will be written as 0 in the machine code (for padding reasons).
+
 #### The instruction object
 
-The instruction object must contain 3 items :
+The instruction object must contain 2 items :
 - `"mnemonics"`, whose value (array of strings) is the array of all of the instruction's mnemonics.
-- `"opcode"`, whose value (number) is the opcode of the instruction.
 - `"bitfields"`, whose value (array of bitfield objects) is the array of all of the instruction's bitfields.
+
+The sum of the lengths of an instruction's bitfields must not exceed the value specified in `"instruction_length"`. If the sum is inferior to this value, all the remaining bits up to the value of `"instruction_length"` are treated as if they were part of a `"constant"` bitfield with a `"constant"` value of 0.
 
 ##### The bitfield object
 
-The bitfield object must contain 2 items :
+The bitfield object must contain 2 to 3 items :
 - `"len"`, whose value (number) is the length (in bits) of the bitfield.
-- `"type"`, whose value (string) is the type of the bitfield. The type can be `"opcode"`, `"register"`, `"immediate"`, `"condition"` or `"unused"`.
+- `"type"`, whose value (string) is the type of the bitfield.
+- `"constant"`, whose value (number) is the value of the constant (if the bitfield's type is `"constant"`).
 
-As the instructions are encoded on 32 bits, the sum of the lengths of an instruction's bitfields must not exceed 32. If it is inferior to 32 bits, all the remaining bits up to the 32nd are considered unused.
-The `"unused"` type is used to add padding inside an instruction.
+`"len"` must be strictly greater than 0. It does not need to be a multiple of 8.
+
+`"type"` must be one of `"constant"`, `"register"`, `"immediate"` and `"condition"`.
+`"constant"` can be used for the opcode, padding or a constant value needed by a pseudoinstruction.
+
+`"constant"` is ignored if the bitfield's type is not `"constant"`. If the bitfield's type is `"constant"` but the `"constant"` item does not exists, it is considered equal to 0.
 
 #### The flag object
 
@@ -154,9 +175,9 @@ The flag object must contain 2 items :
 ### Example
 
 The instruction `JMP 5` with only mnemonic `JMP` and opcode `18` can be made of 3 bitfields:
-- one opcode of 8 bits (mnemonic `JMP`).
-- one unused field of 8 bits (padding).
-- one immediate of 16 bits (immediate `5`).
+- one constant of 8 bits (holding the opcode (`18` here)).
+- one constant of 8 bits (padding).
+- one immediate of 16 bits (holding the target address (`5` here)).
 
 It can therefore be stored as :
 ```json
@@ -165,16 +186,16 @@ It can therefore be stored as :
 	[
 		"JMP"
 	],
-	"opcode": 18,
 	"bitfields":
 	[
 		{
 			"len": 8,
-			"type": "opcode"
+			"type": "constant",
+			"constant" : 18
 		},
 		{
 			"len": 8,
-			"type": "unused"
+			"type": "constant"
 		},
 		{
 			"len": 16,

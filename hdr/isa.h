@@ -2,43 +2,44 @@
 
 /* ----- INCLUDES ----- */
 
-#include <stddef.h>
+#include <unistd.h>
 #include "parr.h"
 
 /* ----- MACROS ----- */
 
 // ISA Json file keys
 //	ISA
-#define JSON_ISA_KEY_NB_REGISTERS	"n_registers"
-#define JSON_ISA_KEY_INSTRUCTIONS	"instructions"
-#define JSON_ISA_KEY_FLAGS		"flags"
+#define JSON_INSTRUCTION_LENGTH	"instruction_length"
+#define JSON_REGISTERS		"registers"
+#define JSON_INSTRUCTIONS	"instructions"
+#define JSON_FLAGS		"flags"
 //		Instruction
-#define JSON_ISA_KEY_INSTRUCTION_MNEMONICS	"mnemonics"
-#define JSON_ISA_KEY_INSTRUCTION_OPCODE		"opcode"
-#define JSON_ISA_KEY_INSTRUCTION_BITFIELDS	"bitfields"
-//			Format
-#define JSON_ISA_KEY_INSTRUCTION_BITFIELD_LEN	"len"
-#define JSON_ISA_KEY_INSTRUCTION_BITFIELD_TYPE	"type"
+#define JSON_INSTRUCTION_MNEMONICS	"mnemonics"
+#define JSON_INSTRUCTION_BITFIELDS	"bitfields"
+//			Bitfield
+#define JSON_INSTRUCTION_BITFIELD_LEN		"len"
+#define JSON_INSTRUCTION_BITFIELD_TYPE		"type"
+#define JSON_INSTRUCTION_BITFIELD_CONSTANT	"constant"
 //		Flag
-#define JSON_ISA_KEY_FLAG_MNEMONICS		"mnemonics"
-#define JSON_ISA_KEY_FLAG_CONDITION_CODE	"condition_code"
+#define JSON_FLAG_MNEMONICS		"mnemonics"
+#define JSON_FLAG_CONDITION_CODE	"condition_code"
 
-// Bitfield types strings
-#define BITFIELD_TYPES	((const char* const[]){"opcode", "register", "immediate", "condition", "unused"})
+// Maximum bitfield length
+#define BITFIELD_LEN_MAX	64
 
-// Number of different bitfield types
-#define N_BITFIELD_TYPES	5
+// Bitfield types
+#define N_BITFIELD_TYPES	4
+#define BITFIELD_TYPES		((const char* const[]){"register", "immediate", "condition", "constant"})
 
 /* ----- ENUMERATIONS ----- */
 
 // Bitfield type
 typedef enum bitfield_type
 {
-	OPCODE = 0,
-	REGISTER,
+	REGISTER = 0,
 	IMMEDIATE,
 	CONDITION,
-	UNUSED
+	CONSTANT
 }	t_bitfield_type;
 
 // Mnemonic type
@@ -50,31 +51,25 @@ typedef enum mnemonic_type
 
 /* ----- STRUCTURES ----- */
 
-// Instruction format bitfield
+// Instruction bitfield
 typedef struct bitfield
 {
-	size_t		len;//	Length of the bitfield
-	t_bitfield_type	type;//	Type of the bitfield
+	size_t		len;//		Length of the bitfield
+	t_bitfield_type	type;//		Type of the bitfield
+	ssize_t		constant;//	Stored constant (if type == CONSTANT)
 }	t_bitfield;
-
-// Instruction format
-typedef struct format
-{
-	size_t	n_opwords;//	Number of words in the instruction (operands + opcode)
-	t_parr	bitfields;//	Array of bitfields
-}	t_format;
 
 // Instruction
 typedef struct instruction
 {
-	size_t		opcode;//	Opcode of the instruction
-	t_format	format;//	Format of the instruction
+	size_t	n_opwords;//	Number of words in the instruction (opcode + operands)
+	t_parr	bitfields;//	Array of bitfields
 }	t_instruction;
 
 // Mnemonic
 typedef struct mnemonic
 {
-	t_parr		mnemonics;//		Array of all mnemonic strings
+	t_parr		mnemonics;//		Array of mnemonic strings
 	void*		compilation_target;//	Pointer to the data to compile to
 	t_mnemonic_type	type;//			Type of the data to compile to
 }	t_mnemonic;
@@ -82,8 +77,9 @@ typedef struct mnemonic
 // ISA
 typedef struct isa
 {
-	size_t	n_registers;//		Number of registers of the CPU
-	t_parr	instructions;//		Array of all supported instructions
-	t_parr	flags;//		Array of all supported flags
-	t_parr	mnemonics;//		Array of all mnemonics and what they compile to
+	size_t	instruction_length;//	Length of the instructions (in bits)
+	t_parr	registers;//		Array of register indexes
+	t_parr	instructions;//		Array of supported instructions
+	t_parr	flags;//		Array of supported flags
+	t_parr	mnemonics;//		Array of mnemonics and what they compile to
 }	t_isa;

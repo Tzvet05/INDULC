@@ -1,15 +1,33 @@
 {
-	"n_registers": 16,
+	"instruction_length": 32,
+	"registers": [
+		0,
+		1,
+		2,
+		3,
+		4,
+		5,
+		6,
+		7,
+		8,
+		9,
+		10,
+		11,
+		12,
+		13,
+		14,
+		15
+	],
 	"instructions": [
 		{
 			"mnemonics": [
 				"NOP"
 			],
-			"opcode": 0,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 0
 				}
 			]
 		},
@@ -17,11 +35,11 @@
 			"mnemonics": [
 				"HLT"
 			],
-			"opcode": 1,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 1
 				}
 			]
 		},
@@ -29,11 +47,11 @@
 			"mnemonics": [
 				"ADD"
 			],
-			"opcode": 2,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 2
 				},
 				{
 					"len": 8,
@@ -53,11 +71,11 @@
 			"mnemonics": [
 				"SUB"
 			],
-			"opcode": 3,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 3
 				},
 				{
 					"len": 8,
@@ -77,11 +95,11 @@
 			"mnemonics": [
 				"MUL"
 			],
-			"opcode": 4,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 4
 				},
 				{
 					"len": 8,
@@ -101,11 +119,11 @@
 			"mnemonics": [
 				"DIV"
 			],
-			"opcode": 5,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 5
 				},
 				{
 					"len": 8,
@@ -125,11 +143,11 @@
 			"mnemonics": [
 				"MOD"
 			],
-			"opcode": 6,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 6
 				},
 				{
 					"len": 8,
@@ -149,11 +167,11 @@
 			"mnemonics": [
 				"EXP"
 			],
-			"opcode": 7,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 7
 				},
 				{
 					"len": 8,
@@ -173,11 +191,11 @@
 			"mnemonics": [
 				"AND"
 			],
-			"opcode": 8,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 8
 				},
 				{
 					"len": 8,
@@ -197,11 +215,11 @@
 			"mnemonics": [
 				"OR"
 			],
-			"opcode": 9,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 9
 				},
 				{
 					"len": 8,
@@ -221,11 +239,11 @@
 			"mnemonics": [
 				"XOR"
 			],
-			"opcode": 10,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 10
 				},
 				{
 					"len": 8,
@@ -245,11 +263,11 @@
 			"mnemonics": [
 				"LBS"
 			],
-			"opcode": 11,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 11
 				},
 				{
 					"len": 8,
@@ -269,11 +287,11 @@
 			"mnemonics": [
 				"RBS"
 			],
-			"opcode": 12,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 12
 				},
 				{
 					"len": 8,
@@ -293,11 +311,11 @@
 			"mnemonics": [
 				"NAND"
 			],
-			"opcode": 13,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 13
 				},
 				{
 					"len": 8,
@@ -317,11 +335,11 @@
 			"mnemonics": [
 				"NOR"
 			],
-			"opcode": 14,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 14
 				},
 				{
 					"len": 8,
@@ -341,11 +359,11 @@
 			"mnemonics": [
 				"XNOR"
 			],
-			"opcode": 15,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 15
 				},
 				{
 					"len": 8,
@@ -365,11 +383,11 @@
 			"mnemonics": [
 				"ILOD"
 			],
-			"opcode": 16,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 16
 				},
 				{
 					"len": 8,
@@ -385,11 +403,11 @@
 			"mnemonics": [
 				"IADD"
 			],
-			"opcode": 17,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 17
 				},
 				{
 					"len": 8,
@@ -405,15 +423,15 @@
 			"mnemonics": [
 				"JMP"
 			],
-			"opcode": 18,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 18
 				},
 				{
 					"len": 8,
-					"type": "unused"
+					"type": "constant"
 				},
 				{
 					"len": 16,
@@ -425,11 +443,11 @@
 			"mnemonics": [
 				"BRH"
 			],
-			"opcode": 19,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 19
 				},
 				{
 					"len": 8,
@@ -445,15 +463,15 @@
 			"mnemonics": [
 				"CAL"
 			],
-			"opcode": 20,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 20
 				},
 				{
 					"len": 8,
-					"type": "unused"
+					"type": "constant"
 				},
 				{
 					"len": 16,
@@ -465,11 +483,11 @@
 			"mnemonics": [
 				"RET"
 			],
-			"opcode": 21,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 21
 				}
 			]
 		},
@@ -477,11 +495,11 @@
 			"mnemonics": [
 				"MLOD"
 			],
-			"opcode": 22,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 22
 				},
 				{
 					"len": 8,
@@ -497,11 +515,11 @@
 			"mnemonics": [
 				"MSTR"
 			],
-			"opcode": 23,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 23
 				},
 				{
 					"len": 8,
@@ -517,11 +535,11 @@
 			"mnemonics": [
 				"PLOD"
 			],
-			"opcode": 24,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 24
 				},
 				{
 					"len": 8,
@@ -537,11 +555,11 @@
 			"mnemonics": [
 				"PSTR"
 			],
-			"opcode": 25,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 25
 				},
 				{
 					"len": 8,
@@ -557,11 +575,11 @@
 			"mnemonics": [
 				"CMP"
 			],
-			"opcode": 3,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 3
 				},
 				{
 					"len": 8,
@@ -577,11 +595,11 @@
 			"mnemonics": [
 				"MOV"
 			],
-			"opcode": 2,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 2
 				},
 				{
 					"len": 8,
@@ -589,7 +607,7 @@
 				},
 				{
 					"len": 8,
-					"type": "unused"
+					"type": "constant"
 				},
 				{
 					"len": 8,
@@ -601,15 +619,57 @@
 			"mnemonics": [
 				"UPD"
 			],
-			"opcode": 2,
 			"bitfields": [
 				{
 					"len": 8,
-					"type": "opcode"
+					"type": "constant",
+					"constant": 2
 				},
 				{
 					"len": 8,
 					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"INC"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"constant": 17
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "constant",
+					"constant": 1
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"DEC"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"constant": 17
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "constant",
+					"constant": -1
 				}
 			]
 		}

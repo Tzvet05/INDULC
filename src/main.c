@@ -3,7 +3,7 @@
 
 static bool	compilation(t_data *data)
 {
-	if (open_file(&data->files[INFILE_PROGRAM], READ_MODE) == 1)
+	if (open_file(&data->files[INFILE_PROGRAM], FOPEN_READ_MODE) == 1)
 		return (1);
 	else if (tokenization(data) == 1)
 		return (1);
@@ -13,7 +13,7 @@ static bool	compilation(t_data *data)
 		return (1);
 	else if (syntax_analysis(data) == 1)
 		return (1);
-	else if (open_file(&data->files[OUTFILE_PROGRAM], WRITE_MODE) == 1)
+	else if (open_file(&data->files[OUTFILE_PROGRAM], FOPEN_WRITE_MODE) == 1)
 		return (1);
 	else 
 		return (machine_code_generation(data));
@@ -25,7 +25,7 @@ int	main(int argc, char** argv)
 		return (1);
 	t_data	data = {0};
 	init_filenames(&data, &argv[1]);
-	if (open_file(&data.files[INFILE_ISA], READ_MODE) == 1 || isa_loading(&data) == 1)
+	if (open_file(&data.files[INFILE_ISA], FOPEN_READ_MODE) == 1 || isa_loading(&data) == 1)
 	{
 		free_isa(&data.isa);
 		close_files(&data);

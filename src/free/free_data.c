@@ -5,8 +5,9 @@
 
 void	free_isa(t_isa* isa)
 {
+	free(isa->registers.arr);
 	for (size_t i = 0; i < isa->instructions.len; i++)
-		free(((t_instruction *)isa->instructions.arr)[i].format.bitfields.arr);
+		free(((t_instruction *)isa->instructions.arr)[i].bitfields.arr);
 	free(isa->instructions.arr);
 	free(isa->flags.arr);
 	for (size_t i = 0; i < isa->mnemonics.len; i++)

@@ -4,9 +4,20 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "cJSON.h"
 #include "file.h"
 #include "lst.h"
 #include "isa.h"
+
+/* ----- ENUMERATIONS ----- */
+
+// Files
+enum
+{
+	INFILE_PROGRAM = 0,
+	OUTFILE_PROGRAM,
+	INFILE_ISA
+};
 
 /* ----- STRUCTURES ----- */
 
@@ -25,6 +36,10 @@ typedef struct data
 // Executable name
 #define EXECUTABLE_NAME	"indulc"
 
+// Default file names
+#define DEFAULT_OUTFILE_PROGRAM	"a.out"
+#define DEFAULT_INFILE_ISA	"isa.json"
+
 // Syntax
 #define DEFINE_KEYWORD	"%define"
 #define LABEL_KEYWORD	":"
@@ -38,12 +53,16 @@ bool	argument_checking(int argc, char** argv);
 
 // isa/
 //	isa_loading.c
+ssize_t	get_bitfield_type(char* str);
 bool	isa_loading(t_data* data);
+//	get_isa.c
+bool	init_isa(t_isa* isa, const cJSON* json_isa);
+//	check_isa_syntax.c
+bool	check_isa_syntax(const cJSON* isa);
 
 // file/
-//	file_opening.c
-bool	open_file(t_file* file, char* mode);
-//	init_filenames.c
+//	file.c
+void	close_files(t_data* data);
 void	init_filenames(t_data* data, char** file_names);
 
 // tokenization/
@@ -70,18 +89,17 @@ bool	machine_code_generation(t_data* data);
 // utils/
 //	compilation.c
 uint64_t	build_mask(size_t len);
-t_bitfield*	get_bitfield(t_instruction* instr, size_t i_operand);
 void*		get_compilation_target(t_isa* isa, char* str, t_mnemonic_type type);
 //	cmp.c
 bool	cmp_label(void* label, void* str);
 bool	cmp_macro(void* macro, void* str);
 bool	cmp_token(void* token, void* str);
 bool	cmp_flag(void* flag, void* ptr);
+bool	cmp_register(void* _register, void* ptr);
 
 // free/
 //	free_data.c
 void	free_isa(t_isa* isa);
-void	close_files(t_data* data);
 void	free_tokens(t_lst* token_col);
 //	free_struct.c
 void	free_label(void* label);

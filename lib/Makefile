@@ -15,6 +15,7 @@ SRC_DIR =	src/
 LST_DIR = 	lst/
 PAR_DIR =	parr/
 NBR_DIR =	nbr/
+FIL_DIR =	file/
 
 # Colors
 
@@ -36,7 +37,9 @@ SRC =	$(LST_DIR)lst_size.c \
 	$(NBR_DIR)is_number.c \
 	$(NBR_DIR)will_overflow.c \
 	$(NBR_DIR)get_number.c \
-	$(NBR_DIR)get_charset.c
+	$(NBR_DIR)get_charset.c \
+	$(FIL_DIR)open_file.c \
+	$(FIL_DIR)close_file.c
 
 # Compiled objects
 
@@ -48,7 +51,7 @@ $(NAME) : $(OBJ)
 	@ ar rcs $(NAME) $(OBJ)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_GREEN)Archive ($(NAME)) compiled.$(COLOR_DEFAULT)"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(LST_DIR) $(PAR_DIR) $(NBR_DIR))
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(LST_DIR) $(PAR_DIR) $(NBR_DIR) $(FIL_DIR))
 	@ $(COMPILER) $(CFLAG) -I$(HDR_DIR) -c $^ -o $@
 
 # Build directories
@@ -64,6 +67,9 @@ $(OBJ_DIR)$(PAR_DIR) :
 
 $(OBJ_DIR)$(NBR_DIR) :
 	@ mkdir -p $(OBJ_DIR)$(NBR_DIR)
+
+$(OBJ_DIR)$(FIL_DIR) :
+	@ mkdir -p $(OBJ_DIR)$(FIL_DIR)
 
 # Rules
 
