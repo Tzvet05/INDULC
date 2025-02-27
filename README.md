@@ -16,19 +16,47 @@ Compile the program using
 make
 ```
 
+### Strict syntax mode
+
+When the strict syntax mode is enabled, the assembler expects a stricter syntax than in the permissive default mode.
+
+Change :
+- The `r` character before the register index is mandatory.
+
+To enable the strict syntax mode, the environment variable `COMP_STRICT_SYNTAX` must be set to `1` before compiling the assembler.
+
+You can do so by executing the following command :
+```sh
+export COMP_STRICT_SYNTAX=1
+```
+
+### Characters assembly mode
+
+When the characters assembly mode is enabled, the assembler outputs the assembled program in a human-readable form.
+
+Change :
+- The assembled program is written in the outfile using characters (`0` and `1`) rather than actual bits.
+
+To enable the strict syntax mode, the environment variable `COMP_BIN_CHAR` must be set to `1` before compiling the assembler.
+
+You can do so by executing the following command :
+```sh
+export COMP_BIN_CHAR=1
+```
+
 ## USAGE
 
-Run the compiler using
-`./indulc [program infile] ([compiled outfile]) ([isa infile])`
+Run the assembler using
+`./indulc [program infile] ([assembled outfile]) ([isa infile])`
 
-`[program infile]` is the input text file containing the program to compile.
+`[program infile]` is the input text file containing the program to assemble.
 You must have reading permissions for it.
 
-`[compiled outfile]` is the output text file to write the compiled program in.
+`[assembled outfile]` is the output text file to write the assembled program in.
 You must have writing permissions for it.
 This argument is optional and will be replaced by a default argument `a.out` if left empty.
 
-`[isa infile]` is the input Json file containing the ISA used for compilation.
+`[isa infile]` is the input Json file containing the ISA used for assembly.
 You must have reading permissions for it.
 This argument is optional and will be replaced by a default argument `isa.json` if left empty.
 
@@ -67,6 +95,8 @@ Each instruction has a specific number and types of operands, specified by the p
 A register can be either a macro or a number that can start with the character `r` or `R`.
 Its index must be supported by the provided ISA.
 
+If the strict syntax mode is enabled, the `r` character before the register index is mandatory.
+
 #### Immediates
 
 An immediate can be either a number, a macro or a label.
@@ -102,7 +132,7 @@ A label statement follows this syntax :
 `[label]` is the name of the label.
 It must start with an alphabetic character.
 
-A label statement can either be on its own line (and will compile to the address following itself) or on the same line as an instruction, before the instruction's mnemonic (and will compile to its own address).
+A label statement can either be on its own line (and will assemble to the address following itself) or on the same line as an instruction, before the instruction's mnemonic (and will assemble to its own address).
 
 Duplicate labels cannot exist.
 
@@ -219,7 +249,7 @@ The flag `even` with multiple mnemonics `even` and `ev` and code `2` can be stor
 
 Refer to the `isa.json` file located at the root of the repository for an example of a full ISA.
 
-## COMPILATION PROCESS
+## ASSEMBLY PROCESS
 
 1. Tokenization
 2. Preprocessing (macro saving & substitution)
