@@ -1,14 +1,9 @@
 #include <sys/param.h>
 #include <string.h>
-#include <ctype.h>
 #include "indulc.h"
-#include "file.h"
 #include "error.h"
-#include "token.h"
-#include "label.h"
-#include "nbr.h"
 
-static bool	write_compiled_instruction(t_file* file, t_parr* instruction)
+static bool	write_instruction(t_file* file, t_parr* instruction)
 {
 #ifdef COMP_BIN_CHAR
 	static char	buffer[9];
@@ -27,37 +22,11 @@ static bool	write_compiled_instruction(t_file* file, t_parr* instruction)
 #endif
 	if (ferror(file->stream) != 0)
 	{
-		fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_FWRITE,
-			ERROR_WRITE_FILE, file->name);
+		fprintf(stderr, "%s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, FUNC_FWRITE, ERROR_WRITE_FILE, file->name);
 		return (1);
 	}
 	return (0);
-}
-
-static ssize_t	get_register_operand(t_token* token)
-{
-	size_t	i = 0;
-	if (tolower(token->str[i]) == 'r')
-		i++;
-	return (get_number(&token->str[i]));
-}
-
-static ssize_t	get_immediate_operand(t_lst* symbol_table, t_token* token)
-{
-	t_lst*	label = (t_lst *)lst_find(symbol_table, token->str, cmp_label);
-	if (label != NULL)
-		return ((ssize_t)((t_label *)label->content)->line);
-	else
-		return (get_number(token->str));
-}
-
-static ssize_t	get_condition_operand(t_isa* isa, t_token* token)
-{
-	size_t*	flag = (size_t *)get_compilation_target(isa, token->str, FLAG);
-	if (flag != NULL)
-		return ((ssize_t)*flag);
-	else
-		return (get_number(token->str));
 }
 
 static void	bitshift_buffer(t_parr* buffer, size_t len)
@@ -129,7 +98,7 @@ static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr
 		}
 		i_bitfield++;
 	}
-	return (write_compiled_instruction(&data->files[OUTFILE_PROGRAM], buffer));
+	return (write_instruction(&data->files[OUTFILE_PROGRAM], buffer));
 }
 
 static bool	allocate_writing_buffer(size_t instruction_length, t_parr* buffer)
@@ -147,7 +116,7 @@ static bool	allocate_writing_buffer(size_t instruction_length, t_parr* buffer)
 	return (0);
 }
 
-bool	machine_code_generation(t_data* data)
+bool	generate_machine_code(t_data* data)
 {
 	t_parr	buffer;
 	if (allocate_writing_buffer(data->isa.instruction_length, &buffer) == 1)
@@ -161,7 +130,7 @@ bool	machine_code_generation(t_data* data)
 		if (tokens_col != NULL)
 		{
 			bzero(buffer.arr, buffer.len * buffer.obj_size);
-			t_instruction*	instr = (t_instruction *)get_compilation_target(&data->isa,
+			t_instruction*	instr = (t_instruction *)get_assembling_target(&data->isa,
 				((t_token *)tokens_col->content)->str, INSTRUCTION);
 			if (instr != NULL
 				&& encode_instruction(data, tokens_col, instr, &buffer) == 1)

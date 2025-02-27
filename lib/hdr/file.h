@@ -24,3 +24,4 @@ typedef struct file
 
 bool	open_file(t_file* file, char* mode);
 void	close_file(t_file* file);
+bool	get_next_line(t_file* file, char** line_ptr);

@@ -21,6 +21,7 @@
 /* -----PROTOTYPES ----- */
 
 bool	is_number(char* str);
-bool	will_overflow(char* str, size_t n_bits);
+bool	will_overflow_str(char* str, size_t n_bits);
+bool	will_overflow_int(ssize_t nbr, size_t n_bits);
 ssize_t	get_number(char* str);
 char*	get_charset(char* str);

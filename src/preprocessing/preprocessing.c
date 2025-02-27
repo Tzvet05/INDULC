@@ -1,26 +1,8 @@
-#include <string.h>
 #include <stdio.h>
-#include <ctype.h>
+#include <string.h>
 #include "indulc.h"
 #include "error.h"
-#include "token.h"
 #include "macro.h"
-
-static bool	is_define(t_lst* tokens)
-{
-	if (strcmp(((t_token *)tokens->content)->str, DEFINE_KEYWORD) != 0)
-		return (0);
-	else if (tokens->next == NULL)
-		return (0);
-	else if (isalpha(((t_token *)tokens->next->content)->str[0]) == 0)
-		return (0);
-	else if (tokens->next->next == NULL)
-		return (0);
-	else if (tokens->next->next->next != NULL)
-		return (0);
-	else
-		return (1);
-}
 
 static bool	add_macro(t_lst* tokens, t_lst** macro_table)
 {
@@ -77,7 +59,7 @@ static bool	substitute_macros(t_lst* macro_table, t_lst* tokens)
 	return (0);
 }
 
-bool	preprocessing(t_data* data)
+bool	preprocess(t_data* data)
 {
 	t_lst*	tokens = data->tokens;
 	while (tokens != NULL)

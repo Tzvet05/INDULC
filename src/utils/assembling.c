@@ -1,15 +1,7 @@
-#include <math.h>
-#include <stddef.h>
 #include <string.h>
-#include <stdint.h>
 #include "isa.h"
 
-uint64_t	build_mask(size_t len)
-{
-	return ((uint64_t)pow(2.0, (double)len) - 1);
-}
-
-void*	get_compilation_target(t_isa* isa, char* str, t_mnemonic_type type)
+void*	get_assembling_target(t_isa* isa, char* str, t_mnemonic_type type)
 {
 	size_t	i = 0;
 	while (i < isa->mnemonics.len)

@@ -1,9 +1,9 @@
-#include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #include "nbr.h"
+#include "bit.h"
 
-bool	will_overflow(char* str, size_t n_bits)
+bool	will_overflow_str(char* str, size_t n_bits)
 {
 	bool	sign = 0;
 	size_t	i = 0;
@@ -20,6 +20,6 @@ bool	will_overflow(char* str, size_t n_bits)
 	ssize_t	n = (ssize_t)strtoll(&str[i], NULL, radix);
 	if (sign == 1)
 		n = -n;
-	ssize_t	extremum = (ssize_t)pow(2.0, (double)(n_bits - 1));
-	return (n >= extremum || n < -extremum);
+	ssize_t	extremum = (ssize_t)build_mask(n_bits - (n_bits > 0));
+	return (n > extremum || n < ~extremum);
 }

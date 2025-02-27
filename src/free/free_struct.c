@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include "indulc.h"
-#include "token.h"
 #include "macro.h"
-#include "label.h"
 
 void	free_label(void *label)
 {

@@ -1,8 +1,7 @@
-#include <math.h>
 #include "cJSON.h"
 #include "indulc.h"
-#include "isa.h"
 #include "error.h"
+#include "nbr.h"
 
 static bool	check_isa_registers(const cJSON* isa)
 {
@@ -181,13 +180,8 @@ static bool	check_isa_instructions(const cJSON* isa, size_t instruction_length)
 													fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s\n", EXECUTABLE_NAME, ERROR_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction, JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_CONSTANT, ERROR_JSON_NOT_NUMBER);
 													error = 1;
 												}
-												else
-												{
-													ssize_t	number = (ssize_t)cJSON_GetNumberValue(constant);
-													ssize_t	extremum = (ssize_t)pow(2.0, (double)(bitfield_len - 1));
-													if (number >= extremum || number < -extremum)
-														fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s\n", EXECUTABLE_NAME, WARNING_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction, JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_CONSTANT, WARNING_OVERFLOW);
-												}
+												else if (will_overflow_int((ssize_t)cJSON_GetNumberValue(constant), bitfield_len) == 1)
+													fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s\n", EXECUTABLE_NAME, WARNING_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction, JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_CONSTANT, WARNING_OVERFLOW);
 											}
 										}
 									}

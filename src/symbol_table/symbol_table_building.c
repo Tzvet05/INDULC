@@ -1,22 +1,6 @@
-#include <string.h>
-#include <ctype.h>
-#include <stdio.h>
 #include "indulc.h"
-#include "token.h"
 #include "label.h"
 #include "error.h"
-
-bool	is_label(t_lst* tokens)
-{
-	if (tokens->next == NULL)
-		return (0);
-	else if (strcmp(((t_token *)tokens->next->content)->str, LABEL_KEYWORD) != 0)
-		return (0);
-	else if (isalpha(((t_token *)tokens->content)->str[0]) == 0)
-		return (0);
-	else
-		return (1);
-}
 
 static bool	add_label(t_lst* tokens, t_lst** symbol_table, size_t line)
 {
@@ -51,15 +35,7 @@ static bool	add_label(t_lst* tokens, t_lst** symbol_table, size_t line)
 	return (0);
 }
 
-static bool	has_instruction(t_isa* isa, t_lst* tokens)
-{
-	if (is_label(tokens) == 1)
-		tokens = tokens->next->next;
-	return (tokens != NULL && get_compilation_target(isa, ((t_token *)tokens->content)->str,
-		INSTRUCTION) != NULL);
-}
-
-bool	symbol_table_building(t_data* data)
+bool	build_symbol_table(t_data* data)
 {
 	size_t	line = 0;
 	t_lst*	tokens = data->tokens;

@@ -1,6 +1,5 @@
 #include <unistd.h>
 #include "indulc.h"
-#include "file.h"
 #include "error.h"
 
 static bool	check_files_access(int n_files, char** file_names)
@@ -50,7 +49,7 @@ static bool	check_files_access(int n_files, char** file_names)
 	return (0);
 }
 
-bool	argument_checking(int argc, char** argv)
+bool	check_arguments(int argc, char** argv)
 {
 	if (argc < 2)
 	{

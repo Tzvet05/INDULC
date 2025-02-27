@@ -1,7 +1,6 @@
 #include <string.h>
 #include "cJSON.h"
 #include "indulc.h"
-#include "file.h"
 #include "error.h"
 
 static bool	get_instructions(t_isa* isa, const cJSON* instructions)

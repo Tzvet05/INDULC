@@ -1,7 +1,5 @@
 #include <stdlib.h>
 #include "indulc.h"
-#include "token.h"
-#include "file.h"
 
 void	free_isa(t_isa* isa)
 {

@@ -6,8 +6,6 @@ COMPILER =	clang
 
 CFLAG =		-Wall -Wextra -Werror
 
-LFLAG =		-lm
-
 LIB =		libindulc.a
 
 MOD =		libcjson.so
@@ -52,17 +50,24 @@ COLOR_WHITE =		\033[1;38;5;15m
 # Source code
 
 SRC =	main.c \
-	$(ARG_DIR)argument_checking.c \
+	$(ARG_DIR)arguments.c \
 	$(ISA_DIR)isa_loading.c \
 	$(ISA_DIR)check_isa_syntax.c \
 	$(ISA_DIR)get_isa.c \
+	$(ISA_DIR)isa_utils.c \
 	$(FIL_DIR)file.c \
 	$(TOK_DIR)tokenization.c \
 	$(PRE_DIR)preprocessing.c \
+	$(PRE_DIR)preprocessing_utils.c \
 	$(SYM_DIR)symbol_table_building.c \
+	$(SYM_DIR)symbol_table_utils.c \
 	$(SYN_DIR)syntax_analysis.c \
+	$(SYN_DIR)syntax_define.c \
+	$(SYN_DIR)syntax_label.c \
+	$(SYN_DIR)syntax_instruction.c \
 	$(MAC_DIR)machine_code_generation.c \
-	$(UTI_DIR)compilation.c \
+	$(MAC_DIR)get_operand.c \
+	$(UTI_DIR)assembling.c \
 	$(UTI_DIR)cmp.c \
 	$(FRE_DIR)free_data.c \
 	$(FRE_DIR)free_struct.c
@@ -74,7 +79,7 @@ OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 # Compilation
 
 $(NAME) : $(OBJ) $(LIB_DIR)$(LIB) $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD)
-	@ $(COMPILER) $(CFLAG) $(LFLAG) $(OBJ) $(LIB_DIR)$(LIB) $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD) -Wl,-rpath,$(MOD_DIR)$(MOD_BUILD_DIR) -o $(NAME)
+	@ $(COMPILER) $(CFLAG) $(OBJ) $(LIB_DIR)$(LIB) $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD) -Wl,-rpath,$(MOD_DIR)$(MOD_BUILD_DIR) -o $(NAME)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_GREEN)Executable ($(NAME)) compiled.$(COLOR_DEFAULT)"
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(ARG_DIR) $(ISA_DIR) $(FIL_DIR) $(TOK_DIR) $(PRE_DIR) $(SYM_DIR) $(SYN_DIR) $(MAC_DIR) $(UTI_DIR) $(FRE_DIR)) $(MOD_DIR)$(MOD_BUILD_DIR)

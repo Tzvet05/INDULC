@@ -1,37 +1,36 @@
 #include "indulc.h"
-#include "file.h"
 
-static bool	compilation(t_data *data)
+static bool	assemble(t_data *data)
 {
 	if (open_file(&data->files[INFILE_PROGRAM], FOPEN_READ_MODE) == 1)
 		return (1);
-	else if (tokenization(data) == 1)
+	else if (tokenize(data) == 1)
 		return (1);
-	else if (preprocessing(data) == 1)
+	else if (preprocess(data) == 1)
 		return (1);
-	else if (symbol_table_building(data) == 1)
+	else if (build_symbol_table(data) == 1)
 		return (1);
-	else if (syntax_analysis(data) == 1)
+	else if (analyse_syntax(data) == 1)
 		return (1);
 	else if (open_file(&data->files[OUTFILE_PROGRAM], FOPEN_WRITE_MODE) == 1)
 		return (1);
 	else 
-		return (machine_code_generation(data));
+		return (generate_machine_code(data));
 }
 
 int	main(int argc, char** argv)
 {
-	if (argument_checking(argc, argv) == 1)
+	if (check_arguments(argc, argv) == 1)
 		return (1);
 	t_data	data = {0};
 	init_filenames(&data, &argv[1]);
-	if (open_file(&data.files[INFILE_ISA], FOPEN_READ_MODE) == 1 || isa_loading(&data) == 1)
+	if (open_file(&data.files[INFILE_ISA], FOPEN_READ_MODE) == 1 || load_isa(&data) == 1)
 	{
 		free_isa(&data.isa);
 		close_files(&data);
 		return (1);
 	}
-	bool	error = compilation(&data);
+	bool	error = assemble(&data);
 	free_isa(&data.isa);
 	close_files(&data);
 	free_tokens(data.tokens);

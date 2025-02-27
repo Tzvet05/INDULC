@@ -8,6 +8,7 @@
 #include "file.h"
 #include "lst.h"
 #include "isa.h"
+#include "token.h"
 
 /* ----- ENUMERATIONS ----- */
 
@@ -49,16 +50,17 @@ typedef struct data
 
 // arguments/
 //	argument_checking.c
-bool	argument_checking(int argc, char** argv);
+bool	check_arguments(int argc, char** argv);
 
 // isa/
 //	isa_loading.c
-ssize_t	get_bitfield_type(char* str);
-bool	isa_loading(t_data* data);
-//	get_isa.c
-bool	init_isa(t_isa* isa, const cJSON* json_isa);
+bool	load_isa(t_data* data);
 //	check_isa_syntax.c
 bool	check_isa_syntax(const cJSON* isa);
+//	get_isa.c
+bool	init_isa(t_isa* isa, const cJSON* json_isa);
+//	isa_utils.c
+ssize_t	get_bitfield_type(char* str);
 
 // file/
 //	file.c
@@ -67,29 +69,43 @@ void	init_filenames(t_data* data, char** file_names);
 
 // tokenization/
 //	tokenization.c
-bool	tokenization(t_data* data);
+bool	tokenize(t_data* data);
 
 // preprocessing/
 //	preprocessing.c
-bool	preprocessing(t_data* data);
+bool	preprocess(t_data* data);
+//	preprocessing_utils.c
+bool	is_define(t_lst* tokens);
 
 // symbol_table/
 //	symbol_table_building.c
+bool	build_symbol_table(t_data* data);
+//	symbol_table_utils.c
 bool	is_label(t_lst* tokens);
-bool	symbol_table_building(t_data* data);
+bool	has_instruction(t_isa* isa, t_lst* tokens);
 
 // syntax/
 //	syntax_analysis.c
-bool	syntax_analysis(t_data* data);
+bool	analyse_syntax(t_data* data);
+//	syntax_define.c
+bool	check_define_syntax(t_lst **tokens_ptr);
+//	syntax_label.c
+bool	check_label_syntax(t_lst **tokens_ptr);
+//	syntax_instruction.c
+bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr);
 
 // machine_code/
 //	machine_code_generation.c
-bool	machine_code_generation(t_data* data);
+bool	generate_machine_code(t_data* data);
+//	get_operand.c
+ssize_t	get_register_operand(t_token* token);
+ssize_t	get_immediate_operand(t_lst* symbol_table, t_token* token);
+ssize_t	get_condition_operand(t_isa* isa, t_token* token);
 
 // utils/
-//	compilation.c
+//	assembling.c
 uint64_t	build_mask(size_t len);
-void*		get_compilation_target(t_isa* isa, char* str, t_mnemonic_type type);
+void*		get_assembling_target(t_isa* isa, char* str, t_mnemonic_type type);
 //	cmp.c
 bool	cmp_label(void* label, void* str);
 bool	cmp_macro(void* macro, void* str);
