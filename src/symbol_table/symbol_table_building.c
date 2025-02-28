@@ -43,7 +43,11 @@ bool	build_symbol_table(t_data* data)
 	{
 		if (is_label((t_lst *)tokens->content) == 1
 			&& add_label((t_lst *)tokens->content, &data->symbol_table, line) == 1)
+		{
+			fprintf(stderr, "%s: %s: %s\n",
+				EXECUTABLE_NAME, FUNC_MALLOC, ERROR_FAILED_ALLOC);
 			return (1);
+		}
 		if (has_instruction(&data->isa, (t_lst *)tokens->content) == 1)
 			line++;
 		tokens = tokens->next;
