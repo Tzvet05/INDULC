@@ -20,10 +20,12 @@ static bool	assemble(t_data *data)
 
 int	main(int argc, char** argv)
 {
-	if (check_arguments(argc, argv) == 1)
+	if (check_arguments(argc - 1) == 1)
 		return (1);
 	t_data	data = {0};
 	init_filenames(&data, &argv[1]);
+	if (check_files(&data) == 1)
+		return (1);
 	if (open_file(&data.files[INFILE_ISA], FOPEN_READ_MODE) == 1 || load_isa(&data) == 1)
 	{
 		free_isa(&data.isa);

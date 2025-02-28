@@ -1,66 +1,18 @@
-#include <unistd.h>
 #include "indulc.h"
 #include "error.h"
 
-static bool	check_files_access(int n_files, char** file_names)
+bool	check_arguments(int n_files)
 {
-	if (access(file_names[INFILE_PROGRAM], F_OK) != 0)
-	{
-		fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_ACCESS,
-			ERROR_FILE_NONEXISTANT, file_names[INFILE_PROGRAM]);
-		return (1);
-	}
-	else if (access(file_names[INFILE_PROGRAM], R_OK) != 0)
-	{
-		fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_ACCESS,
-			ERROR_READ_PERM, file_names[INFILE_PROGRAM]);
-		return (1);
-	}
-	if (n_files > 1)
-	{
-		if (access(file_names[OUTFILE_PROGRAM], F_OK) != 0)
-		{
-			fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_ACCESS,
-				ERROR_FILE_NONEXISTANT, file_names[OUTFILE_PROGRAM]);
-			return (1);
-		}
-		else if (access(file_names[OUTFILE_PROGRAM], W_OK) != 0)
-		{
-			fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_ACCESS,
-				ERROR_WRITE_PERM, file_names[OUTFILE_PROGRAM]);
-			return (1);
-		}
-	}
-	if (n_files > 2)
-	{
-		if (access(file_names[INFILE_ISA], F_OK) != 0)
-		{
-			fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_ACCESS,
-				ERROR_FILE_NONEXISTANT, file_names[INFILE_ISA]);
-			return (1);
-		}
-		else if (access(file_names[INFILE_ISA], R_OK) != 0)
-		{
-			fprintf(stderr, "%s: %s: %s: \"%s\"\n", EXECUTABLE_NAME, FUNC_ACCESS,
-				ERROR_READ_PERM, file_names[INFILE_ISA]);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-bool	check_arguments(int argc, char** argv)
-{
-	if (argc < 2)
+	if (n_files < 1)
 	{
 		fprintf(stderr, "%s: %s\n", EXECUTABLE_NAME, ERROR_TOO_FEW_ARGS);
 		return (1);
 	}
-	else if (argc > 4)
+	else if (n_files > 3)
 	{
 		fprintf(stderr, "%s: %s\n", EXECUTABLE_NAME, ERROR_TOO_MANY_ARGS);
 		return (1);
 	}
 	else
-		return (check_files_access(argc - 1, &argv[1]));
+		return (0);
 }
