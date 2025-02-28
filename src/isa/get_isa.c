@@ -9,7 +9,11 @@ static bool	get_instructions(t_isa* isa, const cJSON* instructions)
 	isa->instructions.obj_size = sizeof(t_instruction);
 	isa->instructions.arr = malloc(isa->instructions.len * isa->instructions.obj_size);
 	if (isa->instructions.arr == NULL)
+	{
+		isa->instructions.len = 0;
+		isa->mnemonics.len = 0;
 		return (1);
+	}
 	size_t	i_instruction = 0;
 	const cJSON*	instruction;
 	cJSON_ArrayForEach(instruction, instructions)
@@ -27,7 +31,15 @@ static bool	get_instructions(t_isa* isa, const cJSON* instructions)
 			= malloc(((t_mnemonic *)isa->mnemonics.arr)[i_instruction].mnemonics.len
 			* ((t_mnemonic *)isa->mnemonics.arr)[i_instruction].mnemonics.obj_size);
 		if (((t_mnemonic *)isa->mnemonics.arr)[i_instruction].mnemonics.arr == NULL)
+		{
+			isa->instructions.len = i_instruction + 1;
+			((t_instruction *)isa->instructions.arr)[i_instruction].bitfields.len = 0;
+			((t_instruction *)isa->instructions.arr)[i_instruction].bitfields.arr
+				= NULL;
+			isa->mnemonics.len = i_instruction + 1;
+			((t_mnemonic *)isa->mnemonics.arr)[i_instruction].mnemonics.len = 0;
 			return (1);
+		}
 		size_t	i_mnemonic = 0;
 		const cJSON*	mnemonic;
 		cJSON_ArrayForEach(mnemonic, item_instruction)
@@ -37,7 +49,17 @@ static bool	get_instructions(t_isa* isa, const cJSON* instructions)
 				= strdup(cJSON_GetStringValue(mnemonic));
 			if (((char **)((t_mnemonic *)isa->mnemonics.arr)[i_instruction]
 				.mnemonics.arr)[i_mnemonic] == NULL)
+			{
+				isa->instructions.len = i_instruction + 1;
+				((t_instruction *)isa->instructions.arr)[i_instruction]
+					.bitfields.len = 0;
+				((t_instruction *)isa->instructions.arr)[i_instruction]
+					.bitfields.arr = NULL;
+				isa->mnemonics.len = i_instruction + 1;
+				((t_mnemonic *)isa->mnemonics.arr)[i_instruction].mnemonics.len
+					= i_mnemonic + 1;
 				return (1);
+			}
 			i_mnemonic++;
 		}
 		item_instruction = cJSON_GetObjectItemCaseSensitive(instruction,
@@ -51,7 +73,12 @@ static bool	get_instructions(t_isa* isa, const cJSON* instructions)
 			.bitfields.len * ((t_instruction *)isa->instructions.arr)[i_instruction]
 			.bitfields.obj_size);
 		if (((t_instruction *)isa->instructions.arr)[i_instruction].bitfields.arr == NULL)
+		{
+			isa->instructions.len = i_instruction + 1;
+			((t_instruction *)isa->instructions.arr)[i_instruction].bitfields.len = 0;
+			isa->mnemonics.len = i_instruction + 1;
 			return (1);
+		}
 		size_t	i_bitfield = 0;
 		const cJSON*	bitfield;
 		cJSON_ArrayForEach(bitfield, item_instruction)
@@ -93,7 +120,11 @@ static bool	get_flags(t_isa* isa, const cJSON* flags)
 	isa->flags.obj_size = sizeof(size_t);
 	isa->flags.arr = malloc(isa->flags.len * isa->flags.obj_size);
 	if (isa->flags.arr == NULL)
+	{
+		isa->flags.len = 0;
+		isa->mnemonics.len = isa->instructions.len;
 		return (1);
+	}
 	size_t	i_flag = 0;
 	const cJSON*	flag;
 	cJSON_ArrayForEach(flag, flags)
@@ -114,7 +145,13 @@ static bool	get_flags(t_isa* isa, const cJSON* flags)
 			+ i_flag].mnemonics.obj_size);
 		if (((t_mnemonic *)isa->mnemonics.arr)[isa->instructions.len
 			+ i_flag].mnemonics.arr == NULL)
+		{
+			isa->flags.len = i_flag + 1;
+			isa->mnemonics.len = isa->instructions.len + i_flag + 1;
+			((t_mnemonic *)isa->mnemonics.arr)[isa->instructions.len + i_flag]
+				.mnemonics.len = 0;
 			return (1);
+		}
 		size_t	i_mnemonic = 0;
 		const cJSON*	mnemonic;
 		cJSON_ArrayForEach(mnemonic, item_flag)
@@ -124,11 +161,16 @@ static bool	get_flags(t_isa* isa, const cJSON* flags)
 				= strdup(cJSON_GetStringValue(mnemonic));
 			if (((char **)((t_mnemonic *)isa->mnemonics.arr)[isa->instructions.len
 				+ i_flag].mnemonics.arr)[i_mnemonic] == NULL)
+			{
+				isa->flags.len = i_flag + 1;
+				isa->mnemonics.len = isa->instructions.len + i_flag + 1;
+				((t_mnemonic *)isa->mnemonics.arr)[isa->instructions.len + i_flag]
+					.mnemonics.len = i_mnemonic + 1;
 				return (1);
+			}
 			i_mnemonic++;
 		}
-		item_flag = cJSON_GetObjectItemCaseSensitive(flag,
-			JSON_FLAG_CONDITION_CODE);
+		item_flag = cJSON_GetObjectItemCaseSensitive(flag, JSON_FLAG_CONDITION_CODE);
 		((size_t *)isa->flags.arr)[i_flag] = (size_t)cJSON_GetNumberValue(item_flag);
 		i_flag++;
 	}
@@ -141,7 +183,10 @@ static bool	get_registers(t_isa* isa, const cJSON* registers)
 	isa->registers.obj_size = sizeof(size_t);
 	isa->registers.arr = malloc(isa->registers.len * isa->registers.obj_size);
 	if (isa->registers.arr == NULL)
+	{
+		isa->registers.len = 0;
 		return (1);
+	}
 	size_t	i = 0;
 	const cJSON*	_register;
 	cJSON_ArrayForEach(_register, registers)
@@ -161,13 +206,15 @@ bool	init_isa(t_isa* isa, const cJSON* json_isa)
 	if (get_registers(isa, item_isa) == 1)
 		return (1);
 	isa->mnemonics.len = cJSON_GetArraySize(cJSON_GetObjectItemCaseSensitive(json_isa,
-		JSON_INSTRUCTIONS))
-		+ cJSON_GetArraySize(cJSON_GetObjectItemCaseSensitive(json_isa,
+		JSON_INSTRUCTIONS)) + cJSON_GetArraySize(cJSON_GetObjectItemCaseSensitive(json_isa,
 		JSON_FLAGS));
 	isa->mnemonics.obj_size = sizeof(t_mnemonic);
 	isa->mnemonics.arr = malloc(isa->mnemonics.len * isa->mnemonics.obj_size);
 	if (isa->mnemonics.arr == NULL)
+	{
+		isa->mnemonics.len = 0;
 		return (1);
+	}
 	item_isa = cJSON_GetObjectItemCaseSensitive(json_isa, JSON_INSTRUCTIONS);
 	if (get_instructions(isa, item_isa) == 1)
 		return (1);

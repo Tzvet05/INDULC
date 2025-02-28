@@ -4,14 +4,15 @@
 void	free_isa(t_isa* isa)
 {
 	free(isa->registers.arr);
-	for (size_t i = 0; i < isa->instructions.len; i++)
-		free(((t_instruction *)isa->instructions.arr)[i].bitfields.arr);
+	for (size_t i_instruction = 0; i_instruction < isa->instructions.len; i_instruction++)
+		free(((t_instruction *)isa->instructions.arr)[i_instruction].bitfields.arr);
 	free(isa->instructions.arr);
 	free(isa->flags.arr);
 	for (size_t i = 0; i < isa->mnemonics.len; i++)
 	{
 		for (size_t i_mnemonic = 0;
-			i_mnemonic < ((t_mnemonic *)isa->mnemonics.arr)[i].mnemonics.len; i_mnemonic++)
+			i_mnemonic < ((t_mnemonic *)isa->mnemonics.arr)[i].mnemonics.len;
+			i_mnemonic++)
 			free(((char **)((t_mnemonic *)isa->mnemonics.arr)[i]
 				.mnemonics.arr)[i_mnemonic]);
 		free(((t_mnemonic *)isa->mnemonics.arr)[i].mnemonics.arr);
