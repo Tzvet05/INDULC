@@ -128,7 +128,8 @@ static bool	check_operand_syntax(t_data* data, t_instruction* instr, t_token* to
 		return (check_immediate_operand_syntax(data->symbol_table, token, bitfield->len));
 	else if (bitfield->type == CONDITION)
 		return (check_condition_operand_syntax(&data->isa, token, bitfield->len));
-	return (0);
+	else
+		return (0);
 }
 
 bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)

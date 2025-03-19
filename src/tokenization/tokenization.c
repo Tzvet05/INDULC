@@ -34,7 +34,7 @@ static t_token*	tokenize_word(char* line, size_t len, size_t lin, size_t col)
 static size_t	get_len_token(char* token)
 {
 	if (strncmp(token, LABEL_KEYWORD, strlen(LABEL_KEYWORD)) == 0)
-		return (1);
+		return (strlen(LABEL_KEYWORD));
 	size_t	i = 0;
 	while (token[i] != '\0' && isspace(token[i]) == 0 && token[i] != ','
 		&& strncmp(&token[i], COMMENT_KEYWORD, strlen(COMMENT_KEYWORD)) != 0
@@ -114,5 +114,4 @@ bool	tokenize(t_data* data)
 		}
 		lin++;
 	}
-	return (0);
 }

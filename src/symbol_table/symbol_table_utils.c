@@ -6,8 +6,8 @@ bool	has_instruction(t_isa* isa, t_lst* tokens)
 {
 	if (is_label(tokens) == 1)
 		tokens = tokens->next->next;
-	return (tokens != NULL && get_assembling_target(isa, ((t_token *)tokens->content)->str,
-		INSTRUCTION) != NULL);
+	return (tokens != NULL && get_assembling_target(isa,
+		((t_token *)tokens->content)->str, INSTRUCTION) != NULL);
 }
 
 bool	is_label(t_lst* tokens)

@@ -27,8 +27,7 @@ bool	check_label_syntax(t_lst **tokens_ptr)
 		error = 1;
 	}
 	tokens = tokens->next;
-	size_t	i_error = 1;
-	while (i_error < (size_t)i)
+	for (size_t i_error = 1; i_error < (size_t)i; i_error++)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX,
@@ -36,7 +35,6 @@ bool	check_label_syntax(t_lst **tokens_ptr)
 			ERROR_LABEL, ERROR_LABEL_TOO_MANY_ARGS, ((t_token *)tokens->content)->str);
 		error = 1;
 		tokens = tokens->next;
-		i_error++;
 	}
 	return (error);
 }
