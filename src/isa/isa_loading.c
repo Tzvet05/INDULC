@@ -48,20 +48,16 @@ static const cJSON*	parse_json_file(t_file* file)
 
 static void	set_opwords(t_isa* isa)
 {
-	size_t	i_instruction = 0;
-	while (i_instruction < isa->instructions.len)
+	for (size_t i_instruction = 0; i_instruction < isa->instructions.len; i_instruction++)
 	{
-		size_t	i_bitfield = 0, n_opwords = 0;
-		while (i_bitfield < ((t_instruction *)isa->instructions.arr)[i_instruction]
-			.bitfields.len)
-		{
+		size_t	n_opwords = 0;
+		for (size_t i_bitfield = 0;
+			i_bitfield < ((t_instruction *)isa->instructions.arr)[i_instruction]
+			.bitfields.len; i_bitfield++)
 			if (((t_bitfield *)((t_instruction *)isa->instructions.arr)[i_instruction]
 				.bitfields.arr)[i_bitfield].type != CONSTANT)
 				n_opwords++;
-			i_bitfield++;
-		}
 		((t_instruction *)isa->instructions.arr)[i_instruction].n_opwords = n_opwords;
-		i_instruction++;
 	}
 }
 
@@ -78,7 +74,7 @@ bool	load_isa(t_data* data)
 	else if (init_isa(&data->isa, (const cJSON *)json) == 1)
 	{
 		cJSON_Delete(json);
-	fprintf(stderr, "%s: %s: %s\n",
+		fprintf(stderr, "%s: %s: %s\n",
 			EXECUTABLE_NAME, FUNC_MALLOC, ERROR_FAILED_ALLOC);
 		return (1);
 	}

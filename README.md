@@ -167,7 +167,7 @@ Whitespace characters are ignored during parsing.
 
 The main object must contain 4 items :
 - `"instruction_length"`, whose value (number) is the maximum length (in bits) of the instructions.
-- `"registers"`, whose value (array of number) is the array of all the valid CPU register indexes.
+- `"registers"`, whose value (array of numbers) is the array of all the valid CPU register indexes.
 - `"instructions"`, whose value (array of instruction objects) is the array of all the supported instructions.
 - `"flags"`, whose value (array of flag objects) is the array of all the supported flags.
 
@@ -180,21 +180,21 @@ The instruction object must contain 2 items :
 - `"mnemonics"`, whose value (array of strings) is the array of all of the instruction's mnemonics.
 - `"bitfields"`, whose value (array of bitfield objects) is the array of all of the instruction's bitfields.
 
-The sum of the lengths of an instruction's bitfields must not exceed the value specified in `"instruction_length"`. If the sum is inferior to this value, all the remaining bits up to the value of `"instruction_length"` are treated as if they were part of a `"constant"` bitfield with a `"constant"` value of 0.
+The sum of the lengths of an instruction's bitfields must not exceed the value specified by `"instruction_length"` from the main object. If the sum is inferior to this value, all the remaining bits up to the value of `"instruction_length"` are treated as if they were part of a `"constant"` bitfield with a `"value"` of 0.
 
 ##### The bitfield object
 
 The bitfield object must contain 2 to 3 items :
 - `"len"`, whose value (number) is the length (in bits) of the bitfield.
 - `"type"`, whose value (string) is the type of the bitfield.
-- `"constant"`, whose value (number) is the value of the constant (if the bitfield's type is `"constant"`).
+- `"value"`, whose value (number) is the value of the constant (if the bitfield's type is `"constant"`).
 
 `"len"` must be strictly greater than 0. It does not need to be a multiple of 8.
 
 `"type"` must be one of `"constant"`, `"register"`, `"immediate"` and `"condition"`.
 `"constant"` can be used for the opcode, padding or a constant value needed by a pseudoinstruction.
 
-`"constant"` is ignored if the bitfield's type is not `"constant"`. If the bitfield's type is `"constant"` but the `"constant"` item does not exists, it is considered equal to 0.
+`"value"` is ignored if the bitfield's type is not `"constant"`. If the bitfield's type is `"constant"` but the `"value"` item does not exists, its value is considered equal to 0.
 
 #### The flag object
 
@@ -221,7 +221,7 @@ It can therefore be stored as :
 		{
 			"len": 8,
 			"type": "constant",
-			"constant" : 18
+			"value" : 18
 		},
 		{
 			"len": 8,

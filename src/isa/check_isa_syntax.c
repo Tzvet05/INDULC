@@ -142,7 +142,7 @@ static bool	check_isa_instructions(const cJSON* isa, size_t instruction_length)
 										else
 										{
 											bitfield_len = (ssize_t)cJSON_GetNumberValue(len);
-											if (bitfield_len <= 0 || bitfield_len > 64)
+											if (bitfield_len < BITFIELD_LEN_MIN || bitfield_len > BITFIELD_LEN_MAX)
 											{
 												fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s (must be > 0 and <= 64)\n", EXECUTABLE_NAME, ERROR_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction, JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_LEN, ERROR_JSON_INVALID_NUMBER);
 												error = 1;
@@ -172,16 +172,17 @@ static bool	check_isa_instructions(const cJSON* isa, size_t instruction_length)
 												fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s (must be one of the types listed in the README)\n", EXECUTABLE_NAME, ERROR_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction, JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_TYPE, ERROR_JSON_INVALID_BITFIELD_TYPE);
 												error = 1;
 											}
-											else if ((t_bitfield_type)number == CONSTANT && cJSON_HasObjectItem(bitfield, JSON_INSTRUCTION_BITFIELD_CONSTANT) != 0)
+											else if ((t_bitfield_type)number == CONSTANT && cJSON_HasObjectItem(bitfield, JSON_INSTRUCTION_BITFIELD_VALUE) != 0)
 											{
-												const cJSON*	constant = cJSON_GetObjectItemCaseSensitive(bitfield, JSON_INSTRUCTION_BITFIELD_CONSTANT);
-												if (cJSON_IsNumber(constant) == 0)
+												const cJSON*	value = cJSON_GetObjectItemCaseSensitive(bitfield, JSON_INSTRUCTION_BITFIELD_VALUE);
+												if (cJSON_IsNumber(value) == 0)
 												{
-													fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s\n", EXECUTABLE_NAME, ERROR_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction, JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_CONSTANT, ERROR_JSON_NOT_NUMBER);
+													fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s\n", EXECUTABLE_NAME, ERROR_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction, JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_VALUE, ERROR_JSON_NOT_NUMBER);
 													error = 1;
 												}
-												else if (will_overflow_int((ssize_t)cJSON_GetNumberValue(constant), bitfield_len) == 1)
-													fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s\n", EXECUTABLE_NAME, WARNING_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction, JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_CONSTANT, WARNING_OVERFLOW);
+												else if (bitfield_len >= BITFIELD_LEN_MIN && bitfield_len <= BITFIELD_LEN_MAX
+													&& will_overflow_int((ssize_t)cJSON_GetNumberValue(value), bitfield_len) == 1)
+													fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s\n", EXECUTABLE_NAME, WARNING_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction, JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_VALUE, WARNING_OVERFLOW);
 											}
 										}
 									}

@@ -4,6 +4,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <unistd.h>
 #include "cJSON.h"
 #include "file.h"
 #include "lst.h"
@@ -50,7 +51,7 @@ typedef struct data
 
 // arguments/
 //	argument_checking.c
-bool	check_arguments(int argc, char** argv);
+bool	check_arguments(int n_files);
 
 // isa/
 //	isa_loading.c
@@ -62,10 +63,11 @@ bool	init_isa(t_isa* isa, const cJSON* json_isa);
 //	isa_utils.c
 ssize_t	get_bitfield_type(char* str);
 
-// file/
+// files/
 //	file.c
 void	close_files(t_data* data);
 void	init_filenames(t_data* data, char** file_names);
+bool	check_files(t_data* data);
 
 // tokenization/
 //	tokenization.c

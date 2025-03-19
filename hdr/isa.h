@@ -19,12 +19,13 @@
 //			Bitfield
 #define JSON_INSTRUCTION_BITFIELD_LEN		"len"
 #define JSON_INSTRUCTION_BITFIELD_TYPE		"type"
-#define JSON_INSTRUCTION_BITFIELD_CONSTANT	"constant"
+#define JSON_INSTRUCTION_BITFIELD_VALUE		"value"
 //		Flag
 #define JSON_FLAG_MNEMONICS		"mnemonics"
 #define JSON_FLAG_CONDITION_CODE	"condition_code"
 
-// Maximum bitfield length
+// Extremum bitfield lengths
+#define BITFIELD_LEN_MIN	1
 #define BITFIELD_LEN_MAX	64
 
 // Bitfield types
@@ -56,7 +57,7 @@ typedef struct bitfield
 {
 	size_t		len;//		Length of the bitfield
 	t_bitfield_type	type;//		Type of the bitfield
-	ssize_t		constant;//	Stored constant (if type == CONSTANT)
+	ssize_t		value;//	Stored value (if type == constant)
 }	t_bitfield;
 
 // Instruction

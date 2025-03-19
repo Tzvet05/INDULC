@@ -96,17 +96,17 @@ static bool	get_instructions(t_isa* isa, const cJSON* instructions)
 			if (((t_bitfield *)((t_instruction *)isa->instructions.arr)[i_instruction]
 				.bitfields.arr)[i_bitfield].type == CONSTANT
 				&& cJSON_HasObjectItem(bitfield,
-				JSON_INSTRUCTION_BITFIELD_CONSTANT) != 0)
+				JSON_INSTRUCTION_BITFIELD_VALUE) != 0)
 			{
 				item_bitfield = cJSON_GetObjectItemCaseSensitive(bitfield,
-				JSON_INSTRUCTION_BITFIELD_CONSTANT);
+				JSON_INSTRUCTION_BITFIELD_VALUE);
 				((t_bitfield *)((t_instruction *)isa->instructions.arr)
-					[i_instruction].bitfields.arr)[i_bitfield].constant
+					[i_instruction].bitfields.arr)[i_bitfield].value
 					= (ssize_t)cJSON_GetNumberValue(item_bitfield);
 			}
 			else
 				((t_bitfield *)((t_instruction *)isa->instructions.arr)
-					[i_instruction].bitfields.arr)[i_bitfield].constant = 0;
+					[i_instruction].bitfields.arr)[i_bitfield].value = 0;
 			i_bitfield++;
 		}
 		i_instruction++;

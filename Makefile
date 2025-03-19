@@ -30,7 +30,7 @@ MOD_DIR =	submodule/cJSON/
 MOD_BUILD_DIR =	build/
 
 ARG_DIR =	arguments/
-FIL_DIR =	file/
+FIL_DIR =	files/
 ISA_DIR =	isa/
 TOK_DIR =	tokenization/
 PRE_DIR =	preprocessing/

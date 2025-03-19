@@ -37,28 +37,28 @@
 #define ERROR_UNRECOGNIZED_TOKEN	"unrecognized token (token not supported by the provided ISA)"
 #define ERROR_NOT_NUMBER		"number contains non-digit characters"
 #define ERROR_NEGATIVE_NUMBER		"number is negative (must be >= 0)"
-//		Type
+//		Define
 #define ERROR_DEFINE			"define statement"
 #define ERROR_DEFINE_TOO_FEW_ARGS	"incomplete statement (expected syntax: %define [word] [number])"
 #define ERROR_DEFINE_TOO_MANY_ARGS	"statement has too many arguments (expected syntax: %define [word] [number])"
 #define ERROR_DEFINE_INVALID_NAME	"invalid macro name (must not start by a digit)"
-//		Type
+//		Label
 #define ERROR_LABEL			"label statement"
 #define ERROR_LABEL_TOO_FEW_ARGS	"incomplete statement, missing label name (expected syntax: [label]:)"
 #define ERROR_LABEL_TOO_MANY_ARGS	"statement has too many arguments (expected syntax: [label]:)"
 #define ERROR_LABEL_INVALID_NAME	"invalid label name (must not start by a digit)"
 #define ERROR_LABEL_DUPLICATE		"duplicate label"
-//		Type
+//		Instruction
 #define ERROR_INSTRUCTION		"instruction"
 #define ERROR_INSTRUCTION_TOO_FEW_ARGS	"incomplete instruction, missing operand(s) (refer to ISA)"
 #define ERROR_INSTRUCTION_TOO_MANY_ARGS	"instruction has too many operands (refer to ISA)"
-//			Type
+//			Register
 #define ERROR_INSTRUCTION_REGISTER		"register operand"
 #define ERROR_INSTRUCTION_REGISTER_INDEX	"register index is not supported (refer to ISA)"
 #define ERROR_INSTRUCTION_REGISTER_PREFIX	"missing register prefix `r` before register index"
-//			Type
+//			Immediate
 #define ERROR_INSTRUCTION_IMMEDIATE	"immediate operand"
-//			Type
+//			Condition
 #define ERROR_INSTRUCTION_CONDITION		"condition operand"
 #define ERROR_INSTRUCTION_CONDITION_FLAG	"unrecognized flag (condition code not supported by the provided ISA)"
 //	Json syntax
@@ -76,9 +76,9 @@
 //	Syntax
 #define WARNING_SYNTAX		"syntax warning"
 #define WARNING_OVERFLOW	"immediate does not fit in designated space and will overflow or underflow"
-//		Type
+//		Define
 #define WARNING_DEFINE		"define statement"
-//		Type
+//		Instruction
 #define WARNING_INSTRUCTION		"instruction"
 #define WARNING_INSTRUCTION_REGISTER	"register operand"
 #define WARNING_INSTRUCTION_IMMEDIATE	"immediate operand"

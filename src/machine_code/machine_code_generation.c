@@ -32,21 +32,19 @@ static bool	write_instruction(t_file* file, t_parr* instruction)
 static void	bitshift_buffer(t_parr* buffer, size_t len)
 {
 	uint8_t	byte;
-	size_t	i = 0, diff_byte = len / (buffer->obj_size * 8);
-	while (i < buffer->len)
+	size_t	diff_byte = len / (buffer->obj_size * 8);
+	for (size_t i = 0; i < buffer->len; i++)
 	{
 		if (i + diff_byte < buffer->len)
 			byte = ((uint8_t *)buffer->arr)[i + diff_byte];
 		else
 			byte = 0;
 		((uint8_t *)buffer->arr)[i] = byte;
-		i++;
 	}
 	size_t	diff_bit = len % (buffer->obj_size * 8);
 	if (diff_bit == 0)
 		return;
-	i = 0;
-	while (i + diff_byte < buffer->len)
+	for (size_t i = 0; i + diff_byte < buffer->len; i++)
 	{
 		if (i + diff_byte + 1 < buffer->len)
 			byte = ((uint8_t *)buffer->arr)[i + 1];
@@ -54,7 +52,6 @@ static void	bitshift_buffer(t_parr* buffer, size_t len)
 			byte = 0;
 		((uint8_t *)buffer->arr)[i] = (((uint8_t *)buffer->arr)[i] << diff_bit)
 			| (byte >> (buffer->obj_size * 8 - diff_bit));
-		i++;
 	}
 }
 
@@ -89,7 +86,7 @@ static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr
 		else if (bitfield->type == CONDITION)
 			operand = get_condition_operand(&data->isa, (t_token *)tokens->content);
 		else
-			operand = bitfield->constant;
+			operand = bitfield->value;
 		add_operand(buffer, operand, bitfield->len);
 		if (bitfield->type != CONSTANT)
 		{
