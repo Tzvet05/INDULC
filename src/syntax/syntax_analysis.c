@@ -1,5 +1,9 @@
-#include "indulc.h"
+#include <stdio.h>
+#include "data.h"
+#include "syntax.h"
+#include "token.h"
 #include "error.h"
+#include "lst.h"
 
 static bool	check_remaining_tokens_syntax(t_lst** tokens_ptr)
 {
@@ -8,8 +12,8 @@ static bool	check_remaining_tokens_syntax(t_lst** tokens_ptr)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, ((t_token *)tokens->content)->lin,
-			((t_token *)tokens->content)->col,
-			ERROR_UNRECOGNIZED_TOKEN, ((t_token *)tokens->content)->str);
+			((t_token *)tokens->content)->col, ERROR_TOKEN,
+			((t_token *)tokens->content)->str);
 		tokens = tokens->next;
 	}
 	*tokens_ptr = tokens;
@@ -23,7 +27,7 @@ bool	analyse_syntax(t_data *data)
 	while (tokens_lin != NULL)
 	{
 		t_lst*	tokens_col = (t_lst *)tokens_lin->content;
-		if (tokens_col != NULL && check_define_syntax(&tokens_col) == 1)
+		if (tokens_col != NULL && check_define_syntax(&data->isa, &tokens_col) == 1)
 			error = 1;
 		if (tokens_col != NULL && check_label_syntax(&tokens_col) == 1)
 			error = 1;

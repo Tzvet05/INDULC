@@ -10,14 +10,14 @@ LIB =		libindulc.a
 
 MOD =		libcjson.so
 
-# Optional compilation macros
+# Optional compilation settings
 
 ifeq ($(COMP_BIN_CHAR), 1)
 	CFLAG += -DCOMP_BIN_CHAR
 endif
 
-ifeq ($(COMP_STRICT_SYNTAX), 1)
-	CFLAG += -DCOMP_STRICT_SYNTAX
+ifeq ($(COMP_MUTE_MACRO_WARNINGS), 1)
+	CFLAG += -DCOMP_MUTE_MACRO_WARNINGS
 endif
 
 # Directories
@@ -38,7 +38,6 @@ SYM_DIR =	symbol_table/
 SYN_DIR =	syntax/
 MAC_DIR =	machine_code/
 UTI_DIR =	utils/
-FRE_DIR =	free/
 
 # Colors
 
@@ -55,12 +54,16 @@ SRC =	main.c \
 	$(ISA_DIR)check_isa_syntax.c \
 	$(ISA_DIR)get_isa.c \
 	$(ISA_DIR)isa_utils.c \
-	$(FIL_DIR)file.c \
+	$(ISA_DIR)free_isa.c \
+	$(FIL_DIR)files.c \
 	$(TOK_DIR)tokenization.c \
+	$(TOK_DIR)free_tokens.c \
 	$(PRE_DIR)preprocessing.c \
 	$(PRE_DIR)preprocessing_utils.c \
+	$(PRE_DIR)free_macro.c \
 	$(SYM_DIR)symbol_table_building.c \
 	$(SYM_DIR)symbol_table_utils.c \
+	$(SYM_DIR)free_label.c \
 	$(SYN_DIR)syntax_analysis.c \
 	$(SYN_DIR)syntax_define.c \
 	$(SYN_DIR)syntax_label.c \
@@ -68,9 +71,7 @@ SRC =	main.c \
 	$(MAC_DIR)machine_code_generation.c \
 	$(MAC_DIR)get_operand.c \
 	$(UTI_DIR)assembling.c \
-	$(UTI_DIR)cmp.c \
-	$(FRE_DIR)free_data.c \
-	$(FRE_DIR)free_struct.c
+	$(UTI_DIR)cmp.c
 
 # Compiled objects
 

@@ -5,11 +5,10 @@
 bool	is_number(char* str)
 {
 	size_t	i = 0;
-	while (str[i] != '\0' && (str[i] == '+' || str[i] == '-'))
+	while (str[i] == '+' || str[i] == '-')
 		i++;
 	char*	charset = get_charset(&str[i]);
-	size_t	radix = strlen(charset);
-	if (radix == 2 || radix == 16)
+	if (strlen(charset) != 10)
 		i += 2;
 	while (str[i] != '\0' && strchr(charset, tolower(str[i])) != NULL)
 		i++;

@@ -16,28 +16,28 @@ Compile the program using
 make
 ```
 
-### Strict syntax mode
+### Mute macro warnings mode
 
-When the strict syntax mode is enabled, the assembler expects a stricter syntax than in the permissive default mode.
+When the mute macro warnings mode is enabled, the assembler runs less extensive syntax checks on macro definitions.
 
-Change :
-- The `r` character before the register index is mandatory.
+Changes :
+- The syntax analysis does not perform syntax checks for macros whose identifier is identical to their substitute, to a flag mnemonic, to a register mnemonic, to a number or to the label definition keyword.
 
-To enable the strict syntax mode, the environment variable `COMP_STRICT_SYNTAX` must be set to `1` before compiling the assembler.
+To enable the mute macro warnings mode, the environment variable `COMP_MUTE_MACRO_WARNINGS` must be set to `1` before compiling the assembler.
 
 You can do so by executing the following command :
 ```sh
-export COMP_STRICT_SYNTAX=1
+export COMP_MUTE_MACRO_WARNINGS=1
 ```
 
 ### Characters assembly mode
 
 When the characters assembly mode is enabled, the assembler outputs the assembled program in a human-readable form.
 
-Change :
+Changes :
 - The assembled program is written in the outfile using characters (`0` and `1`) rather than actual bits.
 
-To enable the strict syntax mode, the environment variable `COMP_BIN_CHAR` must be set to `1` before compiling the assembler.
+To enable the characters assembly mode, the environment variable `COMP_BIN_CHAR` must be set to `1` before compiling the assembler.
 
 You can do so by executing the following command :
 ```sh
@@ -77,7 +77,7 @@ This argument is optional and will be replaced by a default argument `isa.json` 
 ## INDUL SYNTAX
 
 Whitespace characters and commas (`,`) are ignored by the tokenizer.
-All numeric values can be specified in base 10, base 2 using the prefix `0b` or base 16 using the prefixe `0x`.
+All numeric values can be specified in base 10, base 2 using the prefix `0b`, base 8 using the prefix `0o` or base 16 using the prefixe `0x`.
 
 ### Instructions
 
@@ -90,12 +90,11 @@ An instruction follows this syntax :
 `[operand]` is an operand of the instruction. It can be a register, an immediate, a flag, a macro or a label.
 Each instruction has a specific number and types of operands, specified by the provided ISA.
 
+An instruction must be on its own line.
+
 #### Registers
 
-A register can be either a macro or a number that can start with the character `r` or `R`.
-Its index must be supported by the provided ISA.
-
-If the strict syntax mode is enabled, the `r` character before the register index is mandatory.
+A register can be either a macro or a mnemonic string.
 
 #### Immediates
 
@@ -103,8 +102,7 @@ An immediate can be either a number, a macro or a label.
 
 #### Flags
 
-A flag can be either a number or a mnemonic string.
-Its mnemonic string or value must be supported by the provided ISA.
+A flag can be either a macro or a mnemonic string.
 
 ### Defines
 
@@ -114,10 +112,9 @@ A define statement follows this syntax :
 
 `[identifier]` is the identifier of the macro.
 It is the string that will be replaced by the value associated with it.
-It must start with an alphabetic character.
 
 `[value]` is the value of the macro.
-It is the string that will replace the identifier associated with it.
+It is the string that will replace the identifier associated with it. It must be a number.
 
 A define statement must be on its own line.
 
@@ -130,7 +127,6 @@ A label statement follows this syntax :
 `[label]:`
 
 `[label]` is the name of the label.
-It must start with an alphabetic character.
 
 A label statement can either be on its own line (and will assemble to the address following itself) or on the same line as an instruction, before the instruction's mnemonic (and will assemble to its own address).
 
@@ -144,6 +140,8 @@ A comment follows this syntax :
 
 `[comment]` is a string.
 
+A comment can be started anywhere.
+
 ### Example
 
 Here is an example of a valid block of INDUL code :
@@ -154,7 +152,7 @@ Here is an example of a valid block of INDUL code :
 	ILOD	r1,	START		; initialize r1 with START
 	ILOD	r2,	STEP		; initialize r2 with STEP
 loop:	SUB	r1,	r2,	r1	; definition of label "loop", r1 = r1 - r2
-	BRH	nz,	loop		; jump to label "loop" if the result of the substraction is not 0
+	BRH	nz,	loop		; jump to the label "loop" if the result of the substraction is not 0
 	HLT				; stop program execution
 ```
 
@@ -167,12 +165,18 @@ Whitespace characters are ignored during parsing.
 
 The main object must contain 4 items :
 - `"instruction_length"`, whose value (number) is the maximum length (in bits) of the instructions.
-- `"registers"`, whose value (array of numbers) is the array of all the valid CPU register indexes.
+- `"registers"`, whose value (array of register objects) is the array of all the supported CPU registers.
 - `"instructions"`, whose value (array of instruction objects) is the array of all the supported instructions.
 - `"flags"`, whose value (array of flag objects) is the array of all the supported flags.
 
 `"instruction_length"` must be strictly greater than 0.
 It does not need to be a multiple of 8, and if it is not, all the bits up to the nearest multiple of 8 will be written as 0 in the machine code (for padding reasons).
+
+#### The register object
+
+The register object must contain 2 items :
+- `"mnemonics"`, whose value (array of strings) is the array of all of the register's mnemonics.
+- `"index"`, whose value (number) is the index of the register.
 
 #### The instruction object
 
@@ -200,7 +204,7 @@ The bitfield object must contain 2 to 3 items :
 
 The flag object must contain 2 items :
 - `"mnemonics"`, whose value (array of strings) is the array of all of the flag's mnemonics.
-- `"condition_code"`, whose value (number) is the code of the flag.
+- `"code"`, whose value (number) is the code of the flag.
 
 ### Example
 
@@ -243,11 +247,11 @@ The flag `even` with multiple mnemonics `even` and `ev` and code `2` can be stor
 		"ev",
 		"even"
 	],
-	"condition_code": 2
+	"code": 2
 }
 ```
 
-Refer to the `isa.json` file located at the root of the repository for an example of a full ISA.
+Refer to the `isa.json` file located at the root of the repository for an example of a complete ISA.
 
 ## ASSEMBLY PROCESS
 

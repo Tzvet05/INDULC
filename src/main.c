@@ -1,4 +1,9 @@
-#include "indulc.h"
+#include "execution.h"
+#include "data.h"
+#include "files.h"
+#include "macro.h"
+#include "label.h"
+#include "token.h"
 
 static bool	assemble(t_data *data)
 {

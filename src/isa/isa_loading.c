@@ -1,6 +1,6 @@
 #include <sys/stat.h>
 #include "cJSON.h"
-#include "indulc.h"
+#include "files.h"
 #include "error.h"
 
 static const cJSON*	parse_json_file(t_file* file)
@@ -46,18 +46,23 @@ static const cJSON*	parse_json_file(t_file* file)
 	return ((const cJSON *)json);
 }
 
-static void	set_opwords(t_isa* isa)
+static void	set_instruction_data(t_isa* isa)
 {
 	for (size_t i_instruction = 0; i_instruction < isa->instructions.len; i_instruction++)
 	{
-		size_t	n_opwords = 0;
+		size_t	n_opwords = 0, bit_len = 0;
 		for (size_t i_bitfield = 0;
 			i_bitfield < ((t_instruction *)isa->instructions.arr)[i_instruction]
 			.bitfields.len; i_bitfield++)
+		{
 			if (((t_bitfield *)((t_instruction *)isa->instructions.arr)[i_instruction]
 				.bitfields.arr)[i_bitfield].type != CONSTANT)
 				n_opwords++;
+			bit_len += ((t_bitfield *)((t_instruction *)isa->instructions.arr)
+				[i_instruction].bitfields.arr)[i_bitfield].len;
+		}
 		((t_instruction *)isa->instructions.arr)[i_instruction].n_opwords = n_opwords;
+		((t_instruction *)isa->instructions.arr)[i_instruction].bit_len = bit_len;
 	}
 }
 
@@ -66,12 +71,12 @@ bool	load_isa(t_data* data)
 	cJSON*	json = (cJSON *)parse_json_file(&data->files[INFILE_ISA]);
 	if (json == NULL)
 		return (1);
-	else if (check_isa_syntax((const cJSON *)json) == 1)
+	if (check_isa_syntax((const cJSON *)json) == 1)
 	{
 		cJSON_Delete(json);
 		return (1);
 	}
-	else if (init_isa(&data->isa, (const cJSON *)json) == 1)
+	if (init_isa(&data->isa, (const cJSON *)json) == 1)
 	{
 		cJSON_Delete(json);
 		fprintf(stderr, "%s: %s: %s\n",
@@ -79,6 +84,6 @@ bool	load_isa(t_data* data)
 		return (1);
 	}
 	cJSON_Delete(json);
-	set_opwords(&data->isa);
+	set_instruction_data(&data->isa);
 	return (0);
 }

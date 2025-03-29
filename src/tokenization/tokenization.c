@@ -1,29 +1,20 @@
 #include <string.h>
-#include <ctype.h>
-#include "indulc.h"
-#include "file.h"
 #include "error.h"
 #include "token.h"
+#include "syntax.h"
+#include "files.h"
 
-static t_token*	allocate_token(size_t len_str)
+static t_token*	tokenize_word(char* line, size_t len, size_t lin, size_t col)
 {
 	t_token*	token = malloc(sizeof(t_token));
 	if (token == NULL)
 		return (NULL);
-	token->str = malloc((len_str + 1) * sizeof(char));
+	token->str = malloc((len + 1) * sizeof(char));
 	if (token->str == NULL)
 	{
 		free(token);
 		return (NULL);
 	}
-	return (token);
-}
-
-static t_token*	tokenize_word(char* line, size_t len, size_t lin, size_t col)
-{
-	t_token*	token = allocate_token(len);
-	if (token == NULL)
-		return (NULL);
 	token->str[len] = '\0';
 	strncpy(token->str, line, len);
 	token->lin = lin;
@@ -31,14 +22,14 @@ static t_token*	tokenize_word(char* line, size_t len, size_t lin, size_t col)
 	return (token);
 }
 
-static size_t	get_len_token(char* token)
+static size_t	get_len_token(char* line)
 {
-	if (strncmp(token, LABEL_KEYWORD, strlen(LABEL_KEYWORD)) == 0)
+	if (strncmp(line, LABEL_KEYWORD, strlen(LABEL_KEYWORD)) == 0)
 		return (strlen(LABEL_KEYWORD));
 	size_t	i = 0;
-	while (token[i] != '\0' && isspace(token[i]) == 0 && token[i] != ','
-		&& strncmp(&token[i], COMMENT_KEYWORD, strlen(COMMENT_KEYWORD)) != 0
-		&& strncmp(&token[i], LABEL_KEYWORD, strlen(LABEL_KEYWORD)) != 0)
+	while (strchr(IGNORED_CHARS, line[i]) == NULL
+		&& strncmp(&line[i], COMMENT_KEYWORD, strlen(COMMENT_KEYWORD)) != 0
+		&& strncmp(&line[i], LABEL_KEYWORD, strlen(LABEL_KEYWORD)) != 0)
 		i++;
 	return (i);
 }
@@ -46,7 +37,7 @@ static size_t	get_len_token(char* token)
 static size_t	get_len_until_token(char* line)
 {
 	size_t	i = 0;
-	while (line[i] != '\0' && (isspace(line[i]) != 0 || line[i] == ','))
+	while (line[i] != '\0' && strchr(IGNORED_CHARS, line[i]) != NULL)
 		i++;
 	return (i);
 }
@@ -58,7 +49,7 @@ static bool	tokenize_words(t_data* data, char* line, size_t lin, size_t col)
 		&& strncmp(&line[i], COMMENT_KEYWORD, strlen(COMMENT_KEYWORD)) != 0)
 	{
 		size_t	len = get_len_token(&line[i]);
-		t_token*	token = tokenize_word(&line[i], len, lin, col + i);
+		t_token*	token = tokenize_word(&line[i], len, lin, col + i + 1);
 		if (token == NULL
 			|| lst_new_back((t_lst **)&(lst_last(data->tokens)->content), token) == 1)
 		{
@@ -75,9 +66,7 @@ static bool	tokenize_words(t_data* data, char* line, size_t lin, size_t col)
 
 static bool	tokenize_line(t_data* data, char* line, size_t lin)
 {
-	size_t	i = 0;
-	while (line[i] != '\0' && (isspace(line[i]) != 0 || line[i] == ','))
-		i++;
+	size_t	i = get_len_until_token(line);
 	if (line[i] == '\0' || strncmp(&line[i], COMMENT_KEYWORD, strlen(COMMENT_KEYWORD)) == 0)
 		return (0);
 	if (lst_new_back(&data->tokens, NULL) == 1)
@@ -86,7 +75,7 @@ static bool	tokenize_line(t_data* data, char* line, size_t lin)
 			EXECUTABLE_NAME, FUNC_MALLOC, ERROR_FAILED_ALLOC);
 		return (1);
 	}
-	if (tokenize_words(data, &line[i], lin, i + 1) == 1)
+	if (tokenize_words(data, &line[i], lin, i) == 1)
 		return (1);
 	return (0);
 }

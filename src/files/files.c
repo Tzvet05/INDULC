@@ -1,4 +1,5 @@
-#include "indulc.h"
+#include "data.h"
+#include "files.h"
 #include "error.h"
 
 void	close_files(t_data* data)

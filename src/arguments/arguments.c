@@ -1,4 +1,5 @@
-#include "indulc.h"
+#include <stdbool.h>
+#include <stdio.h>
 #include "error.h"
 
 bool	check_arguments(int n_files)

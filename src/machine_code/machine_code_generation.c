@@ -1,7 +1,12 @@
 #include <sys/param.h>
 #include <string.h>
-#include "indulc.h"
+#include "machine_code.h"
 #include "error.h"
+#include "files.h"
+#include "token.h"
+#include "label.h"
+#include "get_struct.h"
+#include "bit.h"
 
 static bool	write_instruction(t_file* file, t_parr* instruction)
 {
@@ -29,71 +34,45 @@ static bool	write_instruction(t_file* file, t_parr* instruction)
 	return (0);
 }
 
-static void	bitshift_buffer(t_parr* buffer, size_t len)
+static void	add_operand(t_parr* buffer, size_t i_bit_start, ssize_t operand, size_t len_operand)
 {
-	uint8_t	byte;
-	size_t	diff_byte = len / (buffer->obj_size * 8);
-	for (size_t i = 0; i < buffer->len; i++)
+	size_t	i_bit = i_bit_start + len_operand - 1, i_byte = i_bit / 8;
+	while (i_bit > i_bit_start)
 	{
-		if (i + diff_byte < buffer->len)
-			byte = ((uint8_t *)buffer->arr)[i + diff_byte];
-		else
-			byte = 0;
-		((uint8_t *)buffer->arr)[i] = byte;
-	}
-	size_t	diff_bit = len % (buffer->obj_size * 8);
-	if (diff_bit == 0)
-		return;
-	for (size_t i = 0; i + diff_byte < buffer->len; i++)
-	{
-		if (i + diff_byte + 1 < buffer->len)
-			byte = ((uint8_t *)buffer->arr)[i + 1];
-		else
-			byte = 0;
-		((uint8_t *)buffer->arr)[i] = (((uint8_t *)buffer->arr)[i] << diff_bit)
-			| (byte >> (buffer->obj_size * 8 - diff_bit));
-	}
-}
-
-static void	add_operand(t_parr* buffer, ssize_t operand, size_t len_bit)
-{
-	bitshift_buffer(buffer, len_bit);
-	size_t	i = buffer->len * buffer->obj_size, limit = i - (len_bit / 8 + (len_bit % 8 != 0));
-	while (i > limit)
-	{
-		((uint8_t *)buffer->arr)[i - 1] = ((uint8_t *)buffer->arr)[i - 1]
-			| (operand & build_mask(MIN(len_bit, 8)));
-		operand >>= buffer->obj_size * 8;
-		len_bit -= buffer->obj_size * 8;
-		i--;
+		size_t	i_bit_byte_start = i_bit & 0xFFFFFFFFFFFFFFF8,
+			i_bit_byte_end = i_bit_byte_start + 7, len_part = MIN(i_bit, i_bit_byte_end)
+				- MAX(i_bit_start, i_bit_byte_start) + 1;
+		((uint8_t *)buffer->arr)[i_byte] |= (operand & build_mask(len_part))
+			<< (i_bit_byte_end - i_bit);
+		operand >>= len_part;
+		i_bit -= MIN(i_bit, len_part);
+		i_byte--;
 	}
 }
 
 static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr,
-	t_parr* buffer)
+	t_parr* buffer, size_t i_bit)
 {
-	ssize_t	operand;
-	size_t	i_opword = 0, i_bitfield = 0;
 	tokens = tokens->next;
-	while (i_opword < instr->n_opwords)
+	for (size_t i_bitfield = 0; i_bitfield < instr->bitfields.len; i_bitfield++)
 	{
+		ssize_t	operand;
 		t_bitfield*	bitfield = &((t_bitfield *)instr->bitfields.arr)[i_bitfield];
 		if (bitfield->type == REGISTER)
-			operand = get_register_operand((t_token *)tokens->content);
+			operand = (ssize_t)get_register(&data->isa,
+				((t_token *)tokens->content)->str)->index;
 		else if (bitfield->type == IMMEDIATE)
 			operand = get_immediate_operand(data->symbol_table,
 				(t_token *)tokens->content);
 		else if (bitfield->type == CONDITION)
-			operand = get_condition_operand(&data->isa, (t_token *)tokens->content);
+			operand = (ssize_t)get_flag(&data->isa,
+				((t_token *)tokens->content)->str)->code;
 		else
 			operand = bitfield->value;
-		add_operand(buffer, operand, bitfield->len);
+		add_operand(buffer, i_bit, operand, bitfield->len);
 		if (bitfield->type != CONSTANT)
-		{
 			tokens = tokens->next;
-			i_opword++;
-		}
-		i_bitfield++;
+		i_bit += bitfield->len;
 	}
 	return (write_instruction(&data->files[OUTFILE_PROGRAM], buffer));
 }
@@ -118,6 +97,7 @@ bool	generate_machine_code(t_data* data)
 	t_parr	buffer;
 	if (allocate_writing_buffer(data->isa.instruction_length, &buffer) == 1)
 		return (1);
+	size_t	i_bit_start = (buffer.len * buffer.obj_size * 8) - data->isa.instruction_length;
 	t_lst*	tokens_lin = data->tokens;
 	while (tokens_lin != NULL)
 	{
@@ -126,14 +106,17 @@ bool	generate_machine_code(t_data* data)
 			tokens_col = tokens_col->next->next;
 		if (tokens_col != NULL)
 		{
-			bzero(buffer.arr, buffer.len * buffer.obj_size);
-			t_instruction*	instr = (t_instruction *)get_assembling_target(&data->isa,
-				((t_token *)tokens_col->content)->str, INSTRUCTION);
-			if (instr != NULL
-				&& encode_instruction(data, tokens_col, instr, &buffer) == 1)
+			t_instruction*	instr = get_instruction(&data->isa,
+				((t_token *)tokens_col->content)->str);
+			if (instr != NULL)
 			{
-				free(buffer.arr);
-				return (1);
+				bzero(buffer.arr, buffer.len * buffer.obj_size);
+				if (encode_instruction(data, tokens_col, instr, &buffer,
+					i_bit_start) == 1)
+				{
+					free(buffer.arr);
+					return (1);
+				}
 			}
 		}
 		tokens_lin = tokens_lin->next;

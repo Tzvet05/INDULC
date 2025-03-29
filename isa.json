@@ -1,22 +1,102 @@
 {
 	"instruction_length": 32,
 	"registers": [
-		0,
-		1,
-		2,
-		3,
-		4,
-		5,
-		6,
-		7,
-		8,
-		9,
-		10,
-		11,
-		12,
-		13,
-		14,
-		15
+		{
+			"mnemonics": [
+				"r0"
+			],
+			"index": 0
+		},
+		{
+			"mnemonics": [
+				"r1"
+			],
+			"index": 1
+		},
+		{
+			"mnemonics": [
+				"r2"
+			],
+			"index": 2
+		},
+		{
+			"mnemonics": [
+				"r3"
+			],
+			"index": 3
+		},
+		{
+			"mnemonics": [
+				"r4"
+			],
+			"index": 4
+		},
+		{
+			"mnemonics": [
+				"r5"
+			],
+			"index": 5
+		},
+		{
+			"mnemonics": [
+				"r6"
+			],
+			"index": 6
+		},
+		{
+			"mnemonics": [
+				"r7"
+			],
+			"index": 7
+		},
+		{
+			"mnemonics": [
+				"r8"
+			],
+			"index": 8
+		},
+		{
+			"mnemonics": [
+				"r9"
+			],
+			"index": 9
+		},
+		{
+			"mnemonics": [
+				"r10"
+			],
+			"index": 10
+		},
+		{
+			"mnemonics": [
+				"r11"
+			],
+			"index": 11
+		},
+		{
+			"mnemonics": [
+				"r12"
+			],
+			"index": 12
+		},
+		{
+			"mnemonics": [
+				"r13"
+			],
+			"index": 13
+		},
+		{
+			"mnemonics": [
+				"r14"
+			],
+			"index": 14
+		},
+		{
+			"mnemonics": [
+				"r15"
+			],
+			"index": 15
+		}
 	],
 	"instructions": [
 		{
@@ -680,42 +760,42 @@
 				"s",
 				"sign"
 			],
-			"condition_code": 0
+			"code": 0
 		},
 		{
 			"mnemonics": [
 				"ns",
 				"notsign"
 			],
-			"condition_code": 1
+			"code": 1
 		},
 		{
 			"mnemonics": [
 				"ev",
 				"even"
 			],
-			"condition_code": 2
+			"code": 2
 		},
 		{
 			"mnemonics": [
 				"nev",
 				"noteven"
 			],
-			"condition_code": 3
+			"code": 3
 		},
 		{
 			"mnemonics": [
 				"z",
 				"zero"
 			],
-			"condition_code": 4
+			"code": 4
 		},
 		{
 			"mnemonics": [
 				"nz",
 				"notzero"
 			],
-			"condition_code": 5
+			"code": 5
 		}
 	]
 }

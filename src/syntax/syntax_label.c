@@ -1,6 +1,8 @@
-#include <ctype.h>
-#include "indulc.h"
 #include "error.h"
+#include "syntax.h"
+#include "token.h"
+#include "cmp.h"
+#include "lst.h"
 
 bool	check_label_syntax(t_lst **tokens_ptr)
 {
@@ -17,14 +19,6 @@ bool	check_label_syntax(t_lst **tokens_ptr)
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
 			ERROR_LABEL, ERROR_LABEL_TOO_FEW_ARGS);
 		return (1);
-	}
-	else if (isalpha(((t_token *)tokens->content)->str[0]) == 0)
-	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, ERROR_SYNTAX,
-			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
-			ERROR_LABEL, ERROR_LABEL_INVALID_NAME, ((t_token *)tokens->content)->str);
-		error = 1;
 	}
 	tokens = tokens->next;
 	for (size_t i_error = 1; i_error < (size_t)i; i_error++)
