@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "lst.h"
 
 bool	lst_new_back(t_lst** lst, void* content)
@@ -7,9 +8,8 @@ bool	lst_new_back(t_lst** lst, void* content)
 		return (1);
 	new->content = content;
 	new->next = NULL;
-	if (*lst == NULL)
-		*lst = new;
-	else
-		lst_last(*lst)->next = new;
+	while (*lst != NULL)
+		lst = &(*lst)->next;
+	*lst = new;
 	return (0);
 }
