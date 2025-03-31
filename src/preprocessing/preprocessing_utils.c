@@ -1,5 +1,4 @@
 #include <string.h>
-#include <stdbool.h>
 #include "lst.h"
 #include "syntax.h"
 #include "token.h"

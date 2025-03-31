@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <sys/stat.h>
 #include "cJSON.h"
 #include "files.h"
@@ -50,19 +51,14 @@ static void	set_instruction_data(t_isa* isa)
 {
 	for (size_t i_instruction = 0; i_instruction < isa->instructions.len; i_instruction++)
 	{
-		size_t	n_opwords = 0, bit_len = 0;
+		size_t	n_opwords = 0;
 		for (size_t i_bitfield = 0;
 			i_bitfield < ((t_instruction *)isa->instructions.arr)[i_instruction]
 			.bitfields.len; i_bitfield++)
-		{
 			if (((t_bitfield *)((t_instruction *)isa->instructions.arr)[i_instruction]
 				.bitfields.arr)[i_bitfield].type != CONSTANT)
 				n_opwords++;
-			bit_len += ((t_bitfield *)((t_instruction *)isa->instructions.arr)
-				[i_instruction].bitfields.arr)[i_bitfield].len;
-		}
 		((t_instruction *)isa->instructions.arr)[i_instruction].n_opwords = n_opwords;
-		((t_instruction *)isa->instructions.arr)[i_instruction].bit_len = bit_len;
 	}
 }
 

@@ -2,7 +2,6 @@
 #include "isa.h"
 #include "error.h"
 #include "syntax.h"
-#include "get_struct.h"
 #include "token.h"
 #include "label.h"
 #include "cmp.h"
@@ -10,12 +9,12 @@
 
 static bool	check_register_operand_syntax(t_isa* isa, t_token* token)
 {
-	if (get_register(isa, token->str) == NULL)
+	if (parr_find(&isa->registers, token->str, cmp_mnemonics) == NULL)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
 			ERROR_INSTRUCTION, ERROR_INSTRUCTION_REGISTER,
-			ERROR_INSTRUCTION_REGISTER_MNEMONIC, token->str);
+			ERROR_INSTRUCTION_OPERAND_MNEMONIC, token->str);
 		return (1);
 	}
 	return (0);
@@ -49,14 +48,14 @@ static bool	check_immediate_operand_syntax(t_lst* symbol_table, t_token* token, 
 	return (0);
 }
 
-static bool	check_condition_operand_syntax(t_isa* isa, t_token* token)
+static bool	check_flag_operand_syntax(t_isa* isa, t_token* token)
 {
-	if (get_flag(isa, token->str) == NULL)
+	if (parr_find(&isa->flags, token->str, cmp_mnemonics) == NULL)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX, token->lin, token->col,
-			ERROR_INSTRUCTION, ERROR_INSTRUCTION_CONDITION,
-			ERROR_INSTRUCTION_CONDITION_MNEMONIC, token->str);
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_FLAG,
+			ERROR_INSTRUCTION_OPERAND_MNEMONIC, token->str);
 		return (1);
 	}
 	return (0);
@@ -83,13 +82,14 @@ static bool	check_operand_syntax(t_data* data, t_instruction* instr, t_token* to
 	else if (bitfield->type == IMMEDIATE)
 		return (check_immediate_operand_syntax(data->symbol_table, token, bitfield->len));
 	else
-		return (check_condition_operand_syntax(&data->isa, token));
+		return (check_flag_operand_syntax(&data->isa, token));
 }
 
 bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 {
 	t_lst*	tokens = *tokens_ptr;
-	t_instruction*	instr = get_instruction(&data->isa, ((t_token *)tokens->content)->str);
+	t_instruction*	instr = parr_find(&data->isa.instructions,
+		((t_token *)tokens->content)->str, cmp_mnemonics);
 	if (instr == NULL)
 		return (0);
 	bool	error = 0;

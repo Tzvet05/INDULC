@@ -531,7 +531,7 @@
 				},
 				{
 					"len": 8,
-					"type": "condition"
+					"type": "flag"
 				},
 				{
 					"len": 16,

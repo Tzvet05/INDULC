@@ -1,10 +1,7 @@
 #include <string.h>
-#include <stdbool.h>
-#include <unistd.h>
 #include "token.h"
 #include "macro.h"
 #include "label.h"
-#include "isa.h"
 
 bool	cmp_label(void* label, void* str)
 {
@@ -21,12 +18,10 @@ bool	cmp_token(void* token, void* str)
 	return (strcmp(((t_token *)token)->str, (char *)str) != 0);
 }
 
-bool	cmp_flag(void* flag, void *ptr)
+bool	cmp_mnemonics(void* mnemonics, void* str)
 {
-	return ((ssize_t)((t_flag *)flag)->code != *(ssize_t *)ptr);
-}
-
-bool	cmp_register(void* _register, void* ptr)
-{
-	return ((ssize_t)((t_register *)_register)->index != *(ssize_t *)ptr);
+	for (size_t i_mnemonic = 0; i_mnemonic < ((t_parr *)mnemonics)->len; i_mnemonic++)
+		if (strcmp(((char **)((t_parr *)mnemonics)->arr)[i_mnemonic], str) == 0)
+			return (0);
+	return (1);
 }

@@ -2,7 +2,7 @@
 #include "error.h"
 #include "token.h"
 #include "syntax.h"
-#include "get_struct.h"
+#include "cmp.h"
 #include "nbr.h"
 
 #ifndef COMP_MUTE_MACRO_WARNINGS
@@ -17,17 +17,19 @@ static void	check_define_identifier(t_isa* isa, t_lst* tokens)
 			WARNING_DEFINE_USELESS, ((t_token *)tokens->next->content)->str);
 		return;
 	}
-	if (get_flag(isa, ((t_token *)tokens->next->content)->str) != NULL)
+	if (parr_find(&isa->flags, ((t_token *)tokens->next->content)->str, cmp_mnemonics) != NULL)
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
 			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
 			WARNING_DEFINE_FLAG, ((t_token *)tokens->next->content)->str);
-	if (get_instruction(isa, ((t_token *)tokens->next->content)->str) != NULL)
+	if (parr_find(&isa->instructions, ((t_token *)tokens->next->content)->str, cmp_mnemonics)
+		!= NULL)
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
 			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
 			WARNING_DEFINE_INSTRUCTION, ((t_token *)tokens->next->content)->str);
-	if (get_register(isa, ((t_token *)tokens->next->content)->str) != NULL)
+	if (parr_find(&isa->registers, ((t_token *)tokens->next->content)->str, cmp_mnemonics)
+		!= NULL)
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
 			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
@@ -37,8 +39,12 @@ static void	check_define_identifier(t_isa* isa, t_lst* tokens)
 			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
 			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
 			WARNING_DEFINE_NUMBER, ((t_token *)tokens->next->content)->str);
-	if (strncmp(((t_token *)tokens->next->content)->str, LABEL_KEYWORD, strlen(LABEL_KEYWORD))
-		== 0)
+	if (strcmp(((t_token *)tokens->next->content)->str, DEFINE_KEYWORD) == 0)
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
+			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
+			WARNING_DEFINE_DEFINE, ((t_token *)tokens->next->content)->str);
+	if (strcmp(((t_token *)tokens->next->content)->str, LABEL_KEYWORD) == 0)
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
 			((t_token *)tokens->next->content)->col, WARNING_DEFINE,

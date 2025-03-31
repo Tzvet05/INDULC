@@ -6,6 +6,7 @@
 #define EXECUTABLE_NAME	"indulc"
 
 // Failing functions
+//	Standard
 #define FUNC_ACCESS	"access()"
 #define FUNC_FOPEN	"fopen()"
 #define FUNC_GETLINE	"getline()"
@@ -13,7 +14,8 @@
 #define FUNC_FREAD	"fread()"
 #define FUNC_FWRITE	"fwrite()"
 #define FUNC_STAT	"stat()"
-//	cJSON library
+//	Libraries
+//		cJSON library
 #define FUNC_CJSON_PARSE	"cJSON_Parse()"
 
 // Error strings
@@ -31,14 +33,13 @@
 #define ERROR_READ_PERM		"file permissions prohibit reading"
 #define ERROR_WRITE_PERM	"file permissions prohibit writing"
 #define ERROR_OPEN_FILE		"failed to open file"
-#define ERROR_READ_FILE		"failed to read file"
+#define ERROR_READ_FILE		"failed to read from file"
 #define ERROR_WRITE_FILE	"failed to write to file"
 #define ERROR_FILE_STATUS	"failed to get file status"
 //	ISA Syntax
 #define ERROR_SYNTAX		"syntax error"
 #define ERROR_TOKEN		"unrecognized token (token not supported by the provided ISA)"
-#define ERROR_NOT_NUMBER	"number contains invalid characters (must be only base-related digits)"
-#define ERROR_NEGATIVE_NUMBER	"number is strictly negative (must be >= 0)"
+#define ERROR_NOT_NUMBER	"number contains invalid characters (must be only base-related characters)"
 //		Define
 #define ERROR_DEFINE			"define statement"
 #define ERROR_DEFINE_TOO_FEW_ARGS	"incomplete statement (expected syntax : %define [word] [number])"
@@ -49,17 +50,16 @@
 #define ERROR_LABEL_TOO_MANY_ARGS	"statement has too many arguments (expected syntax : [label]:)"
 #define ERROR_LABEL_DUPLICATE		"duplicate label (duplicates cannot exist)"
 //		Instruction
-#define ERROR_INSTRUCTION		"instruction"
-#define ERROR_INSTRUCTION_TOO_FEW_ARGS	"incomplete instruction, missing operand(s) (refer to the provided ISA)"
-#define ERROR_INSTRUCTION_TOO_MANY_ARGS	"instruction has too many operands (refer to the provided ISA)"
+#define ERROR_INSTRUCTION			"instruction"
+#define ERROR_INSTRUCTION_TOO_FEW_ARGS		"incomplete instruction, missing operand(s) (refer to the provided ISA)"
+#define ERROR_INSTRUCTION_TOO_MANY_ARGS		"instruction has too many operands (refer to the provided ISA)"
+#define ERROR_INSTRUCTION_OPERAND_MNEMONIC	"unknown mnemonic (mnemonic not supported by the provided ISA)"
 //			Register
 #define ERROR_INSTRUCTION_REGISTER		"register operand"
-#define ERROR_INSTRUCTION_REGISTER_MNEMONIC	"unknown mnemonic (mnemonic not supported by the provided ISA)"
 //			Immediate
 #define ERROR_INSTRUCTION_IMMEDIATE	"immediate operand"
-//			Condition
-#define ERROR_INSTRUCTION_CONDITION		"condition operand"
-#define ERROR_INSTRUCTION_CONDITION_MNEMONIC	"unknown mnemonic (mnemonic not supported by the provided ISA)"
+//			Flag
+#define ERROR_INSTRUCTION_FLAG		"flag operand"
 //	Json syntax
 #define ERROR_JSON_SYNTAX		"Json syntax error"
 #define ERROR_JSON_MISSING_ITEM		"Json item missing"
@@ -82,12 +82,11 @@
 #define WARNING_DEFINE_INSTRUCTION	"conflicting identifier (identifier is identical to an instruction's mnemonic provided by the ISA)"
 #define WARNING_DEFINE_REGISTER		"conflicting identifier (identifier is identical to a register's mnemonic provided by the ISA)"
 #define WARNING_DEFINE_NUMBER		"hazardous identifier (identifier is a number)"
+#define WARNING_DEFINE_DEFINE		"hazardous identifier (identifier is identical to the macro declaration keyword)"
 #define WARNING_DEFINE_LABEL		"hazardous identifier (identifier is identical to the label declaration keyword)"
 //		Instruction
 #define WARNING_INSTRUCTION		"instruction"
-#define WARNING_INSTRUCTION_REGISTER	"register operand"
 #define WARNING_INSTRUCTION_IMMEDIATE	"immediate operand"
-#define WARNING_INSTRUCTION_CONDITION	"condition operand"
 #define WARNING_INSTRUCTION_LABEL	"label resolution"
 //	Json syntax
 #define WARNING_JSON_SYNTAX	"Json syntax warning"

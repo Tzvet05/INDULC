@@ -1,16 +1,16 @@
-#include <sys/param.h>
+#include <stdlib.h>
 #include <string.h>
+#include <sys/param.h>
 #include "machine_code.h"
 #include "error.h"
 #include "files.h"
-#include "token.h"
 #include "label.h"
-#include "get_struct.h"
+#include "cmp.h"
 #include "bit.h"
 
 static bool	write_instruction(t_file* file, t_parr* instruction)
 {
-#ifdef COMP_BIN_CHAR
+#ifdef COMP_OUTPUT_CHARS
 	static char	buffer[9];
 	buffer[8] = ' ';
 	for (size_t i_byte = 0; i_byte < instruction->len * instruction->obj_size; i_byte++)
@@ -59,14 +59,14 @@ static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr
 		ssize_t	operand;
 		t_bitfield*	bitfield = &((t_bitfield *)instr->bitfields.arr)[i_bitfield];
 		if (bitfield->type == REGISTER)
-			operand = (ssize_t)get_register(&data->isa,
-				((t_token *)tokens->content)->str)->index;
+			operand = ((t_register *)parr_find(&data->isa.registers,
+				((t_token *)tokens->content)->str, cmp_mnemonics))->index;
 		else if (bitfield->type == IMMEDIATE)
 			operand = get_immediate_operand(data->symbol_table,
 				(t_token *)tokens->content);
-		else if (bitfield->type == CONDITION)
-			operand = (ssize_t)get_flag(&data->isa,
-				((t_token *)tokens->content)->str)->code;
+		else if (bitfield->type == FLAG)
+			operand = ((t_flag *)parr_find(&data->isa.flags,
+				((t_token *)tokens->content)->str, cmp_mnemonics))->code;
 		else
 			operand = bitfield->value;
 		add_operand(buffer, i_bit, operand, bitfield->len);
@@ -80,8 +80,7 @@ static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr
 static bool	allocate_writing_buffer(size_t instruction_length, t_parr* buffer)
 {
 	buffer->obj_size = sizeof(uint8_t);
-	buffer->len = instruction_length / (buffer->obj_size * 8)
-		+ (instruction_length % (buffer->obj_size * 8) != 0);
+	buffer->len = (instruction_length + (buffer->obj_size * 8 - 1)) / (buffer->obj_size * 8);
 	buffer->arr = malloc(buffer->len);
 	if (buffer->arr == NULL)
 	{
@@ -106,8 +105,8 @@ bool	generate_machine_code(t_data* data)
 			tokens_col = tokens_col->next->next;
 		if (tokens_col != NULL)
 		{
-			t_instruction*	instr = get_instruction(&data->isa,
-				((t_token *)tokens_col->content)->str);
+			t_instruction*	instr = parr_find(&data->isa.instructions,
+				((t_token *)tokens_col->content)->str, cmp_mnemonics);
 			if (instr != NULL)
 			{
 				bzero(buffer.arr, buffer.len * buffer.obj_size);

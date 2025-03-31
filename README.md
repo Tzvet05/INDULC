@@ -21,7 +21,7 @@ make
 When the mute macro warnings mode is enabled, the assembler runs less extensive syntax checks on macro definitions.
 
 Changes :
-- The syntax analysis does not perform syntax checks for macros whose identifier is identical to their substitute, to a flag mnemonic, to a register mnemonic, to a number or to the label definition keyword.
+- The syntax analysis does not perform syntax checks for macros whose identifier is identical to their substitute, to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword.
 
 To enable the mute macro warnings mode, the environment variable `COMP_MUTE_MACRO_WARNINGS` must be set to `1` before compiling the assembler.
 
@@ -30,18 +30,18 @@ You can do so by executing the following command :
 export COMP_MUTE_MACRO_WARNINGS=1
 ```
 
-### Characters assembly mode
+### Characters output mode
 
-When the characters assembly mode is enabled, the assembler outputs the assembled program in a human-readable form.
+When the characters output mode is enabled, the assembler outputs the assembled program in a human-readable form.
 
 Changes :
 - The assembled program is written in the outfile using characters (`0` and `1`) rather than actual bits.
 
-To enable the characters assembly mode, the environment variable `COMP_BIN_CHAR` must be set to `1` before compiling the assembler.
+To enable the characters output mode, the environment variable `COMP_OUTPUT_CHARS` must be set to `1` before compiling the assembler.
 
 You can do so by executing the following command :
 ```sh
-export COMP_BIN_CHAR=1
+export COMP_OUTPUT_CHARS=1
 ```
 
 ## USAGE
@@ -195,7 +195,7 @@ The bitfield object must contain 2 to 3 items :
 
 `"len"` must be strictly greater than 0. It does not need to be a multiple of 8.
 
-`"type"` must be one of `"constant"`, `"register"`, `"immediate"` and `"condition"`.
+`"type"` must be one of `"constant"`, `"register"`, `"immediate"` and `"flag"`.
 `"constant"` can be used for the opcode, padding or a constant value needed by a pseudoinstruction.
 
 `"value"` is ignored if the bitfield's type is not `"constant"`. If the bitfield's type is `"constant"` but the `"value"` item does not exists, its value is considered equal to 0.

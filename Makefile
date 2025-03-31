@@ -12,8 +12,8 @@ MOD =		libcjson.so
 
 # Optional compilation settings
 
-ifeq ($(COMP_BIN_CHAR), 1)
-	CFLAG += -DCOMP_BIN_CHAR
+ifeq ($(COMP_OUTPUT_CHARS), 1)
+	CFLAG += -DCOMP_OUTPUT_CHARS
 endif
 
 ifeq ($(COMP_MUTE_MACRO_WARNINGS), 1)
@@ -70,7 +70,6 @@ SRC =	main.c \
 	$(SYN_DIR)syntax_instruction.c \
 	$(MAC_DIR)machine_code_generation.c \
 	$(MAC_DIR)get_operand.c \
-	$(UTI_DIR)assembling.c \
 	$(UTI_DIR)cmp.c
 
 # Compiled objects
@@ -83,7 +82,7 @@ $(NAME) : $(OBJ) $(LIB_DIR)$(LIB) $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD)
 	@ $(COMPILER) $(CFLAG) $(OBJ) $(LIB_DIR)$(LIB) $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD) -Wl,-rpath,$(MOD_DIR)$(MOD_BUILD_DIR) -o $(NAME)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_GREEN)Executable ($(NAME)) compiled.$(COLOR_DEFAULT)"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(ARG_DIR) $(ISA_DIR) $(FIL_DIR) $(TOK_DIR) $(PRE_DIR) $(SYM_DIR) $(SYN_DIR) $(MAC_DIR) $(UTI_DIR) $(FRE_DIR)) $(MOD_DIR)$(MOD_BUILD_DIR)
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(ARG_DIR) $(ISA_DIR) $(FIL_DIR) $(TOK_DIR) $(PRE_DIR) $(SYM_DIR) $(SYN_DIR) $(MAC_DIR) $(UTI_DIR)) $(MOD_DIR)$(MOD_BUILD_DIR)
 	@ $(COMPILER) $(CFLAG) -I$(HDR_DIR) -I$(LIB_DIR)$(HDR_DIR) -I$(MOD_DIR) -c $^ -o $@
 
 # Build directories
@@ -117,9 +116,6 @@ $(OBJ_DIR)$(MAC_DIR) :
 
 $(OBJ_DIR)$(UTI_DIR) :
 	@ mkdir -p $(OBJ_DIR)$(UTI_DIR)
-
-$(OBJ_DIR)$(FRE_DIR) :
-	@ mkdir -p $(OBJ_DIR)$(FRE_DIR)
 
 $(MOD_DIR)$(MOD_BUILD_DIR) :
 	@ mkdir -p $(MOD_DIR)$(MOD_BUILD_DIR)

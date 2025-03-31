@@ -1,9 +1,7 @@
-#include <stdio.h>
 #include "data.h"
 #include "syntax.h"
 #include "token.h"
 #include "error.h"
-#include "lst.h"
 
 static bool	check_remaining_tokens_syntax(t_lst** tokens_ptr)
 {

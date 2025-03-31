@@ -34,7 +34,7 @@
 
 // Bitfield types
 #define N_BITFIELD_TYPES	4
-#define BITFIELD_TYPES		((const char* const[]){"register", "immediate", "condition", "constant"})
+#define BITFIELD_TYPES		((const char* const[]){"register", "immediate", "flag", "constant"})
 
 /* ----- ENUMERATIONS ----- */
 
@@ -43,7 +43,7 @@ typedef enum bitfield_type
 {
 	REGISTER = 0,
 	IMMEDIATE,
-	CONDITION,
+	FLAG,
 	CONSTANT
 }	t_bitfield_type;
 
@@ -54,7 +54,7 @@ typedef struct bitfield
 {
 	size_t		len;//		Length of the bitfield (in bits)
 	t_bitfield_type	type;//		Type of the bitfield
-	ssize_t		value;//	Stored value (if type == constant)
+	ssize_t		value;//	Stored value (if type == CONSTANT)
 }	t_bitfield;
 
 // Instruction
@@ -62,7 +62,6 @@ typedef struct instruction
 {
 	t_parr	mnemonics;//	Array of mnemonic strings
 	size_t	n_opwords;//	Number of words in the instruction (opcode + operands)
-	size_t	bit_len;//	Length of the instruction (in bits)
 	t_parr	bitfields;//	Array of bitfields
 }	t_instruction;
 
@@ -84,7 +83,7 @@ typedef struct _register
 typedef struct isa
 {
 	size_t	instruction_length;//	Length of the instructions (in bits)
-	t_parr	registers;//		Array of register indexes
+	t_parr	registers;//		Array of supported registers
 	t_parr	instructions;//		Array of supported instructions
 	t_parr	flags;//		Array of supported flags
 }	t_isa;
