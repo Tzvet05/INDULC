@@ -27,8 +27,7 @@ COLOR_WHITE =	\033[1;38;5m
 
 # Source code
 
-SRC =	$(LST_DIR)lst_size.c \
-	$(LST_DIR)lst_new_back.c \
+SRC =	$(LST_DIR)lst_new_back.c \
 	$(LST_DIR)lst_clear.c \
 	$(LST_DIR)lst_last.c \
 	$(LST_DIR)lst_find_index.c \

@@ -24,7 +24,7 @@ bool	will_overflow_str(char* str, size_t n_bits)
 		i++;
 		ptr_charset = strchr(charset, tolower(str[i]));
 	}
-	if (number > 0 || (number - 1 > 0 && sign == 0))
+	if (number > 0 || (sign == 0 && number - 1 > 0))
 		return (1);
 	if (sign == 0)
 		number = -number;
