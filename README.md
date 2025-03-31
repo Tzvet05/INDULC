@@ -21,7 +21,7 @@ make
 When the mute macro warnings mode is enabled, the assembler runs less extensive syntax checks on macro definitions.
 
 Changes :
-- The syntax analysis does not perform syntax checks for macros whose identifier is identical to their substitute, to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword.
+- The syntax analysis does not perform syntax checks for macros whose identifier is identical to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword.
 
 To enable the mute macro warnings mode, the environment variable `COMP_MUTE_MACRO_WARNINGS` must be set to `1` before compiling the assembler.
 
