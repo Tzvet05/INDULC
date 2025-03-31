@@ -114,7 +114,7 @@ A define statement follows this syntax :
 It is the string that will be replaced by the value associated with it.
 
 `[value]` is the value of the macro.
-It is the string that will replace the identifier associated with it. It must be a number.
+It is the string that will replace the identifier associated with it.
 
 A define statement must be on its own line.
 
