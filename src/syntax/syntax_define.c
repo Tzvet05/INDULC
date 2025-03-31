@@ -5,7 +5,6 @@
 #include "cmp.h"
 #include "nbr.h"
 
-#ifndef COMP_MUTE_MACRO_WARNINGS
 static void	check_define_identifier(t_isa* isa, t_lst* tokens)
 {
 	if (strcmp(((t_token *)tokens->next->content)->str,
@@ -17,6 +16,7 @@ static void	check_define_identifier(t_isa* isa, t_lst* tokens)
 			WARNING_DEFINE_USELESS, ((t_token *)tokens->next->content)->str);
 		return;
 	}
+#ifndef COMP_MUTE_MACRO_WARNINGS
 	if (parr_find(&isa->flags, ((t_token *)tokens->next->content)->str, cmp_mnemonics) != NULL)
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
@@ -49,8 +49,8 @@ static void	check_define_identifier(t_isa* isa, t_lst* tokens)
 			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
 			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
 			WARNING_DEFINE_LABEL, ((t_token *)tokens->next->content)->str);
-}
 #endif
+}
 
 bool	check_define_syntax(t_isa* isa, t_lst **tokens_ptr)
 {
@@ -58,9 +58,7 @@ bool	check_define_syntax(t_isa* isa, t_lst **tokens_ptr)
 	t_lst*	tokens = *tokens_ptr;
 	if (strcmp(((t_token *)tokens->content)->str, DEFINE_KEYWORD) != 0)
 		return (0);
-#ifndef COMP_MUTE_MACRO_WARNINGS
 	t_lst*	tokens_first = tokens;
-#endif
 	*tokens_ptr = lst_get_node(tokens, 3);
 	if (tokens->next == NULL)
 	{
@@ -101,8 +99,6 @@ bool	check_define_syntax(t_isa* isa, t_lst **tokens_ptr)
 			((t_token *)tokens->content)->str);
 		return (1);
 	}
-#ifndef COMP_MUTE_MACRO_WARNINGS
 	check_define_identifier(isa, tokens_first);
-#endif
 	return (error);
 }
