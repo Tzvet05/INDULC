@@ -55,7 +55,7 @@
 #define ERROR_INSTRUCTION_TOO_MANY_ARGS		"instruction has too many operands (refer to the provided ISA)"
 #define ERROR_INSTRUCTION_OPERAND_MNEMONIC	"unknown mnemonic (mnemonic not supported by the provided ISA)"
 //			Register
-#define ERROR_INSTRUCTION_REGISTER		"register operand"
+#define ERROR_INSTRUCTION_REGISTER	"register operand"
 //			Immediate
 #define ERROR_INSTRUCTION_IMMEDIATE	"immediate operand"
 //			Flag

@@ -4,11 +4,17 @@
 #include "macro.h"
 #include "label.h"
 #include "token.h"
+#include "error.h"
 
 static bool	assemble(t_data *data)
 {
 	if (open_file(&data->files[INFILE_PROGRAM], FOPEN_READ_MODE) == 1)
+	{
+		fprintf(stderr, "%s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, FUNC_FOPEN, ERROR_OPEN_FILE,
+			data->files[INFILE_PROGRAM].name);
 		return (1);
+	}
 	else if (tokenize(data) == 1)
 		return (1);
 	else if (preprocess(data) == 1)
@@ -18,7 +24,12 @@ static bool	assemble(t_data *data)
 	else if (analyse_syntax(data) == 1)
 		return (1);
 	else if (open_file(&data->files[OUTFILE_PROGRAM], FOPEN_WRITE_MODE) == 1)
+	{
+		fprintf(stderr, "%s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, FUNC_FOPEN, ERROR_OPEN_FILE,
+			data->files[OUTFILE_PROGRAM].name);
 		return (1);
+	}
 	else 
 		return (generate_machine_code(data));
 }
