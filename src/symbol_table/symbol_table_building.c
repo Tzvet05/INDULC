@@ -41,10 +41,11 @@ bool	build_symbol_table(t_data* data)
 	t_lst*	tokens = data->tokens;
 	while (tokens != NULL)
 	{
-		if (is_label((t_lst *)tokens->content) == 1
-			&& check_label((t_lst *)tokens->content, data->symbol_table) == 0)
+		if (is_label((t_lst *)tokens->content) == 1)
 		{
-			if (add_label((t_lst *)tokens->content, &data->symbol_table, line) == 1)
+			if (check_label((t_lst *)tokens->content, data->symbol_table) == 1)
+				return (1);
+			else if (add_label((t_lst *)tokens->content, &data->symbol_table, line) == 1)
 			{
 				fprintf(stderr, "%s: %s: %s\n",
 					EXECUTABLE_NAME, FUNC_MALLOC, ERROR_FAILED_ALLOC);
