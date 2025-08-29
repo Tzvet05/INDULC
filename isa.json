@@ -703,11 +703,16 @@
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 2
+					"value": 17
 				},
 				{
 					"len": 8,
 					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "constant",
+					"value": 0
 				}
 			]
 		},
@@ -758,14 +763,18 @@
 		{
 			"mnemonics": [
 				"s",
-				"sign"
+				"sign",
+				"neg",
+				"negative"
 			],
 			"code": 0
 		},
 		{
 			"mnemonics": [
 				"ns",
-				"notsign"
+				"notsign",
+				"pos",
+				"positive"
 			],
 			"code": 1
 		},
@@ -779,7 +788,8 @@
 		{
 			"mnemonics": [
 				"nev",
-				"noteven"
+				"noteven",
+				"odd"
 			],
 			"code": 3
 		},
