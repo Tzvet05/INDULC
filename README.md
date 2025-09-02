@@ -36,6 +36,7 @@ This argument is optional and will be replaced by a default argument `isa.json` 
 
 Options can be added anywhere in the arguments when running the assembler.
 They sometimes support a shortened name alongside their full name, and they sometimes require a parameter. In such a case, the default parameter when the option is not specified is indicated by `[ ]`. Both the shortened and full names require the parameter to be specified.
+
 The `--` argument can be used to indicate the end of option parsing. Any argument following it will be treated as a regular argument rather than as an option.
 
 #### Version
@@ -58,7 +59,7 @@ When the "mute macro warnings" option is enabled, the syntax warnings for macros
 
 #### Output characters
 
-`-c --output-chars=no|[yes]`
+`-c --output-chars=[no]|yes`
 
 When the "output characters" option is enabled, the assembled machine code is written in the outfile using characters (`0` and `1`) rather than actual raw bits. This is useful for debugging as the machine code is produced in a human-readable form.
 
