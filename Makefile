@@ -33,10 +33,10 @@ UTI_DIR =	utils/
 
 # Colors
 
-COLOR_DEFAULT =		\033[0m
-COLOR_GREEN =		\033[1;38;5;2m
-COLOR_BLUE =		\033[1;38;5;4m
-COLOR_WHITE =		\033[1;38;5;15m
+COLOR_DEFAULT =	\033[0m
+COLOR_GREEN =	\033[1;38;5;2m
+COLOR_BLUE =	\033[1;38;5;4m
+COLOR_WHITE =	\033[1;38;5;15m
 
 # Source headers
 
@@ -94,7 +94,7 @@ $(LIB_DIR)$(LIB) :
 # Submodule
 
 $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD) :
-	@ cmake -DENABLE_CJSON_TEST=Off -B$(MOD_DIR)$(MOD_BUILD_DIR) -S$(MOD_DIR) > /dev/null
+	@ cmake -DCMAKE_POLICY_VERSION_MINIMUM=4.0 -DENABLE_CJSON_TEST=Off -B$(MOD_DIR)$(MOD_BUILD_DIR) -S$(MOD_DIR) > /dev/null
 	@ make -s -C $(MOD_DIR)$(MOD_BUILD_DIR) > /dev/null
 	@ echo "$(COLOR_WHITE)[$(MOD)] - $(COLOR_GREEN)Dynamic library ($(MOD)) compiled.$(COLOR_DEFAULT)"
 
