@@ -1,7 +1,5 @@
-#include <stdio.h>
 #include <stdint.h>
-#include "cJSON.h"
-#include "isa.h"
+#include "isa_loading.h"
 #include "error.h"
 #include "nbr.h"
 

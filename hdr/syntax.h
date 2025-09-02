@@ -17,8 +17,10 @@
 /* ----- PROTOTYPES ----- */
 
 // syntax/
+//	syntax_analysis.c
+bool	analyse_syntax(t_data* data);
 //	syntax_define.c
-bool	check_define_syntax(t_isa* isa, t_lst **tokens_ptr);
+bool	check_define_syntax(t_data* data, t_lst **tokens_ptr);
 //	syntax_label.c
 bool	check_label_syntax(t_lst **tokens_ptr);
 //	syntax_instruction.c

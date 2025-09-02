@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "data.h"
-#include "error.h"
-#include "macro.h"
+#include "preprocessing.h"
 #include "cmp.h"
+#include "error.h"
 
 static bool	add_macro(t_lst* tokens, t_lst** macro_table)
 {

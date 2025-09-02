@@ -1,34 +1,39 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/param.h>
-#include "machine_code.h"
-#include "error.h"
 #include "files.h"
-#include "label.h"
+#include "arguments.h"
+#include "symbol_table.h"
+#include "machine_code.h"
 #include "cmp.h"
 #include "bit.h"
+#include "error.h"
 
-static bool	write_instruction(t_file* file, t_parr* instruction)
+static bool	write_instruction(t_data* data, t_parr* instruction)
 {
-#ifdef COMP_OUTPUT_CHARS
-	static char	buffer[9];
-	buffer[8] = ' ';
-	for (size_t i_byte = 0; i_byte < instruction->len * instruction->obj_size; i_byte++)
+	if (data->options & OPTION_OUTPUT_CHARS)
 	{
-		uint8_t	byte = ((uint8_t *)instruction->arr)[i_byte];
-		for (size_t i_bit = 0; i_bit < 8; i_bit++)
-			buffer[i_bit] = ((byte >> (8 - i_bit - 1)) & 1) + '0';
-		if (i_byte + 1 >= instruction->len * instruction->obj_size)
-			buffer[8] = '\n';
-		fwrite(buffer, sizeof(*buffer), sizeof(buffer), file->stream);
+		static char	buffer[9];
+		buffer[8] = ' ';
+		for (size_t i_byte = 0; i_byte < instruction->len * instruction->obj_size; i_byte++)
+		{
+			uint8_t	byte = ((uint8_t *)instruction->arr)[i_byte];
+			for (size_t i_bit = 0; i_bit < 8; i_bit++)
+				buffer[i_bit] = ((byte >> (8 - i_bit - 1)) & 1) + '0';
+			if (i_byte + 1 >= instruction->len * instruction->obj_size)
+				buffer[8] = '\n';
+			fwrite(buffer, sizeof(*buffer), sizeof(buffer),
+				data->files[OUTFILE_PROGRAM].stream);
+		}
 	}
-#else
-	fwrite(instruction->arr, instruction->obj_size, instruction->len, file->stream);
-#endif
-	if (ferror(file->stream) != 0)
+	else
+		fwrite(instruction->arr, instruction->obj_size, instruction->len,
+			data->files[OUTFILE_PROGRAM].stream);
+	if (ferror(data->files[OUTFILE_PROGRAM].stream) != 0)
 	{
 		fprintf(stderr, "%s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, FUNC_FWRITE, ERROR_WRITE_FILE, file->name);
+			EXECUTABLE_NAME, FUNC_FWRITE, ERROR_WRITE_FILE,
+			data->files[OUTFILE_PROGRAM].name);
 		return (1);
 	}
 	return (0);
@@ -74,7 +79,7 @@ static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr
 			tokens = tokens->next;
 		i_bit += bitfield->len;
 	}
-	return (write_instruction(&data->files[OUTFILE_PROGRAM], buffer));
+	return (write_instruction(data, buffer));
 }
 
 static bool	allocate_writing_buffer(size_t instruction_length, t_parr* buffer)

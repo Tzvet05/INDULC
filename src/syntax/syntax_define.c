@@ -1,11 +1,12 @@
 #include <string.h>
-#include "error.h"
 #include "token.h"
+#include "arguments.h"
 #include "syntax.h"
 #include "cmp.h"
 #include "nbr.h"
+#include "error.h"
 
-static void	check_define_identifier(t_isa* isa, t_lst* tokens)
+static void	check_define_identifier(t_data* data, t_lst* tokens)
 {
 	if (strcmp(((t_token *)tokens->next->content)->str,
 		((t_token *)tokens->next->next->content)->str) == 0)
@@ -16,43 +17,52 @@ static void	check_define_identifier(t_isa* isa, t_lst* tokens)
 			WARNING_DEFINE_USELESS, ((t_token *)tokens->next->content)->str);
 		return;
 	}
-#ifndef COMP_MUTE_MACRO_WARNINGS
-	if (parr_find(&isa->flags, ((t_token *)tokens->next->content)->str, cmp_mnemonics) != NULL)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
-			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
-			WARNING_DEFINE_FLAG, ((t_token *)tokens->next->content)->str);
-	if (parr_find(&isa->instructions, ((t_token *)tokens->next->content)->str, cmp_mnemonics)
-		!= NULL)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
-			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
-			WARNING_DEFINE_INSTRUCTION, ((t_token *)tokens->next->content)->str);
-	if (parr_find(&isa->registers, ((t_token *)tokens->next->content)->str, cmp_mnemonics)
-		!= NULL)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
-			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
-			WARNING_DEFINE_REGISTER, ((t_token *)tokens->next->content)->str);
-	if (is_number(((t_token *)tokens->next->content)->str) == 1)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
-			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
-			WARNING_DEFINE_NUMBER, ((t_token *)tokens->next->content)->str);
-	if (strcmp(((t_token *)tokens->next->content)->str, DEFINE_KEYWORD) == 0)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
-			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
-			WARNING_DEFINE_DEFINE, ((t_token *)tokens->next->content)->str);
-	if (strcmp(((t_token *)tokens->next->content)->str, LABEL_KEYWORD) == 0)
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
-			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
-			WARNING_DEFINE_LABEL, ((t_token *)tokens->next->content)->str);
-#endif
+	if (!(data->options & OPTION_MUTE_MACRO_WARNINGS))
+	{
+		if (parr_find(&data->isa.flags, ((t_token *)tokens->next->content)->str,
+			cmp_mnemonics) != NULL)
+			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, WARNING_SYNTAX,
+				((t_token *)tokens->next->content)->lin,
+				((t_token *)tokens->next->content)->col, WARNING_DEFINE,
+				WARNING_DEFINE_FLAG, ((t_token *)tokens->next->content)->str);
+		if (parr_find(&data->isa.instructions, ((t_token *)tokens->next->content)->str,
+			cmp_mnemonics) != NULL)
+			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, WARNING_SYNTAX,
+				((t_token *)tokens->next->content)->lin,
+				((t_token *)tokens->next->content)->col,
+				WARNING_DEFINE, WARNING_DEFINE_INSTRUCTION,
+				((t_token *)tokens->next->content)->str);
+		if (parr_find(&data->isa.registers, ((t_token *)tokens->next->content)->str,
+			cmp_mnemonics) != NULL)
+			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, WARNING_SYNTAX,
+				((t_token *)tokens->next->content)->lin,
+				((t_token *)tokens->next->content)->col, WARNING_DEFINE,
+				WARNING_DEFINE_REGISTER, ((t_token *)tokens->next->content)->str);
+		if (is_number(((t_token *)tokens->next->content)->str) == 1)
+			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, WARNING_SYNTAX,
+				((t_token *)tokens->next->content)->lin,
+				((t_token *)tokens->next->content)->col, WARNING_DEFINE,
+				WARNING_DEFINE_NUMBER, ((t_token *)tokens->next->content)->str);
+		if (strcmp(((t_token *)tokens->next->content)->str, DEFINE_KEYWORD) == 0)
+			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, WARNING_SYNTAX,
+				((t_token *)tokens->next->content)->lin,
+				((t_token *)tokens->next->content)->col, WARNING_DEFINE,
+				WARNING_DEFINE_DEFINE, ((t_token *)tokens->next->content)->str);
+		if (strcmp(((t_token *)tokens->next->content)->str, LABEL_KEYWORD) == 0)
+			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, WARNING_SYNTAX,
+				((t_token *)tokens->next->content)->lin,
+				((t_token *)tokens->next->content)->col, WARNING_DEFINE,
+				WARNING_DEFINE_LABEL, ((t_token *)tokens->next->content)->str);
+	}
 }
 
-bool	check_define_syntax(t_isa* isa, t_lst **tokens_ptr)
+bool	check_define_syntax(t_data* data, t_lst **tokens_ptr)
 {
 	bool	error = 0;
 	t_lst*	tokens = *tokens_ptr;
@@ -84,7 +94,7 @@ bool	check_define_syntax(t_isa* isa, t_lst **tokens_ptr)
 	tokens = tokens->next;
 	if (is_number(((t_token *)tokens->content)->str) == 1
 		&& will_overflow_str(((t_token *)tokens->content)->str,
-			isa->instruction_length) == 1)
+			data->isa.instruction_length) == 1)
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
@@ -99,6 +109,6 @@ bool	check_define_syntax(t_isa* isa, t_lst **tokens_ptr)
 			((t_token *)tokens->content)->str);
 		return (1);
 	}
-	check_define_identifier(isa, tokens_first);
+	check_define_identifier(data, tokens_first);
 	return (error);
 }

@@ -24,8 +24,13 @@
 //		cJSON library
 #define ERROR_CJSON_PARSE	"failed to parse content of Json file"
 //	Argument
-#define ERROR_TOO_FEW_ARGS	"too few arguments provided (expected arguments : ./indulc [program infile] ([program outfile]) ([isa infile]))"
-#define ERROR_TOO_MANY_ARGS	"too many arguments provided (expected arguments : ./indulc [program infile] ([program outfile]) ([isa infile]))"
+#define ERROR_ARGUMENT	"program arguments"
+//		File
+#define ERROR_ARGUMENT_TOO_FEW_FILES	"too few files provided (expected arguments : ./indulc [program infile] ([program outfile]) ([isa infile]))"
+#define ERROR_ARGUMENT_TOO_MANY_FILES	"too many files provided (expected arguments : ./indulc [program infile] ([program outfile]) ([isa infile]))"
+//		Option
+#define ERROR_ARGUMENT_OPTION_NAME	"unrecognized option (must be a supported option listed in the usage help (\"./indulc --help\") or in the README)"
+#define ERROR_ARGUMENT_OPTION_VALUE	"unrecognized or missing option value (must be a supported option value listed in the usage help (\"./indulc --help\") or in the README)"
 //	Allocation
 #define ERROR_FAILED_ALLOC	"failed memory allocation"
 //	File
@@ -67,7 +72,7 @@
 #define ERROR_JSON_NOT_STRING		"Json item is not a string when it should be"
 #define ERROR_JSON_NOT_ARRAY		"Json item is not an array when it should be"
 #define ERROR_JSON_NOT_OBJECT		"Json item is not an object when it should be"
-#define ERROR_JSON_BITFIELD_TYPE	"unsupported bitfield type (must be one of the types specified in the README)"
+#define ERROR_JSON_BITFIELD_TYPE	"unsupported bitfield type (must be one of the types listed in the README)"
 #define ERROR_JSON_INVALID_NUMBER	"invalid numeric value"
 #define ERROR_JSON_INSTRUCTION_TOO_LONG	"the sum of all the bitfields exceeds the maximum instruction length (must be <= to the maximum instruction length specified in the provided ISA)"
 

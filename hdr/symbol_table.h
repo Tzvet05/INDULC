@@ -2,22 +2,17 @@
 
 /* ----- INCLUDES ----- */
 
-#include "token.h"
+#include <stdbool.h>
 #include "isa.h"
 #include "lst.h"
-
-/* ----- STRUCTURES ----- */
-
-// Label
-typedef struct label
-{
-	t_token*	name;
-	size_t		line;
-}	t_label;
+#include "data.h"
+#include "label.h"
 
 /* ----- PROTOTYPES ----- */
 
 // symbol_table/
+//	symbol_table_building.c
+bool	build_symbol_table(t_data* data);
 //	symbol_table_utils.c
 bool	is_label(t_lst* tokens);
 bool	has_instruction(t_isa* isa, t_lst* tokens);

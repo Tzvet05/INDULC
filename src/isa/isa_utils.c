@@ -1,5 +1,5 @@
 #include <string.h>
-#include "isa.h"
+#include "isa_loading.h"
 
 ssize_t	get_bitfield_type(char* str)
 {

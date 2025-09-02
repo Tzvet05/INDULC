@@ -1,5 +1,4 @@
 #include <string.h>
-#include "lst.h"
 #include "syntax.h"
 #include "token.h"
 
@@ -13,6 +12,5 @@ bool	is_define(t_lst* tokens)
 		return (0);
 	else if (tokens->next->next->next != NULL)
 		return (0);
-	else
-		return (1);
+	return (1);
 }

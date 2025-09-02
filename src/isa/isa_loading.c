@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
-#include "cJSON.h"
 #include "files.h"
+#include "isa_loading.h"
 #include "error.h"
 
 static const cJSON*	parse_json_file(t_file* file)

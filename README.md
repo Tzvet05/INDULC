@@ -16,34 +16,6 @@ Compile the program using
 make
 ```
 
-### Mute macro warnings mode
-
-When the mute macro warnings mode is enabled, the assembler runs less extensive syntax checks on macro definitions.
-
-Changes :
-- The syntax analysis does not perform syntax checks for macros whose identifier is identical to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword.
-
-To enable the mute macro warnings mode, the environment variable `COMP_MUTE_MACRO_WARNINGS` must be set to `1` before compiling the assembler.
-
-You can do so by executing the following command :
-```sh
-export COMP_MUTE_MACRO_WARNINGS=1
-```
-
-### Characters output mode
-
-When the characters output mode is enabled, the assembler outputs the assembled program in a human-readable form.
-
-Changes :
-- The assembled program is written in the outfile using characters (`0` and `1`) rather than actual bits.
-
-To enable the characters output mode, the environment variable `COMP_OUTPUT_CHARS` must be set to `1` before compiling the assembler.
-
-You can do so by executing the following command :
-```sh
-export COMP_OUTPUT_CHARS=1
-```
-
 ## USAGE
 
 Run the assembler using
@@ -59,6 +31,36 @@ This argument is optional and will be replaced by a default argument `a.out` if 
 `[isa infile]` is the input Json file containing the ISA used for assembly.
 You must have reading permissions for it.
 This argument is optional and will be replaced by a default argument `isa.json` if left empty.
+
+### Options
+
+Options can be added anywhere in the arguments when running the assembler.
+They sometimes support a shortened name alongside their full name, and they sometimes require a parameter. In such a case, the default parameter when the option is not specified is indicated by `[ ]`. Both the shortened and full names require the parameter to be specified.
+The `--` argument can be used to indicate the end of option parsing. Any argument following it will be treated as a regular argument rather than as an option.
+
+#### Version
+
+`--version`
+
+The "version" option displays INDULC's version. It doesn't run the assembling process.
+
+#### Help
+
+`-h --help`
+
+The "help" option displays the usage help. It doesn't run the assembling process.
+
+#### Mute macro warnings
+
+`-m --mute-macro-warnings=[no]|yes`
+
+When the "mute macro warnings" option is enabled, the syntax warnings for macros whose identifier is identical to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword are muted.
+
+#### Output characters
+
+`-c --output-chars=no|[yes]`
+
+When the "output characters" option is enabled, the assembled machine code is written in the outfile using characters (`0` and `1`) rather than actual raw bits. This is useful for debugging as the machine code is produced in a human-readable form.
 
 ### Makefile rules
 
@@ -78,31 +80,6 @@ This argument is optional and will be replaced by a default argument `isa.json` 
 
 Whitespace characters and commas (`,`) are ignored by the tokenizer.
 All numeric values can be specified in base 10, base 2 using the prefix `0b`, base 8 using the prefix `0o` or base 16 using the prefixe `0x`.
-
-### Instructions
-
-An instruction follows this syntax :
-
-`[mnemonic] [operand 1] [...] [operand n]`
-
-`[mnemonic]` is the mnemonic string of the instruction. It must be supported by the provided ISA.
-
-`[operand]` is an operand of the instruction. It can be a register, an immediate, a flag, a macro or a label.
-Each instruction has a specific number and types of operands, specified by the provided ISA.
-
-An instruction must be on its own line.
-
-#### Registers
-
-A register can be either a macro or a mnemonic string.
-
-#### Immediates
-
-An immediate can be either a number, a macro or a label.
-
-#### Flags
-
-A flag can be either a macro or a mnemonic string.
 
 ### Defines
 
@@ -131,6 +108,31 @@ A label statement follows this syntax :
 A label statement can either be on its own line (and will assemble to the address following itself) or on the same line as an instruction, before the instruction's mnemonic (and will assemble to its own address).
 
 Duplicate labels cannot exist.
+
+### Instructions
+
+An instruction follows this syntax :
+
+`[mnemonic] [operand 1] [...] [operand n]`
+
+`[mnemonic]` is the mnemonic string of the instruction. It must be supported by the provided ISA.
+
+`[operand]` is an operand of the instruction. It can be a register, an immediate, a flag, a macro or a label.
+Each instruction has a specific number and types of operands, specified by the provided ISA.
+
+An instruction must be on its own line.
+
+#### Registers
+
+A register can be either a macro or a mnemonic string.
+
+#### Immediates
+
+An immediate can be either a number, a macro or a label.
+
+#### Flags
+
+A flag can be either a macro or a mnemonic string.
 
 ### Comments
 

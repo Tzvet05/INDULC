@@ -1,3 +1,4 @@
+#include "lst.h"
 #include "token.h"
 #include "label.h"
 #include "cmp.h"

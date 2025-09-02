@@ -1,9 +1,7 @@
 #include <stdlib.h>
-#include <stdio.h>
-#include "data.h"
-#include "label.h"
-#include "error.h"
+#include "symbol_table.h"
 #include "cmp.h"
+#include "error.h"
 
 static bool	check_label(t_lst* tokens, t_lst* symbol_table)
 {

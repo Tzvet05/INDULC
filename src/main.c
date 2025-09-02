@@ -1,9 +1,12 @@
-#include "execution.h"
 #include "data.h"
 #include "files.h"
-#include "macro.h"
-#include "label.h"
-#include "token.h"
+#include "arguments.h"
+#include "isa_loading.h"
+#include "tokenization.h"
+#include "preprocessing.h"
+#include "symbol_table.h"
+#include "syntax.h"
+#include "machine_code.h"
 #include "error.h"
 
 static bool	assemble(t_data *data)
@@ -36,10 +39,12 @@ static bool	assemble(t_data *data)
 
 int	main(int argc, char** argv)
 {
-	if (check_arguments(argc - 1) == 1)
-		return (1);
+	(void)argc;
 	t_data	data = {0};
-	init_filenames(&data, &argv[1]);
+	if (get_arguments(&data, &argv[1]) == 1)
+		return (1);
+	if (exec_options(data.options) == 1)
+		return (0);
 	if (check_files(&data) == 1)
 		return (1);
 	if (open_file(&data.files[INFILE_ISA], FOPEN_READ_MODE) == 1 || load_isa(&data) == 1)

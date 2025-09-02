@@ -1,4 +1,6 @@
+#include <stdbool.h>
 #include <string.h>
+#include "parr.h"
 #include "token.h"
 #include "macro.h"
 #include "label.h"
