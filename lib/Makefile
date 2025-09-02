@@ -25,6 +25,10 @@ COLOR_GREEN =	\033[1;38;5;2m
 COLOR_BLUE =	\033[1;38;5;4m
 COLOR_WHITE =	\033[1;38;5m
 
+# Source headers
+
+HDR =	$(HDR_DIR)
+
 # Source code
 
 SRC =	$(LST_DIR)lst_new_back.c \
@@ -54,34 +58,17 @@ $(NAME) : $(OBJ)
 	@ ar rcs $(NAME) $(OBJ)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_GREEN)Archive ($(NAME)) compiled.$(COLOR_DEFAULT)"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c | $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(LST_DIR) $(PAR_DIR) $(NBR_DIR) $(FIL_DIR) $(BIT_DIR))
-	@ $(COMPILER) $(CFLAG) -I$(HDR_DIR) -c $^ -o $@
-
-# Build directories
-
-$(OBJ_DIR) :
-	@ mkdir -p $@
-
-$(OBJ_DIR)$(LST_DIR) :
-	@ mkdir -p $(OBJ_DIR)$(LST_DIR)
-
-$(OBJ_DIR)$(PAR_DIR) :
-	@ mkdir -p $(OBJ_DIR)$(PAR_DIR)
-
-$(OBJ_DIR)$(NBR_DIR) :
-	@ mkdir -p $(OBJ_DIR)$(NBR_DIR)
-
-$(OBJ_DIR)$(FIL_DIR) :
-	@ mkdir -p $(OBJ_DIR)$(FIL_DIR)
-
-$(OBJ_DIR)$(BIT_DIR) :
-	@ mkdir -p $(OBJ_DIR)$(BIT_DIR)
+$(OBJ_DIR)%.o : $(SRC_DIR)%.c
+	@ mkdir -p $(dir $@)
+	@ $(COMPILER) $(CFLAG) $(addprefix -I,$(HDR)) -c $^ -o $@
 
 # Rules
 
 all : $(NAME)
 
-fclean : clean
+fclean :
+	@ rm -rf $(OBJ_DIR)
+	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 	@ rm -f $(NAME)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Archive ($(NAME)) cleaned.$(COLOR_DEFAULT)"
 
