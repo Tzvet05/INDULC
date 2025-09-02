@@ -17,7 +17,7 @@ static void	check_define_identifier(t_data* data, t_lst* tokens)
 			WARNING_DEFINE_USELESS, ((t_token *)tokens->next->content)->str);
 		return;
 	}
-	if (!(data->options & OPTION_MUTE_MACRO_WARNINGS))
+	if (data->options & OPTION_MACRO_WARNINGS)
 	{
 		if (parr_find(&data->isa.flags, ((t_token *)tokens->next->content)->str,
 			cmp_mnemonics) != NULL)

@@ -81,7 +81,8 @@ bool	get_arguments(t_data* data, char** args)
 							return (1);
 						}
 					}
-					data->options |= (uint8_t)i_value << (uint8_t)i_option;
+					data->options ^= (data->options & (1 << (uint8_t)i_option))
+						^ ((uint8_t)i_value << (uint8_t)i_option);
 				}
 			}
 		}

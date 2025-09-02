@@ -51,11 +51,11 @@ The "version" option displays INDULC's version. It doesn't run the assembling pr
 
 The "help" option displays the usage help. It doesn't run the assembling process.
 
-#### Mute macro warnings
+#### Macro warnings
 
-`-m --mute-macro-warnings=[no]|yes`
+`-m --macro-warnings=no|[yes]`
 
-When the "mute macro warnings" option is enabled, the syntax warnings for macros whose identifier is identical to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword are muted.
+When the "macro warnings" option is disabled, the syntax warnings for macros whose identifier is identical to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword are muted.
 
 #### Output characters
 

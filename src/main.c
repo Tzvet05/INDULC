@@ -40,7 +40,7 @@ static bool	assemble(t_data *data)
 int	main(int argc, char** argv)
 {
 	(void)argc;
-	t_data	data = {0};
+	t_data	data = (t_data){.options = DEFAULT_OPTIONS};
 	if (get_arguments(&data, &argv[1]) == 1)
 		return (1);
 	if (exec_options(data.options) == 1)

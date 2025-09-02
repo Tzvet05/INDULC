@@ -13,6 +13,9 @@
 #define DEFAULT_INFILE_ISA	"isa.json"
 #define DEFAULT_FILES		(const char* const[]){DEFAULT_OUTFILE_PROGRAM, DEFAULT_INFILE_ISA}
 
+// Default options
+#define DEFAULT_OPTIONS	OPTION_MACRO_WARNINGS
+
 // Option strings
 #define OPTIONS	\
 (const t_parr){\
@@ -47,7 +50,7 @@
 		(t_option){\
 			.names = \
 			(char*[]){\
-				"--mute-macro-warnings", "-m", NULL\
+				"--macro-warnings", "-m", NULL\
 			}, \
 			.values = \
 			(char*[]){\
@@ -58,10 +61,10 @@
 }
 
 // Option bits
-#define OPTION_VERSION			(1 << 0)
-#define OPTION_HELP			(1 << 1)
-#define OPTION_OUTPUT_CHARS		(1 << 2)
-#define OPTION_MUTE_MACRO_WARNINGS	(1 << 3)
+#define OPTION_VERSION		(1 << 0)
+#define OPTION_HELP		(1 << 1)
+#define OPTION_OUTPUT_CHARS	(1 << 2)
+#define OPTION_MACRO_WARNINGS	(1 << 3)
 
 // Option outputs
 #define EXECUTABLE_VERSION	"2.1.0"
@@ -74,10 +77,10 @@
 	The \"--\" argument can be used to indicate the end of option parsing. Any argument following it will be treated as a regular argument rather than as an option.\n\
 	The default options are indicated with [ ].\n\
 	The available options are :\n\
-		-h --help					Show this message.\n\
-		--version					Show INDULC's version.\n\
-		-c --output-chars		=[no]|yes	Write machine code as ASCII characters rather than raw binary. Useful for debugging.\n\
-		-m --mute-macro-warnings	=no|[yes]	Mute macro-related warnings.\n\
+		-h --help				Show this message.\n\
+		--version				Show INDULC's version.\n\
+		-c --output-chars	=[no]|yes	Write machine code as ASCII characters rather than raw binary. Useful for debugging.\n\
+		-m --macro-warnings	=no|[yes]	Display macro-related warnings.\n\
 \n\
 See the README at the root of the repository for more informations.\n\
 \n\
