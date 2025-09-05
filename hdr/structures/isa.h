@@ -10,7 +10,7 @@
 // Bitfield type
 typedef enum bitfield_type
 {
-	REGISTER = 0,
+	REGISTER,
 	IMMEDIATE,
 	FLAG,
 	CONSTANT

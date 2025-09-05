@@ -9,7 +9,7 @@
 // Files
 enum
 {
-	INFILE_PROGRAM = 0,
+	INFILE_PROGRAM,
 	OUTFILE_PROGRAM,
 	INFILE_ISA
 };
