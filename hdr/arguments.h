@@ -71,7 +71,7 @@
 #define EXECUTABLE_HELP		"Usage: ./indulc [program infile] ([program outfile]) ([isa infile])\n\
 	[program infile] is the input file from which the INDUL code is read. INDULC must have reading permissions on it. This argument is mandatory.\n\
 	[program outfile] is the output file in which the machine code is written. If it exists, INDULC must have writing permissions on it and will overwrite it, otherwise, INDULC will create it. This argument is optional and will default to \"a.out\" if not provided.\n\
-	[isa infile] is the input file from which the ISA used by INDULC is read. If it does not exist, or if INDULC does not have reding permissions on it, INDULC will report an error. This argument is optional and will default to \"isa.json\" if not provided.\n\
+	[isa infile] is the input file from which the ISA used by INDULC is read. If it does not exist, or if INDULC does not have reading permissions on it, INDULC will report an error. This argument is optional and will default to \"isa.json\" if not provided.\n\
 \n\
 	Options can be added at any point in the arguments.\n\
 	The \"--\" argument can be used to indicate the end of option parsing. Any argument following it will be treated as a regular argument rather than as an option.\n\
@@ -82,7 +82,7 @@
 		-c --output-chars	=[no]|yes	Write machine code as ASCII characters rather than raw binary. Useful for debugging.\n\
 		-m --macro-warnings	=no|[yes]	Display macro-related warnings.\n\
 \n\
-See the README at the root of the repository for more informations.\n\
+Refer to the README at the root of the repository for more informations.\n\
 \n\
 GitHub repository available at : github.com/Tzvet05/INDULC\n\
 Programmed by Tzvet for their Industrious CPUs, a series of RISC CPUs implemented in Factorio."
