@@ -8,7 +8,7 @@ Assembler for INDUL (**Indu**strious **L**anguage), an ASM-like language designe
 
 Clone and go into the repository using
 ```sh
-git clone --recursive-submodules git@github.com:Tzvet05/INDULC.git && cd INDULC/
+git clone --recurse-submodules git@github.com:Tzvet05/INDULC.git && cd INDULC/
 ```
 
 Compile the program using
