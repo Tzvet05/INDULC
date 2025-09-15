@@ -1,11 +1,13 @@
 #include <string.h>
+#include "lst.h"
+#include "data.h"
 #include "isa.h"
-#include "error.h"
 #include "syntax.h"
-#include "token.h"
-#include "label.h"
+#include "tokenization.h"
+#include "symbol_table.h"
 #include "cmp.h"
 #include "nbr.h"
+#include "error.h"
 
 static bool	check_register_operand_syntax(t_isa* isa, t_token* token)
 {
@@ -40,7 +42,7 @@ static bool	check_immediate_operand_syntax(t_lst* symbol_table, t_token* token, 
 			ERROR_NOT_NUMBER, token->str);
 		return (1);
 	}
-	else if (will_overflow_str(token->str, bit_len) == 1)
+	if (will_overflow_str(token->str, bit_len) == 1)
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, token->lin, token->col,
 			WARNING_INSTRUCTION, WARNING_INSTRUCTION_IMMEDIATE,
@@ -79,10 +81,9 @@ static bool	check_operand_syntax(t_data* data, t_instruction* instr, t_token* to
 	t_bitfield*	bitfield = get_bitfield(instr, i_opword);
 	if (bitfield->type == REGISTER)
 		return (check_register_operand_syntax(&data->isa, token));
-	else if (bitfield->type == IMMEDIATE)
+	if (bitfield->type == IMMEDIATE)
 		return (check_immediate_operand_syntax(data->symbol_table, token, bitfield->len));
-	else
-		return (check_flag_operand_syntax(&data->isa, token));
+	return (check_flag_operand_syntax(&data->isa, token));
 }
 
 bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
@@ -112,7 +113,7 @@ bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 			ERROR_INSTRUCTION, ERROR_INSTRUCTION_TOO_FEW_ARGS);
 		return (1);
 	}
-	else if (tokens->next != NULL)
+	if (tokens->next != NULL)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX,

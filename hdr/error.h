@@ -1,5 +1,9 @@
 #pragma once
 
+/* ----- INCLUDES ----- */
+
+#include <stdio.h>
+
 /* ----- MACROS ----- */
 
 // Executable name
@@ -24,13 +28,22 @@
 //		cJSON library
 #define ERROR_CJSON_PARSE	"failed to parse content of Json file"
 //	Argument
-#define ERROR_ARGUMENT	"program arguments"
-//		File
-#define ERROR_ARGUMENT_TOO_FEW_FILES	"too few files provided (expected arguments : ./indulc [program infile] ([program outfile]) ([isa infile]))"
-#define ERROR_ARGUMENT_TOO_MANY_FILES	"too many files provided (expected arguments : ./indulc [program infile] ([program outfile]) ([isa infile]))"
-//		Option
+#define ERROR_ARGUMENT		"program arguments"
+#define ERROR_ARGUMENT_TOO_FEW	"too few arguments provided (expected arguments : ./indulc [program infile])"
+#define ERROR_ARGUMENT_TOO_MANY	"too many arguments provided (expected arguments : ./indulc [program infile])"
+//		Options
+#define ERROR_ARGUMENT_OPTION	"option"
+//			Option name
 #define ERROR_ARGUMENT_OPTION_NAME	"unrecognized option (must be a supported option listed in the usage help (\"./indulc --help\") or in the README)"
-#define ERROR_ARGUMENT_OPTION_VALUE	"unrecognized or missing option value (must be a supported option value listed in the usage help (\"./indulc --help\") or in the README)"
+//			Option parameters
+#define ERROR_ARGUMENT_OPTION_PARAM		"option parameters"
+#define ERROR_ARGUMENT_OPTION_PARAM_TOO_FEW	"missing option parameter (must have a supported option parameter listed in the usage help (\"./indulc --help\") or in the README)"
+#define ERROR_ARGUMENT_OPTION_PARAM_TOO_MANY	"unexpected option parameter (option does not take any parameters)"
+#define ERROR_ARGUMENT_OPTION_PARAM_INVALID	"unrecognized option parameter (must be a supported option parameter listed in the usage help (\"./indulc --help\") or in the README)"
+//			Option arguments
+#define ERROR_ARGUMENT_OPTION_ARGUMENTS		"option arguments"
+#define ERROR_ARGUMENT_OPTION_ARGUMENTS_TOO_FEW	"too few arguments provided (expected arguments listed in the the usage help (\"./indulc --help\") or in the README)"
+#define ERROR_ARGUMENT_OPTION_ARGUMENTS_OPTION	"unexpected option (must not be an option when among the arguments of another option)"
 //	Allocation
 #define ERROR_FAILED_ALLOC	"failed memory allocation"
 //	File
@@ -47,8 +60,8 @@
 #define ERROR_NOT_NUMBER	"number contains invalid characters (must be only base-related characters)"
 //		Define
 #define ERROR_DEFINE			"define statement"
-#define ERROR_DEFINE_TOO_FEW_ARGS	"incomplete statement (expected syntax : %define [word] [number])"
-#define ERROR_DEFINE_TOO_MANY_ARGS	"statement has too many arguments (expected syntax : %define [word] [number])"
+#define ERROR_DEFINE_TOO_FEW_ARGS	"incomplete statement (expected syntax : %define [identifier] [value])"
+#define ERROR_DEFINE_TOO_MANY_ARGS	"statement has too many arguments (expected syntax : %define [identifier] [value])"
 //		Label
 #define ERROR_LABEL			"label statement"
 #define ERROR_LABEL_TOO_FEW_ARGS	"incomplete statement, missing label name (expected syntax : [label]:)"

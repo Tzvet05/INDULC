@@ -1,6 +1,6 @@
 #include "lst.h"
-#include "token.h"
-#include "label.h"
+#include "tokenization.h"
+#include "symbol_table.h"
 #include "cmp.h"
 #include "nbr.h"
 

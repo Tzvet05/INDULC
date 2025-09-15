@@ -1,16 +1,28 @@
 #include "arguments.h"
 #include "error.h"
 
-bool	exec_options(uint8_t options)
+static bool	exec_option_version(void)
 {
-	if (options & OPTION_VERSION)
+	fprintf(stdout, "%s %s\n", EXECUTABLE_NAME, EXECUTABLE_VERSION);
+	return (0);
+}
+
+static bool	exec_option_help(void)
+{
+	fprintf(stdout, "%s\n", EXECUTABLE_HELP);
+	return (0);
+}
+
+bool	exec_options(t_option_parameter* options, bool* error)
+{
+	if (options[OPTION_VERSION] == YES)
 	{
-		fprintf(stdout, "%s %s\n", EXECUTABLE_NAME, EXECUTABLE_VERSION);
+		*error = exec_option_version();
 		return (1);
 	}
-	else if (options & OPTION_HELP)
+	if (options[OPTION_HELP] == YES)
 	{
-		fprintf(stdout, "%s\n", EXECUTABLE_HELP);
+		*error = exec_option_help();
 		return (1);
 	}
 	return (0);

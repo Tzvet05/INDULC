@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/param.h>
+#include "lst.h"
+#include "data.h"
 #include "files.h"
 #include "arguments.h"
 #include "symbol_table.h"
@@ -11,7 +13,7 @@
 
 static bool	write_instruction(t_data* data, t_parr* instruction)
 {
-	if (data->options & OPTION_OUTPUT_CHARS)
+	if (data->options[OPTION_OUTPUT_CHARS] == YES)
 	{
 		static char	buffer[9];
 		buffer[8] = ' ';
@@ -47,7 +49,7 @@ static void	add_operand(t_parr* buffer, size_t i_bit_start, ssize_t operand, siz
 		size_t	i_bit_byte_start = i_bit & 0xFFFFFFFFFFFFFFF8,
 			i_bit_byte_end = i_bit_byte_start + 7, len_part = MIN(i_bit, i_bit_byte_end)
 				- MAX(i_bit_start, i_bit_byte_start) + 1;
-		((uint8_t *)buffer->arr)[i_byte] |= (operand & build_mask(len_part))
+		((uint8_t *)buffer->arr)[i_byte] |= ((uint64_t)operand & build_mask(len_part))
 			<< (i_bit_byte_end - i_bit);
 		operand >>= len_part;
 		i_bit -= MIN(i_bit, len_part);
@@ -64,13 +66,13 @@ static bool	encode_instruction(t_data* data, t_lst* tokens, t_instruction* instr
 		ssize_t	operand;
 		t_bitfield*	bitfield = &((t_bitfield *)instr->bitfields.arr)[i_bitfield];
 		if (bitfield->type == REGISTER)
-			operand = ((t_register *)parr_find(&data->isa.registers,
+			operand = (ssize_t)((t_register *)parr_find(&data->isa.registers,
 				((t_token *)tokens->content)->str, cmp_mnemonics))->index;
 		else if (bitfield->type == IMMEDIATE)
 			operand = get_immediate_operand(data->symbol_table,
 				(t_token *)tokens->content);
 		else if (bitfield->type == FLAG)
-			operand = ((t_flag *)parr_find(&data->isa.flags,
+			operand = (ssize_t)((t_flag *)parr_find(&data->isa.flags,
 				((t_token *)tokens->content)->str, cmp_mnemonics))->code;
 		else
 			operand = bitfield->value;

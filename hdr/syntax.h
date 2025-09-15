@@ -2,7 +2,7 @@
 
 /* ----- INCLUDES ----- */
 
-#include "data.h"
+#include <stdbool.h>
 
 /* ----- MACROS ----- */
 
@@ -13,6 +13,11 @@
 #define COMMENT_KEYWORD	";"
 //	Characters ignored during tokenization
 #define IGNORED_CHARS	"\t\n\v\f\r ,"
+
+/* ----- TYPES DECLARATIONS ----- */
+
+typedef struct	lst	t_lst;
+typedef struct	data	t_data;
 
 /* ----- PROTOTYPES ----- */
 

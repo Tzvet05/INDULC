@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include "lst.h"
 #include "data.h"
 #include "preprocessing.h"
 #include "cmp.h"

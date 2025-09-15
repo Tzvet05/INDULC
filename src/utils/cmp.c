@@ -1,9 +1,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include "parr.h"
-#include "token.h"
-#include "macro.h"
-#include "label.h"
+#include "tokenization.h"
+#include "preprocessing.h"
+#include "symbol_table.h"
 
 bool	cmp_label(void* label, void* str)
 {

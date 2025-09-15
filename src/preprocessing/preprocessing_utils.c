@@ -1,16 +1,11 @@
 #include <string.h>
+#include "lst.h"
 #include "syntax.h"
-#include "token.h"
+#include "tokenization.h"
 
 bool	is_define(t_lst* tokens)
 {
-	if (strcmp(((t_token *)tokens->content)->str, DEFINE_KEYWORD) != 0)
-		return (0);
-	else if (tokens->next == NULL)
-		return (0);
-	else if (tokens->next->next == NULL)
-		return (0);
-	else if (tokens->next->next->next != NULL)
-		return (0);
-	return (1);
+	return (strcmp(((t_token *)tokens->content)->str, DEFINE_KEYWORD) == 0
+		&& tokens->next != NULL && tokens->next->next != NULL
+		&& tokens->next->next->next == NULL);
 }

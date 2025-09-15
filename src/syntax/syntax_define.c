@@ -1,5 +1,7 @@
 #include <string.h>
-#include "token.h"
+#include "lst.h"
+#include "data.h"
+#include "tokenization.h"
 #include "arguments.h"
 #include "syntax.h"
 #include "cmp.h"
@@ -17,7 +19,7 @@ static void	check_define_identifier(t_data* data, t_lst* tokens)
 			WARNING_DEFINE_USELESS, ((t_token *)tokens->next->content)->str);
 		return;
 	}
-	if (data->options & OPTION_MACRO_WARNINGS)
+	if (data->options[OPTION_MACRO_WARNINGS] == YES)
 	{
 		if (parr_find(&data->isa.flags, ((t_token *)tokens->next->content)->str,
 			cmp_mnemonics) != NULL)

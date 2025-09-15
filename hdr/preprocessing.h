@@ -2,9 +2,23 @@
 
 /* ----- INCLUDES ----- */
 
-#include "lst.h"
-#include "data.h"
-#include "macro.h"
+#include "tokenization.h"
+
+/* ----- TYPES DECLARATIONS ----- */
+
+typedef struct	lst	t_lst;
+typedef struct	data	t_data;
+
+/* ----- STRUCTURES ----- */
+
+// Macro
+typedef struct macro
+{
+	t_token*	identifier;
+	t_token*	substitute;
+}	t_macro;
+
+/* ----- PROTOTYPES ----- */
 
 // preprocessing/
 //	preprocessing.c

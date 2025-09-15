@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "isa_loading.h"
+#include "isa.h"
 #include "error.h"
 #include "nbr.h"
 
@@ -260,7 +260,7 @@ static bool	check_isa_instructions(const cJSON* isa, size_t instruction_length)
 													error = 1;
 												}
 												else if (bitfield_len >= BITFIELD_LEN_MIN && bitfield_len <= BITFIELD_LEN_MAX
-													&& will_overflow_int((ssize_t)cJSON_GetNumberValue(value), bitfield_len) == 1)
+													&& will_overflow_int((ssize_t)cJSON_GetNumberValue(value), (size_t)bitfield_len) == 1)
 													fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\" (index %zu): \"%s\"): %s\n",
 														EXECUTABLE_NAME, WARNING_JSON_SYNTAX, JSON_INSTRUCTIONS, i_instruction,
 														JSON_INSTRUCTION_BITFIELDS, i_bitfield, JSON_INSTRUCTION_BITFIELD_VALUE, WARNING_OVERFLOW);
@@ -415,7 +415,7 @@ bool	check_isa_syntax(const cJSON* isa)
 	}
 	if (check_isa_registers(isa) == 1)
 		error = 1;
-	if (check_isa_instructions(isa, number) == 1)
+	if (check_isa_instructions(isa, (size_t)number) == 1)
 		error = 1;
 	if (check_isa_flags(isa) == 1)
 		error = 1;

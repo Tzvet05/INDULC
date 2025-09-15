@@ -1,12 +1,11 @@
 #include <stdlib.h>
 #include <string.h>
-#include "isa_loading.h"
 #include "isa.h"
 #include "error.h"
 
 static bool	get_instructions(t_isa* isa, const cJSON* instructions)
 {
-	isa->instructions.len = cJSON_GetArraySize(instructions);
+	isa->instructions.len = (size_t)cJSON_GetArraySize(instructions);
 	isa->instructions.obj_size = sizeof(t_instruction);
 	isa->instructions.arr = malloc(isa->instructions.len * isa->instructions.obj_size);
 	if (isa->instructions.arr == NULL)
@@ -21,7 +20,7 @@ static bool	get_instructions(t_isa* isa, const cJSON* instructions)
 		const cJSON*	item_instruction = cJSON_GetObjectItemCaseSensitive(instruction,
 			JSON_INSTRUCTION_MNEMONICS);
 		((t_instruction *)isa->instructions.arr)[i_instruction].mnemonics.len
-			= cJSON_GetArraySize(item_instruction);
+			= (size_t)cJSON_GetArraySize(item_instruction);
 		((t_instruction *)isa->instructions.arr)[i_instruction].mnemonics.obj_size
 			= sizeof(char *);
 		((t_instruction *)isa->instructions.arr)[i_instruction].mnemonics.arr
@@ -58,7 +57,7 @@ static bool	get_instructions(t_isa* isa, const cJSON* instructions)
 		item_instruction = cJSON_GetObjectItemCaseSensitive(instruction,
 			JSON_INSTRUCTION_BITFIELDS);
 		((t_instruction *)isa->instructions.arr)[i_instruction].bitfields.len
-			= cJSON_GetArraySize(item_instruction);
+			= (size_t)cJSON_GetArraySize(item_instruction);
 		((t_instruction *)isa->instructions.arr)[i_instruction].bitfields.obj_size
 			= sizeof(t_bitfield);
 		((t_instruction *)isa->instructions.arr)[i_instruction].bitfields.arr
@@ -110,7 +109,7 @@ static bool	get_instructions(t_isa* isa, const cJSON* instructions)
 
 static bool	get_flags(t_isa* isa, const cJSON* flags)
 {
-	isa->flags.len = cJSON_GetArraySize(flags);
+	isa->flags.len = (size_t)cJSON_GetArraySize(flags);
 	isa->flags.obj_size = sizeof(t_flag);
 	isa->flags.arr = malloc(isa->flags.len * isa->flags.obj_size);
 	if (isa->flags.arr == NULL)
@@ -124,7 +123,8 @@ static bool	get_flags(t_isa* isa, const cJSON* flags)
 	{
 		const cJSON*	item_flag = cJSON_GetObjectItemCaseSensitive(flag,
 			JSON_FLAG_MNEMONICS);
-		((t_flag *)isa->flags.arr)[i_flag].mnemonics.len = cJSON_GetArraySize(item_flag);
+		((t_flag *)isa->flags.arr)[i_flag].mnemonics.len =
+			(size_t)cJSON_GetArraySize(item_flag);
 		((t_flag *)isa->flags.arr)[i_flag].mnemonics.obj_size = sizeof(char *);
 		((t_flag *)isa->flags.arr)[i_flag].mnemonics.arr =
 			malloc(((t_flag *)isa->flags.arr)[i_flag].mnemonics.len
@@ -159,7 +159,7 @@ static bool	get_flags(t_isa* isa, const cJSON* flags)
 
 static bool	get_registers(t_isa* isa, const cJSON* registers)
 {
-	isa->registers.len = cJSON_GetArraySize(registers);
+	isa->registers.len = (size_t)cJSON_GetArraySize(registers);
 	isa->registers.obj_size = sizeof(t_register);
 	isa->registers.arr = malloc(isa->registers.len * isa->registers.obj_size);
 	if (isa->registers.arr == NULL)
@@ -174,7 +174,7 @@ static bool	get_registers(t_isa* isa, const cJSON* registers)
 		const cJSON*	item_register = cJSON_GetObjectItemCaseSensitive(_register,
 			JSON_REGISTER_MNEMONICS);
 		((t_register *)isa->registers.arr)[i_register].mnemonics.len
-			= cJSON_GetArraySize(item_register);
+			= (size_t)cJSON_GetArraySize(item_register);
 		((t_register *)isa->registers.arr)[i_register].mnemonics.obj_size = sizeof(char *);
 		((t_register *)isa->registers.arr)[i_register].mnemonics.arr
 			= malloc(((t_register *)isa->registers.arr)[i_register].mnemonics.len

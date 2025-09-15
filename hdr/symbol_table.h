@@ -3,10 +3,22 @@
 /* ----- INCLUDES ----- */
 
 #include <stdbool.h>
-#include "isa.h"
-#include "lst.h"
-#include "data.h"
-#include "label.h"
+#include "tokenization.h"
+
+/* ----- TYPES DECLARATIONS ----- */
+
+typedef struct	lst	t_lst;
+typedef struct	data	t_data;
+typedef struct	isa	t_isa;
+
+/* ----- STRUCTURES ----- */
+
+// Label
+typedef struct label
+{
+	t_token*	name;
+	size_t		line;
+}	t_label;
 
 /* ----- PROTOTYPES ----- */
 

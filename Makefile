@@ -4,7 +4,7 @@ NAME =		indulc
 
 COMPILER =	clang
 
-CFLAG =		-Wall -Wextra -Werror
+CFLAG =		-Wall -Wextra -Wconversion
 
 LIB =		libindulc.a
 
@@ -18,8 +18,6 @@ OBJ_DIR =	obj/
 LIB_DIR =	lib/
 MOD_DIR =	submodule/cJSON/
 MOD_BUILD_DIR =	build/
-
-STR_DIR =	structures/
 
 ARG_DIR =	arguments/
 FIL_DIR =	files/
@@ -41,7 +39,6 @@ COLOR_WHITE =	\033[1;38;5;15m
 # Source headers
 
 HDR =	$(HDR_DIR) \
-	$(HDR_DIR)$(STR_DIR) \
 	$(LIB_DIR)$(HDR_DIR) \
 	$(MOD_DIR)
 
@@ -49,7 +46,9 @@ HDR =	$(HDR_DIR) \
 
 SRC =	main.c \
 	$(ARG_DIR)get_arguments.c \
+	$(ARG_DIR)check_arguments.c \
 	$(ARG_DIR)exec_options.c \
+	$(ARG_DIR)arguments_utils.c \
 	$(ISA_DIR)isa_loading.c \
 	$(ISA_DIR)check_isa_syntax.c \
 	$(ISA_DIR)get_isa.c \

@@ -8,7 +8,7 @@ Assembler for INDUL (**Indu**strious **L**anguage), an ASM-like language designe
 
 Clone and go into the repository using
 ```sh
-git clone --recursive-submodules git@github.com:Tzvet05/INDULC.git && cd INDULC/
+git clone --recurse-submodules git@github.com:Tzvet05/INDULC.git && cd INDULC/
 ```
 
 Compile the program using
@@ -19,23 +19,22 @@ make
 ## USAGE
 
 Run the assembler using
-`./indulc [program infile] ([assembled outfile]) ([isa infile])`
+`./indulc {program input file}`
 
-`[program infile]` is the input text file containing the program to assemble.
+`{program input file}` is the input text file containing the program to assemble.
 You must have reading permissions for it.
 
-`[assembled outfile]` is the output text file to write the assembled program in.
-You must have writing permissions for it.
-This argument is optional and will be replaced by a default argument `a.out` if left empty.
+The default output file in which the assembled machine code is written is named `"a.out"`. This name can be changed using the "output file" option (see further down). If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.
 
-`[isa infile]` is the input Json file containing the ISA used for assembly.
-You must have reading permissions for it.
-This argument is optional and will be replaced by a default argument `isa.json` if left empty.
+The default input file from which the ISA is read is named `"isa.json"`. This name can be changed using the "isa file" option (see further down). INDULC must have reading permissions for it.
 
 ### Options
 
-Options can be added anywhere in the arguments when running the assembler.
-They sometimes support a shortened name alongside their full name, and they sometimes require a parameter. In such a case, the default parameter when the option is not specified is indicated by `[ ]`. Both the shortened and full names require the parameter to be specified.
+Options can be added anywhere in the arguments when running the assembler, except among an option's arguments.
+
+They may support multiple names, they may require a parameter, and they may require arguments. The default parameters and arguments are indicated by `[ ]`. If the option requires arguments, they are indicated by `{ }`, and no options can be specified until all the arguments are given.
+
+If the same option is specified multiple times, the last occurence prevails.
 
 The `--` argument can be used to indicate the end of option parsing. Any argument following it will be treated as a regular argument rather than as an option.
 
@@ -47,21 +46,43 @@ The "version" option displays INDULC's version. It doesn't run the assembling pr
 
 #### Help
 
-`-h --help`
+`-h|--help`
 
 The "help" option displays the usage help. It doesn't run the assembling process.
 
-#### Macro warnings
-
-`-m --macro-warnings=no|[yes]`
-
-When the "macro warnings" option is disabled, the syntax warnings for macros whose identifier is identical to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword are muted.
-
 #### Output characters
 
-`-c --output-chars=[no]|yes`
+`-c|--output-chars=[no]|yes`
 
-When the "output characters" option is enabled, the assembled machine code is written in the outfile using characters (`0` and `1`) rather than actual raw bits. This is useful for debugging as the machine code is produced in a human-readable form.
+When the "output characters" option is enabled, the assembled machine code is written in the output file using characters (`0` and `1`) rather than actual raw bits. This is useful for debugging as the machine code is produced in a human-readable form.
+
+#### Macro warnings
+
+`-m|--macro-warnings=no|[yes]`
+
+When the "macro warnings" option is disabled, the syntax warnings for macros whose identifiers are identical to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword are muted.
+
+#### Syntax only
+
+`-s|--syntax-only=[no]|yes`
+
+When the "syntax only" option is enabled, INDULC runs the preprocessing, the symbol table resolution and the syntax checking but not the assembling.
+
+#### Output file
+
+`-o|--output-file {file}|[a.out]`
+
+`{file}` is the name of the output file.
+
+The "output file" option can be used to specify the name of the output file in which the assembled machine code is written. If the output file does not exist, INDULC will create it and name it accordingly to this option. If it already exists, INDULC must have writing permissions for it.
+
+#### ISA file
+
+`-i|--isa-file {file}|[isa.json]`
+
+`{file}` is the name of the ISA file.
+
+The "isa file" option can be used to specify the name of the input Json file from which the ISA is read. INDULC must have reading permissions for it.
 
 ### Makefile rules
 

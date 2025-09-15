@@ -1,10 +1,10 @@
 #pragma once
 
-/* ----- INCLUDES ----- */
+/* ----- TYPES DECLARATIONS ----- */
 
-#include "isa.h"
-#include "token.h"
-#include "lst.h"
+typedef struct	lst	t_lst;
+typedef struct	token	t_token;
+typedef struct	isa	t_isa;
 
 /* ----- PROTOTYPES ----- */
 

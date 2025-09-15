@@ -1,8 +1,8 @@
-#include "error.h"
-#include "syntax.h"
-#include "token.h"
-#include "cmp.h"
 #include "lst.h"
+#include "syntax.h"
+#include "tokenization.h"
+#include "cmp.h"
+#include "error.h"
 
 bool	check_label_syntax(t_lst **tokens_ptr)
 {
@@ -11,7 +11,7 @@ bool	check_label_syntax(t_lst **tokens_ptr)
 	ssize_t	i = lst_find_index(tokens, LABEL_KEYWORD, cmp_token);
 	if (i == -1)
 		return (0);
-	*tokens_ptr = lst_get_node(tokens, i + 1);
+	*tokens_ptr = lst_get_node(tokens, (size_t)i + 1);
 	if (i < 1)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n",

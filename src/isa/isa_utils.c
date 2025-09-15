@@ -1,5 +1,5 @@
 #include <string.h>
-#include "isa_loading.h"
+#include "isa.h"
 
 ssize_t	get_bitfield_type(char* str)
 {
@@ -9,6 +9,5 @@ ssize_t	get_bitfield_type(char* str)
 		type++;
 	if (type == N_BITFIELD_TYPES)
 		return (-1);
-	else
-		return ((ssize_t)type);
+	return ((ssize_t)type);
 }

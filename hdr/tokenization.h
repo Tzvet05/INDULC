@@ -3,9 +3,21 @@
 /* ----- INCLUDES ----- */
 
 #include <stdbool.h>
-#include "lst.h"
-#include "data.h"
-#include "token.h"
+#include <stddef.h>
+
+/* ----- TYPES DECLARATIONS ----- */
+
+typedef struct	lst	t_lst;
+typedef struct	data	t_data;
+
+/* ----- STRUCTURES ----- */
+
+typedef struct token
+{
+	char*	str;
+	size_t	lin;
+	size_t	col;
+}	t_token;
 
 /* ----- PROTOTYPES ----- */
 

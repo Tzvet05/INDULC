@@ -1,7 +1,8 @@
+#include "lst.h"
 #include "data.h"
 #include "files.h"
 #include "arguments.h"
-#include "isa_loading.h"
+#include "isa.h"
 #include "tokenization.h"
 #include "preprocessing.h"
 #include "symbol_table.h"
@@ -18,33 +19,32 @@ static bool	assemble(t_data *data)
 			data->files[INFILE_PROGRAM].name);
 		return (1);
 	}
-	else if (tokenize(data) == 1)
+	if (tokenize(data) == 1 || preprocess(data) == 1
+		|| build_symbol_table(data) == 1 || analyse_syntax(data) == 1)
 		return (1);
-	else if (preprocess(data) == 1)
-		return (1);
-	else if (build_symbol_table(data) == 1)
-		return (1);
-	else if (analyse_syntax(data) == 1)
-		return (1);
-	else if (open_file(&data->files[OUTFILE_PROGRAM], FOPEN_WRITE_MODE) == 1)
+	if (data->options[OPTION_SYNTAX_ONLY] == YES)
+		return (0);
+	if (open_file(&data->files[OUTFILE_PROGRAM], FOPEN_WRITE_MODE) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, FUNC_FOPEN, ERROR_OPEN_FILE,
 			data->files[OUTFILE_PROGRAM].name);
 		return (1);
 	}
-	else 
-		return (generate_machine_code(data));
+	return (generate_machine_code(data));
 }
 
 int	main(int argc, char** argv)
 {
 	(void)argc;
-	t_data	data = (t_data){.options = DEFAULT_OPTIONS};
-	if (get_arguments(&data, &argv[1]) == 1)
+	t_data	data = (t_data){.options = DEFAULT_OPTIONS,
+		.files[OUTFILE_PROGRAM].name = DEFAULT_OUTFILE_PROGRAM,
+		.files[INFILE_ISA].name = DEFAULT_INFILE_ISA};
+	if (get_arguments(&data, &argv[1]) == 1 || check_arguments(&data) == 1)
 		return (1);
-	if (exec_options(data.options) == 1)
-		return (0);
+	bool	error = 0;
+	if (exec_options(data.options, &error) == 1)
+		return (error);
 	if (check_files(&data) == 1)
 		return (1);
 	if (open_file(&data.files[INFILE_ISA], FOPEN_READ_MODE) == 1 || load_isa(&data) == 1)
@@ -53,7 +53,7 @@ int	main(int argc, char** argv)
 		close_files(&data);
 		return (1);
 	}
-	bool	error = assemble(&data);
+	error = assemble(&data);
 	free_isa(&data.isa);
 	close_files(&data);
 	free_tokens(data.tokens);

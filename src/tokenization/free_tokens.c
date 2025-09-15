@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include "token.h"
 #include "lst.h"
+#include "tokenization.h"
 
 void	free_token(void* token)
 {

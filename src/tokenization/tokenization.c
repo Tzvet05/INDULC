@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include <string.h>
-#include "error.h"
-#include "token.h"
-#include "syntax.h"
+#include "lst.h"
+#include "data.h"
+#include "tokenization.h"
 #include "files.h"
+#include "syntax.h"
+#include "error.h"
 
 static t_token*	tokenize_word(char* line, size_t len, size_t lin, size_t col)
 {

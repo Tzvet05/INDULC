@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
+#include "data.h"
 #include "files.h"
-#include "isa_loading.h"
 #include "error.h"
 
 static const cJSON*	parse_json_file(t_file* file)
@@ -13,7 +13,7 @@ static const cJSON*	parse_json_file(t_file* file)
 			EXECUTABLE_NAME, FUNC_STAT, ERROR_FILE_STATUS, file->name);
 		return (NULL);
 	}
-	char*	buffer = malloc((file_status.st_size + 1) * sizeof(char));
+	char*	buffer = malloc(((size_t)file_status.st_size + 1) * sizeof(char));
 	if (buffer == NULL)
 	{
 		fprintf(stderr, "%s: %s: %s\n",
@@ -21,14 +21,16 @@ static const cJSON*	parse_json_file(t_file* file)
 		return (NULL);
 	}
 	buffer[file_status.st_size] = '\0';
-	fread(buffer, 1, file_status.st_size, file->stream);
+	fread(buffer, 1, (size_t)file_status.st_size, file->stream);
 	if (ferror(file->stream) != 0)
 	{
+		free(buffer);
 		fprintf(stderr, "%s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, FUNC_FREAD, ERROR_READ_FILE, file->name);
 		return (NULL);
 	}
 	cJSON*	json = cJSON_Parse(buffer);
+	free(buffer);
 	if (json == NULL)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: \"%s\": ",
@@ -38,12 +40,10 @@ static const cJSON*	parse_json_file(t_file* file)
 		if (error != NULL)
 			fprintf(stderr, "error is located at: %s\n", error);
 		else
-			fprintf(stderr, "location of error is unrecoverable\n");
-		free(buffer);
+			fprintf(stderr, "error location is unrecoverable\n");
 		cJSON_Delete(json);
 		return (NULL);
 	}
-	free(buffer);
 	return ((const cJSON *)json);
 }
 

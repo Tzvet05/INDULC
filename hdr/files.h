@@ -2,7 +2,11 @@
 
 /* ----- INCLUDES ----- */
 
-#include "data.h"
+#include <stdbool.h>
+
+/* ----- TYPES DECLARATIONS ----- */
+
+typedef struct	data	t_data;
 
 /* ----- ENUMERATIONS ----- */
 

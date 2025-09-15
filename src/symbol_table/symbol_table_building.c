@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include "lst.h"
+#include "data.h"
 #include "symbol_table.h"
 #include "cmp.h"
 #include "error.h"
@@ -43,7 +45,7 @@ bool	build_symbol_table(t_data* data)
 		{
 			if (check_label((t_lst *)tokens->content, data->symbol_table) == 1)
 				return (1);
-			else if (add_label((t_lst *)tokens->content, &data->symbol_table, line) == 1)
+			if (add_label((t_lst *)tokens->content, &data->symbol_table, line) == 1)
 			{
 				fprintf(stderr, "%s: %s: %s\n",
 					EXECUTABLE_NAME, FUNC_MALLOC, ERROR_FAILED_ALLOC);
