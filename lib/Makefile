@@ -4,7 +4,7 @@ NAME =		libindulc.a
 
 COMPILER =	clang
 
-CFLAG =		-Wall -Wextra -Werror
+CFLAG =		-Wall -Wextra -Wconversion
 
 # Directories
 

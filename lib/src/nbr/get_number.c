@@ -20,7 +20,7 @@ ssize_t	get_number(char* str)
 	char*	ptr_charset = strchr(charset, tolower(str[i]));
 	while (str[i] != '\0' && ptr_charset != NULL)
 	{
-		number = radix * number - (ssize_t)(ptr_charset - charset);
+		number = (ssize_t)radix * number - (ssize_t)(ptr_charset - charset);
 		i++;
 		ptr_charset = strchr(charset, tolower(str[i]));
 	}
