@@ -107,12 +107,12 @@ All numeric values can be specified in base 10, base 2 using the prefix `0b`, ba
 
 A define statement follows this syntax :
 
-`%define [identifier] [value]`
+`%define {identifier} {value}`
 
-`[identifier]` is the identifier of the macro.
+`{identifier}` is the identifier of the macro.
 It is the string that will be replaced by the value associated with it.
 
-`[value]` is the value of the macro.
+`{value}` is the value of the macro.
 It is the string that will replace the identifier associated with it.
 
 A define statement must be on its own line.
@@ -123,9 +123,9 @@ If a redefinition occurs (a define statement specifies an already used identifie
 
 A label statement follows this syntax :
 
-`[label]:`
+`{label}:`
 
-`[label]` is the name of the label.
+`{label}` is the name of the label.
 
 A label statement can either be on its own line (and will assemble to the address following itself) or on the same line as an instruction, before the instruction's mnemonic (and will assemble to its own address).
 
@@ -135,11 +135,11 @@ Duplicate labels cannot exist.
 
 An instruction follows this syntax :
 
-`[mnemonic] [operand 1] [...] [operand n]`
+`{mnemonic} {operand 1} {...} {operand n}`
 
-`[mnemonic]` is the mnemonic string of the instruction. It must be supported by the provided ISA.
+`{mnemonic}` is the mnemonic string of the instruction. It must be supported by the provided ISA.
 
-`[operand]` is an operand of the instruction. It can be a register, an immediate, a flag, a macro or a label.
+`{operand}` is an operand of the instruction. It can be a register, an immediate, a flag, a macro or a label.
 Each instruction has a specific number and types of operands, specified by the provided ISA.
 
 An instruction must be on its own line.
@@ -160,9 +160,9 @@ A flag can be either a macro or a mnemonic string.
 
 A comment follows this syntax :
 
-`;[comment]`
+`;{comment}`
 
-`[comment]` is a string.
+`{comment}` is a string.
 
 A comment can be started anywhere.
 
@@ -232,8 +232,8 @@ The flag object must contain 2 items :
 
 ### Example
 
-The instruction `JMP 5` with only mnemonic `JMP` and opcode `18` can be made of 3 bitfields:
-- one constant of 8 bits (holding the opcode (`18` here)).
+The instruction `JMPI 5` with only mnemonic `JMPI` and opcode `30` can be made of 3 bitfields:
+- one constant of 8 bits (holding the opcode (`30` here)).
 - one constant of 8 bits (padding).
 - one immediate of 16 bits (holding the target address (`5` here)).
 
@@ -242,14 +242,14 @@ It can therefore be stored as :
 {
 	"mnemonics":
 	[
-		"JMP"
+		"JMPI"
 	],
 	"bitfields":
 	[
 		{
 			"len": 8,
 			"type": "constant",
-			"value" : 18
+			"value" : 30
 		},
 		{
 			"len": 8,
