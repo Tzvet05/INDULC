@@ -1257,49 +1257,13 @@
 	"flags": [
 		{
 			"mnemonics": [
-				"s",
-				"sign",
-				"neg",
-				"negative"
-			],
-			"code": 0
-		},
-		{
-			"mnemonics": [
-				"ns",
-				"notsign",
-				"pos",
-				"positive"
-			],
-			"code": 1
-		},
-		{
-			"mnemonics": [
-				"ev",
-				"even",
-				"nod",
-				"notodd"
-			],
-			"code": 2
-		},
-		{
-			"mnemonics": [
-				"nev",
-				"noteven",
-				"od",
-				"odd"
-			],
-			"code": 3
-		},
-		{
-			"mnemonics": [
 				"z",
 				"zero",
 				"eq",
 				"equal",
 				"=="
 			],
-			"code": 4
+			"code": 0
 		},
 		{
 			"mnemonics": [
@@ -1309,7 +1273,57 @@
 				"notequal",
 				"!="
 			],
+			"code": 1
+		},
+		{
+			"mnemonics": [
+				"s",
+				"sign",
+				"neg",
+				"negative"
+			],
+			"code": 2
+		},
+		{
+			"mnemonics": [
+				"ns",
+				"notsign",
+				"pos",
+				"positive"
+			],
+			"code": 3
+		},
+		{
+			"mnemonics": [
+				"ev",
+				"even",
+				"nod",
+				"notodd"
+			],
+			"code": 4
+		},
+		{
+			"mnemonics": [
+				"nev",
+				"noteven",
+				"od",
+				"odd"
+			],
 			"code": 5
+		},
+		{
+			"mnemonics": [
+				"ov",
+				"overflow"
+			],
+			"code": 6
+		},
+		{
+			"mnemonics": [
+				"nov",
+				"notoverflow"
+			],
+			"code": 7
 		}
 	]
 }
