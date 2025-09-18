@@ -170,14 +170,14 @@ A comment can be started anywhere.
 
 Here is an example of a valid block of INDUL code :
 ```
-%define START	10			; starting value
-%define STEP	2			; step value
+%define START	10					; starting value
+%define STEP	2					; step value
 
-	ILOD	r1,	START		; initialize r1 with START
-	ILOD	r2,	STEP		; initialize r2 with STEP
-loop:	SUB	r1,	r2,	r1	; definition of label "loop", r1 = r1 - r2
-	BRH	nz,	loop		; jump to the label "loop" if the result of the substraction is not 0
-	HLT				; stop program execution
+		ILOD	r1,		START		; initialize r1 with START
+		ILOD	r2,		STEP		; initialize r2 with STEP
+loop:	SUB		r1,		r2,		r1	; definition of label "loop", r1 = r1 - r2
+		BRH		nz,		loop		; jump to the label "loop" if the result of the substraction is not 0
+		HLT							; stop program execution
 ```
 
 ## JSON ISA SYNTAX
