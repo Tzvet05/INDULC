@@ -149,7 +149,7 @@
 		},
 		{
 			"mnemonics": [
-				"SUB"
+				"ADDI"
 			],
 			"bitfields": [
 				{
@@ -162,18 +162,14 @@
 					"type": "register"
 				},
 				{
-					"len": 8,
-					"type": "register"
-				},
-				{
-					"len": 8,
-					"type": "register"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
 		{
 			"mnemonics": [
-				"MUL"
+				"SUB"
 			],
 			"bitfields": [
 				{
@@ -197,7 +193,7 @@
 		},
 		{
 			"mnemonics": [
-				"DIV"
+				"SUBI"
 			],
 			"bitfields": [
 				{
@@ -210,18 +206,14 @@
 					"type": "register"
 				},
 				{
-					"len": 8,
-					"type": "register"
-				},
-				{
-					"len": 8,
-					"type": "register"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
 		{
 			"mnemonics": [
-				"MOD"
+				"MUL"
 			],
 			"bitfields": [
 				{
@@ -245,7 +237,7 @@
 		},
 		{
 			"mnemonics": [
-				"EXP"
+				"MULI"
 			],
 			"bitfields": [
 				{
@@ -258,18 +250,14 @@
 					"type": "register"
 				},
 				{
-					"len": 8,
-					"type": "register"
-				},
-				{
-					"len": 8,
-					"type": "register"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
 		{
 			"mnemonics": [
-				"AND"
+				"OR"
 			],
 			"bitfields": [
 				{
@@ -293,7 +281,7 @@
 		},
 		{
 			"mnemonics": [
-				"OR"
+				"ORI"
 			],
 			"bitfields": [
 				{
@@ -306,18 +294,14 @@
 					"type": "register"
 				},
 				{
-					"len": 8,
-					"type": "register"
-				},
-				{
-					"len": 8,
-					"type": "register"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
 		{
 			"mnemonics": [
-				"XOR"
+				"NOR"
 			],
 			"bitfields": [
 				{
@@ -341,7 +325,7 @@
 		},
 		{
 			"mnemonics": [
-				"LBS"
+				"NORI"
 			],
 			"bitfields": [
 				{
@@ -354,18 +338,14 @@
 					"type": "register"
 				},
 				{
-					"len": 8,
-					"type": "register"
-				},
-				{
-					"len": 8,
-					"type": "register"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
 		{
 			"mnemonics": [
-				"RBS"
+				"AND"
 			],
 			"bitfields": [
 				{
@@ -389,7 +369,7 @@
 		},
 		{
 			"mnemonics": [
-				"NAND"
+				"ANDI"
 			],
 			"bitfields": [
 				{
@@ -402,18 +382,14 @@
 					"type": "register"
 				},
 				{
-					"len": 8,
-					"type": "register"
-				},
-				{
-					"len": 8,
-					"type": "register"
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
 		{
 			"mnemonics": [
-				"NOR"
+				"NAND"
 			],
 			"bitfields": [
 				{
@@ -437,37 +413,13 @@
 		},
 		{
 			"mnemonics": [
-				"XNOR"
+				"NANDI"
 			],
 			"bitfields": [
 				{
 					"len": 8,
 					"type": "constant",
 					"value": 15
-				},
-				{
-					"len": 8,
-					"type": "register"
-				},
-				{
-					"len": 8,
-					"type": "register"
-				},
-				{
-					"len": 8,
-					"type": "register"
-				}
-			]
-		},
-		{
-			"mnemonics": [
-				"ILOD"
-			],
-			"bitfields": [
-				{
-					"len": 8,
-					"type": "constant",
-					"value": 16
 				},
 				{
 					"len": 8,
@@ -481,7 +433,31 @@
 		},
 		{
 			"mnemonics": [
-				"IADD"
+				"XOR"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 16
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"XORI"
 			],
 			"bitfields": [
 				{
@@ -501,13 +477,301 @@
 		},
 		{
 			"mnemonics": [
-				"JMP"
+				"XNOR"
 			],
 			"bitfields": [
 				{
 					"len": 8,
 					"type": "constant",
 					"value": 18
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"XNORI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 19
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"LBS"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 20
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"LBSI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 21
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"ILBS"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 22
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"LRBS"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 23
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"LRBSI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 24
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"ILRBS"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 25
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"ARBS"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 26
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"ARBSI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 27
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"IARBS"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 28
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"JMP"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 29
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"JMPI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 30
+				},
+				{
+					"len": 8,
+					"type": "constant"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"RJMP"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 31
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"RJMPI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 32
 				},
 				{
 					"len": 8,
@@ -527,7 +791,67 @@
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 19
+					"value": 33
+				},
+				{
+					"len": 8,
+					"type": "flag"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"BRHI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 34
+				},
+				{
+					"len": 8,
+					"type": "flag"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"RBRH"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 35
+				},
+				{
+					"len": 8,
+					"type": "flag"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"RBRHI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 36
 				},
 				{
 					"len": 8,
@@ -547,7 +871,59 @@
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 20
+					"value": 37
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"CALI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 38
+				},
+				{
+					"len": 8,
+					"type": "constant"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"RCAL"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 39
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"RCALI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 40
 				},
 				{
 					"len": 8,
@@ -567,7 +943,27 @@
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 21
+					"value": 41
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"LODI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 42
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
 				}
 			]
 		},
@@ -579,11 +975,31 @@
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 22
+					"value": 43
 				},
 				{
 					"len": 8,
 					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"IMLOD"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 44
+				},
+				{
+					"len": 16,
+					"type": "immediate"
 				},
 				{
 					"len": 8,
@@ -599,7 +1015,7 @@
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 23
+					"value": 45
 				},
 				{
 					"len": 8,
@@ -613,17 +1029,77 @@
 		},
 		{
 			"mnemonics": [
+				"IMSTR"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 46
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"MSTRI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 47
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				}
+			]
+		},
+		{
+			"mnemonics": [
 				"PLOD"
 			],
 			"bitfields": [
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 24
+					"value": 48
 				},
 				{
 					"len": 8,
 					"type": "register"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"IPLOD"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 49
+				},
+				{
+					"len": 16,
+					"type": "immediate"
 				},
 				{
 					"len": 8,
@@ -639,7 +1115,7 @@
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 25
+					"value": 50
 				},
 				{
 					"len": 8,
@@ -653,13 +1129,53 @@
 		},
 		{
 			"mnemonics": [
+				"IPSTR"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 51
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				},
+				{
+					"len": 8,
+					"type": "register"
+				}
+			]
+		},
+		{
+			"mnemonics": [
+				"PSTRI"
+			],
+			"bitfields": [
+				{
+					"len": 8,
+					"type": "constant",
+					"value": 52
+				},
+				{
+					"len": 8,
+					"type": "register"
+				},
+				{
+					"len": 16,
+					"type": "immediate"
+				}
+			]
+		},
+		{
+			"mnemonics": [
 				"CMP"
 			],
 			"bitfields": [
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 3
+					"value": 4
 				},
 				{
 					"len": 8,
@@ -697,34 +1213,13 @@
 		},
 		{
 			"mnemonics": [
-				"UPD"
-			],
-			"bitfields": [
-				{
-					"len": 8,
-					"type": "constant",
-					"value": 17
-				},
-				{
-					"len": 8,
-					"type": "register"
-				},
-				{
-					"len": 16,
-					"type": "constant",
-					"value": 0
-				}
-			]
-		},
-		{
-			"mnemonics": [
 				"INC"
 			],
 			"bitfields": [
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 17
+					"value": 3
 				},
 				{
 					"len": 8,
@@ -745,7 +1240,7 @@
 				{
 					"len": 8,
 					"type": "constant",
-					"value": 17
+					"value": 3
 				},
 				{
 					"len": 8,
@@ -781,7 +1276,9 @@
 		{
 			"mnemonics": [
 				"ev",
-				"even"
+				"even",
+				"nod",
+				"notodd"
 			],
 			"code": 2
 		},
@@ -789,6 +1286,7 @@
 			"mnemonics": [
 				"nev",
 				"noteven",
+				"od",
 				"odd"
 			],
 			"code": 3
@@ -796,14 +1294,20 @@
 		{
 			"mnemonics": [
 				"z",
-				"zero"
+				"zero",
+				"eq",
+				"equal",
+				"=="
 			],
 			"code": 4
 		},
 		{
 			"mnemonics": [
 				"nz",
-				"notzero"
+				"notzero",
+				"neq",
+				"notequal",
+				"!="
 			],
 			"code": 5
 		}
