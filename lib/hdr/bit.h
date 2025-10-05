@@ -1,3 +1,5 @@
+#pragma once
+
 /* ----- INCLUDES ----- */
 
 #include <stdint.h>
