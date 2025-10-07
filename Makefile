@@ -16,7 +16,7 @@ HDR_DIR =	hdr/
 SRC_DIR =	src/
 OBJ_DIR =	obj/
 LIB_DIR =	lib/
-MOD_DIR =	submodule/cJSON/
+MOD_DIR =	submodules/cJSON/
 MOD_BUILD_DIR =	build/
 
 ARG_DIR =	arguments/
