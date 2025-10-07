@@ -7,14 +7,17 @@
 static bool	check_remaining_tokens_syntax(t_lst** tokens_ptr)
 {
 	t_lst*	tokens = *tokens_ptr;
+	fprintf(stderr, "%s: %s (%zu:%zu): %s: ",
+		EXECUTABLE_NAME, ERROR_SYNTAX,
+		((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col, ERROR_TOKEN);
 	while (tokens != NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: \"%s\"\n",
-			EXECUTABLE_NAME, ERROR_SYNTAX, ((t_token *)tokens->content)->lin,
-			((t_token *)tokens->content)->col, ERROR_TOKEN,
-			((t_token *)tokens->content)->str);
+		fprintf(stderr, "\"%s\"", ((t_token *)tokens->content)->str);
+		if (tokens->next != NULL)
+			fprintf(stderr, ", ");
 		tokens = tokens->next;
 	}
+	fprintf(stderr, "\n");
 	*tokens_ptr = tokens;
 	return (1);
 }

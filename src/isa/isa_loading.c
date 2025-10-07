@@ -9,15 +9,15 @@ static const cJSON*	parse_json_file(t_file* file)
 	struct stat	file_status;
 	if (stat(file->name, &file_status) != 0)
 	{
-		fprintf(stderr, "%s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, FUNC_STAT, ERROR_FILE_STATUS, file->name);
+		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, LIB_LIBC, FUNC_STAT, ERROR_FILE_STATUS, file->name);
 		return (NULL);
 	}
 	char*	buffer = malloc(((size_t)file_status.st_size + 1) * sizeof(char));
 	if (buffer == NULL)
 	{
-		fprintf(stderr, "%s: %s: %s\n",
-			EXECUTABLE_NAME, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+		fprintf(stderr, "%s: %s: %s: %s\n",
+			EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
 		return (NULL);
 	}
 	buffer[file_status.st_size] = '\0';
@@ -25,25 +25,25 @@ static const cJSON*	parse_json_file(t_file* file)
 	if (ferror(file->stream) != 0)
 	{
 		free(buffer);
-		fprintf(stderr, "%s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, FUNC_FREAD, ERROR_READ_FILE, file->name);
+		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, LIB_LIBC, FUNC_FREAD, ERROR_READ_FILE, file->name);
 		return (NULL);
 	}
 	cJSON*	json = cJSON_Parse(buffer);
-	free(buffer);
 	if (json == NULL)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: \"%s\": ",
-			EXECUTABLE_NAME, ERROR_CJSON_LIB, FUNC_CJSON_PARSE, ERROR_CJSON_PARSE,
+			EXECUTABLE_NAME, LIB_CJSON, FUNC_CJSON_PARSE, ERROR_CJSON_PARSE,
 			file->name);
 		const char*	error = cJSON_GetErrorPtr();
 		if (error != NULL)
-			fprintf(stderr, "error is located at: %s\n", error);
+			fprintf(stderr, "%s", error);
 		else
 			fprintf(stderr, "error location is unrecoverable\n");
-		cJSON_Delete(json);
+		free(buffer);
 		return (NULL);
 	}
+	free(buffer);
 	return ((const cJSON *)json);
 }
 
@@ -64,7 +64,7 @@ static void	set_instruction_data(t_isa* isa)
 
 bool	load_isa(t_data* data)
 {
-	cJSON*	json = (cJSON *)parse_json_file(&data->files[INFILE_ISA]);
+	cJSON*	json = (cJSON *)parse_json_file(&((t_file *)data->files.arr)[INFILE_ISA]);
 	if (json == NULL)
 		return (1);
 	if (check_isa_syntax((const cJSON *)json) == 1)
@@ -72,11 +72,16 @@ bool	load_isa(t_data* data)
 		cJSON_Delete(json);
 		return (1);
 	}
+	if (data->options[OPTION_ISA_ONLY] == YES)
+	{
+		cJSON_Delete(json);
+		return (0);
+	}
 	if (init_isa(&data->isa, (const cJSON *)json) == 1)
 	{
 		cJSON_Delete(json);
-		fprintf(stderr, "%s: %s: %s\n",
-			EXECUTABLE_NAME, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+		fprintf(stderr, "%s: %s: %s: %s\n",
+			EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
 		return (1);
 	}
 	cJSON_Delete(json);

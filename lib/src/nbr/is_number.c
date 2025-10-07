@@ -1,5 +1,5 @@
-#include <string.h>
 #include <ctype.h>
+#include <string.h>
 #include "nbr.h"
 
 bool	is_number(char* str)

@@ -13,25 +13,21 @@
 #define DEFAULT_INFILE_ISA	"isa.json"
 
 // Default options
-#define DEFAULT_OPTIONS	(t_option_parameter[]){NO, NO, NO, YES, NO, NO, NO}
+#define DEFAULT_OPTIONS	(t_option_parameter[]){NO, NO, NO, YES, NO, NO, NO, NO}
 
 // Options
 #define OPTION_PARSING_END	"--"
 #define OPTIONS	\
 (const t_parr){\
-	.len = 7, \
+	.len = 8, \
 	.obj_size = sizeof(t_option), \
 	.arr = (t_option[])\
 	{\
 		(t_option){\
-			.names = (char*[]){"--version", NULL}, \
-			.parameters = {0}, \
-			.arguments = {0}\
+			.names = (char*[]){"--version", NULL}\
 		}, \
 		(t_option){\
-			.names = (char*[]){"--help", "-h", NULL}, \
-			.parameters = {0}, \
-			.arguments = {0}\
+			.names = (char*[]){"--help", "-h", NULL}\
 		}, \
 		(t_option){\
 			.names = (char*[]){"--output-chars", "-c", NULL}, \
@@ -50,8 +46,7 @@
 						.parameter = NO\
 					}\
 				}\
-			}, \
-			.arguments = {0}\
+			}\
 		}, \
 		(t_option){\
 			.names = (char*[]){"--macro-warnings", "-m", NULL}, \
@@ -70,8 +65,26 @@
 						.parameter = NO\
 					}\
 				}\
-			}, \
-			.arguments = {0}\
+			}\
+		}, \
+		(t_option){\
+			.names = (char*[]){"--isa-only", "-j", NULL}, \
+			.parameters = \
+			(t_parr){\
+				.len = 2, \
+				.obj_size = sizeof(t_parameter), \
+				.arr = (t_parameter[])\
+				{\
+					(t_parameter){\
+						.name = "yes", \
+						.parameter = YES\
+					}, \
+					(t_parameter){\
+						.name = "no", \
+						.parameter = NO\
+					}\
+				}\
+			}\
 		}, \
 		(t_option){\
 			.names = (char*[]){"--syntax-only", "-s", NULL}, \
@@ -90,27 +103,24 @@
 						.parameter = NO\
 					}\
 				}\
-			}, \
-			.arguments = {0}\
+			}\
 		}, \
 		(t_option){\
 			.names = (char*[]){"--output-file", "-o", NULL}, \
-			.parameters = {0}, \
 			.arguments = \
 			(t_parr){\
 				.len = 1, \
 				.obj_size = sizeof(char**), \
-				.arr = (char**[]){&data->files[OUTFILE_PROGRAM].name}\
+				.arr = (char**[]){&((t_file *)data->files.arr)[OUTFILE_PROGRAM].name}\
 			}\
 		}, \
 		(t_option){\
 			.names = (char*[]){"--isa-file", "-i", NULL}, \
-			.parameters = {0}, \
 			.arguments = \
 			(t_parr){\
 				.len = 1, \
 				.obj_size = sizeof(char**), \
-				.arr = (char**[]){&data->files[INFILE_ISA].name}\
+				.arr = (char**[]){&((t_file *)data->files.arr)[INFILE_ISA].name}\
 			}\
 		}\
 	}\
@@ -132,7 +142,8 @@
 		--version			Show INDULC's version.\n\
 		-c|--output-chars=[no]|yes	Write machine code as ASCII characters rather than raw binary. Useful for debugging.\n\
 		-m|--macro-warnings=no|[yes]	Display macro-related warnings.\n\
-		-s|--syntax-only=[no]|yes	Run preprocessing and syntax checking only.\n\
+		-j|--isa-only=[no]|yes		Only check the ISA's syntax.\n\
+		-s|--syntax-only=[no]|yes	Only check the code's syntax.\n\
 		-o|--output-file {file}|[a.out]	Indicate output file to write to.\n\
 		-i|--isa-file {file}|[isa.json]	Indicate ISA file to read from.\n\
 \n\
@@ -140,11 +151,6 @@ Refer to the README at the root of the repository for more informations.\n\
 \n\
 GitHub repository available at : github.com/Tzvet05/INDULC\n\
 Programmed by Tzvet for their Industrious CPUs, a series of RISC CPUs implemented in Factorio."
-
-/* ----- TYPES DECLARATIONS ----- */
-
-typedef struct	file	t_file;
-typedef struct	data	t_data;
 
 /* ----- ENUMERATIONS ----- */
 
@@ -155,10 +161,16 @@ enum	option_index
 	OPTION_HELP,
 	OPTION_OUTPUT_CHARS,
 	OPTION_MACRO_WARNINGS,
+	OPTION_ISA_ONLY,
 	OPTION_SYNTAX_ONLY,
 	OPTION_OUTPUT_FILE,
 	OPTION_ISA_FILE
 };
+
+/* ----- TYPES DECLARATIONS ----- */
+
+typedef struct	file	t_file;
+typedef struct	data	t_data;
 
 // Option parameters
 typedef enum	option_parameter

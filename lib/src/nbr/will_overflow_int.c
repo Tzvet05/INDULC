@@ -1,5 +1,5 @@
+#include <sys/types.h>
 #include <stdbool.h>
-#include <unistd.h>
 #include "bit.h"
 
 bool	will_overflow_int(ssize_t nbr, size_t n_bits)

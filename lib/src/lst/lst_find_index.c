@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include "lst.h"
 
 ssize_t	lst_find_index(t_lst* lst, void* to_find, bool (*cmp)(void*, void*))

@@ -36,10 +36,6 @@
 #define N_BITFIELD_TYPES	4
 #define BITFIELD_TYPES		((const char* const[]){"register", "immediate", "flag", "constant"})
 
-/* ----- TYPES DECLARATIONS ----- */
-
-typedef struct	data	t_data;
-
 /* ----- ENUMERATIONS ----- */
 
 // Bitfield type
@@ -50,6 +46,10 @@ typedef enum bitfield_type
 	FLAG,
 	CONSTANT
 }	t_bitfield_type;
+
+/* ----- TYPES DECLARATIONS ----- */
+
+typedef struct	data	t_data;
 
 /* ----- STRUCTURES ----- */
 

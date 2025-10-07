@@ -93,17 +93,16 @@ bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 		((t_token *)tokens->content)->str, cmp_mnemonics);
 	if (instr == NULL)
 		return (0);
+	*tokens_ptr = lst_last(tokens)->next;
 	bool	error = 0;
 	size_t	i_opword = 0;
 	while (tokens->next != NULL && i_opword < instr->n_opwords)
 	{
-		if (check_operand_syntax(data, instr,
-			(t_token *)tokens->next->content, i_opword) == 1)
-			error = 1;
 		tokens = tokens->next;
+		if (check_operand_syntax(data, instr, (t_token *)tokens->content, i_opword) == 1)
+			error = 1;
 		i_opword++;
 	}
-	*tokens_ptr = tokens->next;
 	if (i_opword < instr->n_opwords)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n",
@@ -113,13 +112,21 @@ bool	check_instruction_syntax(t_data* data, t_lst **tokens_ptr)
 			ERROR_INSTRUCTION, ERROR_INSTRUCTION_TOO_FEW_ARGS);
 		return (1);
 	}
-	if (tokens->next != NULL)
+	tokens = tokens->next;
+	if (tokens != NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: ",
 			EXECUTABLE_NAME, ERROR_SYNTAX,
-			((t_token *)tokens->next->content)->lin,
-			((t_token *)tokens->next->content)->col, ERROR_INSTRUCTION,
-			ERROR_INSTRUCTION_TOO_MANY_ARGS, ((t_token *)tokens->next->content)->str);
+			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
+			ERROR_INSTRUCTION, ERROR_INSTRUCTION_TOO_MANY_ARGS);
+		while (tokens != NULL)
+		{
+			fprintf(stderr, "\"%s\"", ((t_token *)tokens->content)->str);
+			if (tokens->next != NULL)
+				fprintf(stderr, ", ");
+			tokens = tokens->next;
+		}
+		fprintf(stderr, "\n");
 		return (1);
 	}
 	return (error);

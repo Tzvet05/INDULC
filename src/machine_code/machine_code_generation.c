@@ -25,17 +25,17 @@ static bool	write_instruction(t_data* data, t_parr* instruction)
 			if (i_byte + 1 >= instruction->len * instruction->obj_size)
 				buffer[8] = '\n';
 			fwrite(buffer, sizeof(*buffer), sizeof(buffer),
-				data->files[OUTFILE_PROGRAM].stream);
+				((t_file *)data->files.arr)[OUTFILE_PROGRAM].stream);
 		}
 	}
 	else
 		fwrite(instruction->arr, instruction->obj_size, instruction->len,
-			data->files[OUTFILE_PROGRAM].stream);
-	if (ferror(data->files[OUTFILE_PROGRAM].stream) != 0)
+			((t_file *)data->files.arr)[OUTFILE_PROGRAM].stream);
+	if (ferror(((t_file *)data->files.arr)[OUTFILE_PROGRAM].stream) != 0)
 	{
-		fprintf(stderr, "%s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, FUNC_FWRITE, ERROR_WRITE_FILE,
-			data->files[OUTFILE_PROGRAM].name);
+		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, LIB_LIBC, FUNC_FWRITE, ERROR_WRITE_FILE,
+			((t_file *)data->files.arr)[OUTFILE_PROGRAM].name);
 		return (1);
 	}
 	return (0);
@@ -47,7 +47,8 @@ static void	add_operand(t_parr* buffer, size_t i_bit_start, ssize_t operand, siz
 	while (i_bit > i_bit_start)
 	{
 		size_t	i_bit_byte_start = i_bit & 0xFFFFFFFFFFFFFFF8,
-			i_bit_byte_end = i_bit_byte_start + 7, len_part = MIN(i_bit, i_bit_byte_end)
+			i_bit_byte_end = i_bit_byte_start + 7,
+			len_part = MIN(i_bit, i_bit_byte_end)
 				- MAX(i_bit_start, i_bit_byte_start) + 1;
 		((uint8_t *)buffer->arr)[i_byte] |= ((uint64_t)operand & build_mask(len_part))
 			<< (i_bit_byte_end - i_bit);
@@ -91,8 +92,8 @@ static bool	allocate_writing_buffer(size_t instruction_length, t_parr* buffer)
 	buffer->arr = malloc(buffer->len);
 	if (buffer->arr == NULL)
 	{
-		fprintf(stderr, "%s: %s: %s\n",
-			EXECUTABLE_NAME, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+		fprintf(stderr, "%s: %s: %s: %s\n",
+			EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
 		return (1);
 	}
 	return (0);

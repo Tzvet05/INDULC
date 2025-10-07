@@ -62,11 +62,17 @@ When the "output characters" option is enabled, the assembled machine code is wr
 
 When the "macro warnings" option is disabled, the syntax warnings for macros whose identifiers are identical to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword are muted.
 
+#### ISA only
+
+`-j|--isa-only=[no]|yes`
+
+When the "ISA only" option is enabled, INDULC only checks the ISA's syntax, and doesn't check the INDUL code's syntax nor outputs a machine code file.
+
 #### Syntax only
 
 `-s|--syntax-only=[no]|yes`
 
-When the "syntax only" option is enabled, INDULC runs the preprocessing, the symbol table resolution and the syntax checking but not the assembling.
+When the "syntax only" option is enabled, INDULC only checks the INDUL code's syntax, and doesn't output a machine code file.
 
 #### Output file
 

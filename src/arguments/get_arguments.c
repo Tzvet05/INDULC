@@ -128,8 +128,8 @@ bool	get_arguments(t_data* data, char** args)
 		}
 		else
 		{
-			if (data->files[INFILE_PROGRAM].name == NULL)
-				data->files[INFILE_PROGRAM].name = args[i_arg];
+			if (((t_file *)data->files.arr)[INFILE_PROGRAM].name == NULL)
+				((t_file *)data->files.arr)[INFILE_PROGRAM].name = args[i_arg];
 			else
 			{
 				fprintf(stderr, "%s: %s: %s: \"%s\"\n",

@@ -16,7 +16,7 @@ typedef struct	lst	t_lst;
 typedef struct data
 {
 	t_option_parameter*	options;
-	t_file			files[3];
+	t_parr			files;
 	t_lst*			tokens;
 	t_lst*			macro_table;
 	t_lst*			symbol_table;

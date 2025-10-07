@@ -47,8 +47,8 @@ bool	build_symbol_table(t_data* data)
 				return (1);
 			if (add_label((t_lst *)tokens->content, &data->symbol_table, line) == 1)
 			{
-				fprintf(stderr, "%s: %s: %s\n",
-					EXECUTABLE_NAME, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+				fprintf(stderr, "%s: %s: %s: %s\n",
+					EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
 				return (1);
 			}
 		}

@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include "lst.h"
 
 t_lst*	lst_last(t_lst* lst)

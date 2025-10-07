@@ -66,12 +66,11 @@ static void	check_define_identifier(t_data* data, t_lst* tokens)
 
 bool	check_define_syntax(t_data* data, t_lst **tokens_ptr)
 {
-	bool	error = 0;
 	t_lst*	tokens = *tokens_ptr;
 	if (strcmp(((t_token *)tokens->content)->str, DEFINE_KEYWORD) != 0)
 		return (0);
 	t_lst*	tokens_first = tokens;
-	*tokens_ptr = lst_get_node(tokens, 3);
+	*tokens_ptr = lst_last(tokens)->next;
 	if (tokens->next == NULL)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n",
@@ -104,13 +103,20 @@ bool	check_define_syntax(t_data* data, t_lst **tokens_ptr)
 	tokens = tokens->next;
 	if (tokens != NULL)
 	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: ",
 			EXECUTABLE_NAME, ERROR_SYNTAX,
 			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
-			ERROR_DEFINE, ERROR_DEFINE_TOO_MANY_ARGS,
-			((t_token *)tokens->content)->str);
+			ERROR_DEFINE, ERROR_DEFINE_TOO_MANY_ARGS);
+		while (tokens != NULL)
+		{
+			fprintf(stderr, "\"%s\"", ((t_token *)tokens->content)->str);
+			if (tokens->next != NULL)
+				fprintf(stderr, ", ");
+			tokens = tokens->next;
+		}
+		fprintf(stderr, "\n");
 		return (1);
 	}
 	check_define_identifier(data, tokens_first);
-	return (error);
+	return (0);
 }

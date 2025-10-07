@@ -10,22 +10,23 @@
 #define EXECUTABLE_NAME	"indulc"
 
 // Failing functions
-//	Standard
-#define FUNC_ACCESS	"access()"
-#define FUNC_FOPEN	"fopen()"
-#define FUNC_GETLINE	"getline()"
-#define FUNC_MALLOC	"malloc()"
-#define FUNC_FREAD	"fread()"
-#define FUNC_FWRITE	"fwrite()"
-#define FUNC_STAT	"stat()"
-//	Libraries
-//		cJSON library
-#define FUNC_CJSON_PARSE	"cJSON_Parse()"
+//	libc
+#define FUNC_ACCESS	"access function"
+#define FUNC_FOPEN	"fopen function"
+#define FUNC_GETLINE	"getline function"
+#define FUNC_MALLOC	"malloc function"
+#define FUNC_FREAD	"fread function"
+#define FUNC_FWRITE	"fwrite function"
+#define FUNC_STAT	"stat function"
+//	cJSON
+#define FUNC_CJSON_PARSE	"cJSON_Parse function"
+
+// Failing libraries
+#define LIB_LIBC	"libc library"
+#define LIB_CJSON	"cJSON library"
 
 // Error strings
-//	Libraries
-#define ERROR_CJSON_LIB	"cJSON library (libcjson.so)"
-//		cJSON library
+//	cJSON
 #define ERROR_CJSON_PARSE	"failed to parse content of Json file"
 //	Argument
 #define ERROR_ARGUMENT		"program arguments"
@@ -48,6 +49,7 @@
 #define ERROR_FAILED_ALLOC	"failed memory allocation"
 //	File
 #define ERROR_FILE_NONEXISTANT	"file does not exist"
+#define ERROR_FILE_NONREGULAR	"is not a regular file"
 #define ERROR_READ_PERM		"file permissions prohibit reading"
 #define ERROR_WRITE_PERM	"file permissions prohibit writing"
 #define ERROR_OPEN_FILE		"failed to open file"
@@ -56,7 +58,7 @@
 #define ERROR_FILE_STATUS	"failed to get file status"
 //	ISA Syntax
 #define ERROR_SYNTAX		"syntax error"
-#define ERROR_TOKEN		"unrecognized token (token not supported by the provided ISA)"
+#define ERROR_TOKEN		"unrecognized token makes line unassemblable (token not supported by the provided ISA)"
 #define ERROR_NOT_NUMBER	"number contains invalid characters (must be only base-related characters)"
 //		Define
 #define ERROR_DEFINE			"define statement"

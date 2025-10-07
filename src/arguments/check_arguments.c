@@ -5,7 +5,7 @@
 
 bool	check_arguments(t_data* data)
 {
-	if (data->files[INFILE_PROGRAM].name == NULL
+	if (((t_file *)data->files.arr)[INFILE_PROGRAM].name == NULL
 		&& data->options[OPTION_VERSION] == NO && data->options[OPTION_HELP] == NO)
 	{
 		fprintf(stderr, "%s: %s: %s\n",

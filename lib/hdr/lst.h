@@ -2,7 +2,7 @@
 
 /* ----- INCLUDES ----- */
 
-#include <unistd.h>
+#include <sys/types.h>
 #include <stdbool.h>
 
 /* ----- STRUCTURES ----- */
