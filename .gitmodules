@@ -1,3 +1,5 @@
-[submodule "submodule/cJSON"]
-	path = submodule/cJSON
+[submodule "submodules/cJSON"]
+	path = submodules/cJSON
 	url = https://github.com/DaveGamble/cJSON.git
+[submodule "submodules"]
+	path = submodules
