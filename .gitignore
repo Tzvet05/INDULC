@@ -1,7 +1,11 @@
 indulc
-programs/
 obj/
 TODO
+programs/
+machine_code.bin
+machine_code.txt
+blueprint.json
+string.txt
 isa_test.json
 *.out
 *.a

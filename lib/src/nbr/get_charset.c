@@ -1,7 +1,7 @@
 #include <string.h>
 #include "nbr.h"
 
-char*	get_charset(char* str)
+char	*get_charset(char *str)
 {
 	if (strncmp(str, HEX_PREFIX, strlen(HEX_PREFIX)) == 0)
 		return (HEX_CHARSET);

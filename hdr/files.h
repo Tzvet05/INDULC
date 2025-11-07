@@ -6,23 +6,41 @@
 
 /* ----- MACROS ----- */
 
+// Default file names
+#define DEFAULT_INFILE_ISA			"isa.json"
+#define DEFAULT_INFILE_SIGNALS			"signals.json"
+#define DEFAULT_OUTFILE_MACHINE_CODE_BIN	"machine_code.bin"
+#define DEFAULT_OUTFILE_MACHINE_CODE_TXT	"machine_code.txt"
+#define DEFAULT_OUTFILE_JSON			"blueprint.json"
+#define DEFAULT_OUTFILE_STRING			"string.txt"
+
 // Default files
 #define DEFAULT_FILES	\
-(t_parr){\
-	.len = 3, \
+{\
+	.len = 6, \
 	.obj_size = sizeof(t_file), \
-	.arr = (t_file[])\
+	.arr = (t_file [])\
 	{\
-		(t_file){\
+		{\
 			.info = SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)\
-		},\
-		(t_file){\
-			.name = DEFAULT_OUTFILE_PROGRAM, \
-			.info = SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)\
-		},\
-		(t_file){\
+		}, \
+		{\
 			.name = DEFAULT_INFILE_ISA, \
 			.info = SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)\
+		}, \
+		{\
+			.name = DEFAULT_INFILE_SIGNALS, \
+			.info = SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)\
+		}, \
+		{\
+			.info = SET_REQUIREMENT(UNUSED)\
+		}, \
+		{\
+			.info = SET_REQUIREMENT(UNUSED)\
+		}, \
+		{\
+			.name = DEFAULT_OUTFILE_STRING, \
+			.info = SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)\
 		}\
 	}\
 }
@@ -32,9 +50,12 @@
 // Files
 enum
 {
-	INFILE_PROGRAM,
-	OUTFILE_PROGRAM,
-	INFILE_ISA
+	INFILE_CODE,
+	INFILE_ISA,
+	INFILE_SIGNALS,
+	OUTFILE_MACHINE_CODE,
+	OUTFILE_JSON,
+	OUTFILE_STRING
 };
 
 /* ----- TYPES DECLARATIONS ----- */
@@ -44,6 +65,8 @@ typedef struct	data	t_data;
 /* ----- PROTOTYPES ----- */
 
 // files/
-//	files.c
-void	close_files(t_data* data);
-bool	check_files(t_data* data);
+//	check.c
+bool	check_files(t_data *data);
+//	init.c
+bool	alloc_files(t_data *data);
+bool	init_files(t_data *data);

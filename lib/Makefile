@@ -1,56 +1,58 @@
-# Make parameters
+# Compilation parameters
 
-NAME =		libindulc.a
+NAME :=	libindulc.a
 
-COMPILER =	clang
+CC :=	clang
 
-CFLAG =		-Wall -Wextra -Wconversion
+CFLAGS =	-Wall -Wextra -Wconversion -Wpedantic
 
 # Directories
 
-HDR_DIR =	hdr/
-OBJ_DIR =	obj/
-SRC_DIR =	src/
+DIR_HDR :=	hdr/
+DIR_SRC :=	src/
+DIR_OBJ :=	obj/
 
-LST_DIR = 	lst/
-PAR_DIR =	parr/
-NBR_DIR =	nbr/
-FIL_DIR =	file/
-BIT_DIR =	bit/
+DIR_LST := 	lst/
+DIR_PAR :=	parr/
+DIR_NBR :=	nbr/
+DIR_FIL :=	file/
+DIR_BIT :=	bit/
 
 # Colors
 
-COLOR_DEFAULT =	\033[0m
-COLOR_GREEN =	\033[1;38;5;2m
-COLOR_BLUE =	\033[1;38;5;4m
-COLOR_WHITE =	\033[1;38;5m
+COLOR_DEFAULT :=	\033[0m
+COLOR_GREEN :=		\033[32;1m
+COLOR_BLUE :=		\033[34;1m
+COLOR_WHITE :=		\033[97;1m
 
 # Source headers
 
-HDR =	$(HDR_DIR)
+HDR :=	$(DIR_HDR)
 
 # Source code
 
-SRC =	$(LST_DIR)lst_new_back.c \
-	$(LST_DIR)lst_clear.c \
-	$(LST_DIR)lst_last.c \
-	$(LST_DIR)lst_find_index.c \
-	$(LST_DIR)lst_get_node.c \
-	$(LST_DIR)lst_find.c \
-	$(PAR_DIR)parr_find.c \
-	$(NBR_DIR)is_number.c \
-	$(NBR_DIR)will_overflow_str.c \
-	$(NBR_DIR)will_overflow_int.c \
-	$(NBR_DIR)get_number.c \
-	$(NBR_DIR)get_charset.c \
-	$(FIL_DIR)open_file.c \
-	$(FIL_DIR)close_file.c \
-	$(FIL_DIR)get_next_line.c \
-	$(BIT_DIR)build_mask.c
+SRC :=	$(DIR_LST)new_back.c \
+	$(DIR_LST)clear.c \
+	$(DIR_LST)last.c \
+	$(DIR_LST)find_index.c \
+	$(DIR_LST)get_node.c \
+	$(DIR_LST)find.c \
+	$(DIR_PAR)find.c \
+	$(DIR_PAR)clear.c \
+	$(DIR_NBR)is_number.c \
+	$(DIR_NBR)will_overflow_str.c \
+	$(DIR_NBR)will_overflow_int.c \
+	$(DIR_NBR)get_number.c \
+	$(DIR_NBR)get_charset.c \
+	$(DIR_FIL)open.c \
+	$(DIR_FIL)get_next_line.c \
+	$(DIR_FIL)close.c \
+	$(DIR_FIL)free.c \
+	$(DIR_BIT)build_mask.c
 
 # Compiled objects
 
-OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
+OBJ :=	$(addprefix $(DIR_OBJ), $(SRC:.c=.o))
 
 # Compilation
 
@@ -58,22 +60,22 @@ $(NAME) : $(OBJ)
 	@ ar rcs $(NAME) $(OBJ)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_GREEN)Archive ($(NAME)) compiled.$(COLOR_DEFAULT)"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c
+$(DIR_OBJ)%.o : $(DIR_SRC)%.c
 	@ mkdir -p $(dir $@)
-	@ $(COMPILER) $(CFLAG) $(addprefix -I,$(HDR)) -c $^ -o $@
+	@ $(CC) $(CFLAGS) $(addprefix -I,$(HDR)) -c $^ -o $@
 
 # Rules
 
 all : $(NAME)
 
 fclean :
-	@ rm -rf $(OBJ_DIR)
+	@ rm -rf $(DIR_OBJ)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 	@ rm -f $(NAME)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Archive ($(NAME)) cleaned.$(COLOR_DEFAULT)"
 
 clean :
-	@ rm -rf $(OBJ_DIR)
+	@ rm -rf $(DIR_OBJ)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 
 re : fclean all

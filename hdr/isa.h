@@ -33,13 +33,12 @@
 #define BITFIELD_LEN_MAX	64
 
 // Bitfield types
-#define N_BITFIELD_TYPES	4
-#define BITFIELD_TYPES		((const char* const[]){"register", "immediate", "flag", "constant"})
+#define BITFIELD_TYPES		{"register", "immediate", "flag", "constant", NULL}
 
 /* ----- ENUMERATIONS ----- */
 
 // Bitfield type
-typedef enum bitfield_type
+typedef enum	bitfield_type
 {
 	REGISTER,
 	IMMEDIATE,
@@ -54,7 +53,7 @@ typedef struct	data	t_data;
 /* ----- STRUCTURES ----- */
 
 // Instruction bitfield
-typedef struct bitfield
+typedef struct	bitfield
 {
 	size_t		len;//		Length of the bitfield (in bits)
 	t_bitfield_type	type;//		Type of the bitfield
@@ -62,7 +61,7 @@ typedef struct bitfield
 }	t_bitfield;
 
 // Instruction
-typedef struct instruction
+typedef struct	instruction
 {
 	t_parr	mnemonics;//	Array of mnemonic strings
 	size_t	n_opwords;//	Number of words in the instruction (opcode + operands)
@@ -70,21 +69,21 @@ typedef struct instruction
 }	t_instruction;
 
 // Flag
-typedef struct flag
+typedef struct	flag
 {
 	t_parr	mnemonics;//	Array of mnemonic strings
 	size_t	code;//		Flag code
 }	t_flag;
 
 // Register
-typedef struct _register
+typedef struct	_register
 {
 	t_parr	mnemonics;//	Array of mnemonic strings
 	size_t	index;//	Register index
 }	t_register;
 
 // ISA
-typedef struct isa
+typedef struct	isa
 {
 	size_t	instruction_length;//	Length of the instructions (in bits)
 	t_parr	registers;//		Array of supported registers
@@ -95,13 +94,13 @@ typedef struct isa
 /* ----- PROTOTYPES ----- */
 
 // isa/
-//	isa_loading.c
-bool	load_isa(t_data* data);
-//	check_isa_syntax.c
-bool	check_isa_syntax(const cJSON* isa);
-//	get_isa.c
-bool	init_isa(t_isa* isa, const cJSON* json_isa);
-//	isa_utils.c
-ssize_t	get_bitfield_type(char* str);
-//	free_isa.c
-void	free_isa(t_isa* isa);
+//	load.c
+bool	load_isa(t_data *data);
+//	check.c
+bool	check_isa_syntax(const cJSON *isa);
+//	get.c
+bool	init_isa(t_isa *isa, const cJSON *json_isa);
+//	utils.c
+ssize_t	get_bitfield_type(char *str);
+//	free.c
+void	free_isa(t_isa *isa);

@@ -2,7 +2,9 @@
 
 **Indu**strious **L**anguage **C**ompiler
 
-Assembler for INDUL (**Indu**strious **L**anguage), an ASM-like language designed to be executed on the Industrious CPUs, a series of RISC Factorio CPUs.
+Assembler for INDUL (**Indu**strious **L**anguage), an ASM-like language originally designed to be executed on the Industrious CPUs, a series of RISC Factorio CPUs.
+
+INDULC can directly generate Factorio blueprint strings to import in-game, but it can also only generate the assembled machine code, making it useful for many other uses.
 
 ## SETUP
 
@@ -16,33 +18,43 @@ Compile the program using
 make
 ```
 
+### Makefile rules
+
+`make (all)` compiles the libraries and the program.
+
+`make fclean` removes everything that got compiled.
+
+`make clean` removes everything that got compiled except the executable and its dynamic library.
+
+`make cleanindulc` removes the program's object files.
+
+`make re` removes everything that got compiled and recompiles the libraries and the program.
+
+`make reindulc` removes the program's object files and recompiles the program.
+
 ## USAGE
 
 Run the assembler using
-`./indulc {program input file}`
+`./indulc {input}`
 
-`{program input file}` is the input text file containing the program to assemble.
-You must have reading permissions for it.
+`{input}` is the mandatory input text file containing the program to assemble.
+INDULC must have reading permissions for it.
 
-The default output file in which the assembled machine code is written is named `"a.out"`. This name can be changed using the "output file" option (see further down). If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.
+The default output file in which the assembled machine code is written is named `a.out`. This name can be changed using the "output file" option (see further down). If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.
 
-The default input file from which the ISA is read is named `"isa.json"`. This name can be changed using the "isa file" option (see further down). INDULC must have reading permissions for it.
+The default input file from which the ISA is read is named `isa.json`. This name can be changed using the "ISA file" option (see further down). INDULC must have reading permissions for it.
+
+The default input file from which the signals are read is named `signals.json`. This name can be changed using the "signals file" option (see further down). INDULC must have reading permissions for it.
 
 ### Options
 
 Options can be added anywhere in the arguments when running the assembler, except among an option's arguments.
 
-They may support multiple names, they may require a parameter, and they may require arguments. The default parameters and arguments are indicated by `[ ]`. If the option requires arguments, they are indicated by `{ }`, and no options can be specified until all the arguments are given.
+They may support multiple names, they may require a parameter, and they may require arguments. The default parameters and arguments are indicated by `[ ]`. If the option requires arguments, they are indicated by `{ }`, and no options can be specified until all the arguments are provided.
 
 If the same option is specified multiple times, the last occurence prevails.
 
 The `--` argument can be used to indicate the end of option parsing. Any argument following it will be treated as a regular argument rather than as an option.
-
-#### Version
-
-`--version`
-
-The "version" option displays INDULC's version. It doesn't run the assembling process.
 
 #### Help
 
@@ -50,15 +62,15 @@ The "version" option displays INDULC's version. It doesn't run the assembling pr
 
 The "help" option displays the usage help. It doesn't run the assembling process.
 
-#### Output characters
+#### Version
 
-`-c|--output-chars=[no]|yes`
+`--version`
 
-When the "output characters" option is enabled, the assembled machine code is written in the output file using characters (`0` and `1`) rather than actual raw bits. This is useful for debugging as the machine code is produced in a human-readable form.
+The "version" option displays INDULC's version. It doesn't run the assembling process.
 
 #### Macro warnings
 
-`-m|--macro-warnings=no|[yes]`
+`-mw|--macro-warnings=no|[yes]`
 
 When the "macro warnings" option is disabled, the syntax warnings for macros whose identifiers are identical to a flag mnemonic, to a register mnemonic, to a number, to the label definition keyword or to the macro definition keyword are muted.
 
@@ -74,14 +86,6 @@ When the "ISA only" option is enabled, INDULC only checks the ISA's syntax, and 
 
 When the "syntax only" option is enabled, INDULC only checks the INDUL code's syntax, and doesn't output a machine code file.
 
-#### Output file
-
-`-o|--output-file {file}|[a.out]`
-
-`{file}` is the name of the output file.
-
-The "output file" option can be used to specify the name of the output file in which the assembled machine code is written. If the output file does not exist, INDULC will create it and name it accordingly to this option. If it already exists, INDULC must have writing permissions for it.
-
 #### ISA file
 
 `-i|--isa-file {file}|[isa.json]`
@@ -90,19 +94,31 @@ The "output file" option can be used to specify the name of the output file in w
 
 The "isa file" option can be used to specify the name of the input Json file from which the ISA is read. INDULC must have reading permissions for it.
 
-### Makefile rules
+#### Signals file
 
-`make (all)` compiles the libraries and the program.
+`-si|--signals-file {file}|[signals.json]`
 
-`make fclean` removes everything that got compiled.
+`{file}` is the name of the signals file.
 
-`make clean` removes everything that got compiled except the executable and its dynamic library.
+The "signals file" option can be used to specify the name of the input Json file from which the Factorio signals are read. INDULC must have reading permissions for it.
 
-`make cleanindulc` removes the program's object files.
+#### Machine code output
 
-`make re` removes everything that got compiled and recompiles the libraries and the program.
+`-mo|--machine-code-output=[no]|bin|ascii`
 
-`make reindulc` removes the program's object files and recompiles the program.
+The "machine code output" option can be used to specify how, if at all, the machine code is written. It can be in binary or using ASCII characters `0` and `1`. If a file is used and does not exist, INDULC will create it and name it `machine_code.bin` or `machine_code.txt` depending on the specified option. If it already exists, INDULC must have writing permissions for it.
+
+#### Json output
+
+`-jo|--json-output=[no]|compact|format`
+
+The "json output" option can be used to specify how, if at all, the Json blueprint item is written. It can be compact or formatted with whitespaces. If a file is used and does not exist, INDULC will create it and name it `blueprint.json`. If it already exists, INDULC must have writing permissions for it.
+
+#### String output
+
+`-o|--string-output=no|terminal|file|[all]`
+
+The "string output" option can be used to specify where, if at all, the blueprint string is written. It can be in the terminal, in a file or in both. If a file is used and does not exist, INDULC will create it and name it `string.txt`. If it already exists, INDULC must have writing permissions for it.
 
 ## INDUL SYNTAX
 
@@ -283,10 +299,96 @@ The flag `even` with multiple mnemonics `even` and `ev` and code `2` can be stor
 
 Refer to the `isa.json` file located at the root of the repository for an example of a complete ISA.
 
+## JSON SIGNALS SYNTAX
+
+The Json file providing the Factorio signals must follow a strict syntax.
+Whitespace characters are ignored during parsing.
+
+### The main object
+
+The main object must contain 1 to 3 items :
+- `"types"`, whose value (array of strings) is the array of all internal signal types.
+- `"qualities"`, whose value (array of strings) is the array of all signal qualities.
+- `"signals"`, whose value (array of signal objects) is the array of all signals.
+
+`"types"` can be absent or empty if no signal specifies a type.
+
+`"qualities"` can be absent or empty.
+
+The generated blueprint lists instructions in the same order as signal types are listed. Typeless signals are implicitely listed first.
+
+The generated blueprint will use all the specified qualities to store instructions. If no qualities are specified, the blueprint will be devoid of quality-related fields.
+
+#### The signal object
+
+The signal object must contain 1 to 2 items :
+- `"type"`, whose value (string) is the internal type of the signal.
+- `"name"`, whose value (string) is the name of the signal.
+
+`"type"` can be absent.
+The type specified by the signal must be listed in the `"types"` item of the main object at the desired index.
+
+The generated blueprint lists instructions in the same order as signals are listed relative to their type category.
+
+### Example
+
+A valid signals file can look like this :
+```json
+{
+	"types":
+	[
+		"fluid",
+		"virtual"
+	],
+	"qualities":
+	[
+		"normal",
+		"uncommon"
+	],
+	"signals":
+	[
+		{
+			"type": "virtual",
+			"name": "shape-vertical"
+		},
+		{
+			"name": "wooden-chest"
+		},
+		{
+			"type": "fluid",
+			"name": "steam"
+		},
+		{
+			"name": "iron-chest"
+		}
+	]
+}
+```
+
+The instructions would be stored as signals in the following order :
+1. `"wooden-chest"`, `"normal"` (typeless instructions come first, the first listed signal in the typeless category is `"wooden-chest"`, the first listed quality is `"normal"`)
+2. `"wooden-chest"`, `"uncommon"` (the second listed quality is `"uncommon"`)
+3. `"iron-chest"`, `"normal"` (the second listed signal in the typeless category is `"iron-chest"`)
+4. `"iron-chest"`, `"uncommon"`
+5. `"steam"` (`"fluid"`), `"normal"` (the first listed type is `"fluid"`)
+6. `"steam"` (`"fluid"`), `"uncommon"`
+7. `"shape-vertical"` (`"virtual"`), `"normal"` (the third listed type is `"virtual"`)
+8. `"shape-vertical"` (`"virtual"`), `"uncommon"`
+
+Refer to the `signals.json` file located at the root of the repository for an example of a complete Factorio signals file.
+
 ## ASSEMBLY PROCESS
 
 1. Tokenization
 2. Preprocessing (macro saving & substitution)
-3. Symbol table management (label saving)
+3. Symbol table building (label saving)
 4. Syntax analysis (syntax verification)
 5. Machine code generation (label substitution & encoding)
+
+6. Factorio Json blueprint item building
+7. Factorio blueprint string convertion
+
+## CREDITS
+
+A special thanks to the contributors of :
+- [cJSON](https://github.com/DaveGamble/cJSON) - Used for the parsing and building of Json objects

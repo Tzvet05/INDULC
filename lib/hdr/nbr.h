@@ -20,8 +20,14 @@
 
 /* -----PROTOTYPES ----- */
 
-bool	is_number(char* str);
-bool	will_overflow_str(char* str, size_t n_bits);
+// nbr/
+//	is_number.c
+bool	is_number(char *str);
+//	will_overflow_str.c
+bool	will_overflow_str(char *str, size_t n_bits);
+//	will_overflow_int.c
 bool	will_overflow_int(ssize_t nbr, size_t n_bits);
-ssize_t	get_number(char* str);
-char*	get_charset(char* str);
+//	get_number.c
+ssize_t	get_number(char *str);
+//	get_charset.c
+char	*get_charset(char *str);

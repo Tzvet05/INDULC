@@ -1,129 +1,156 @@
-# Make parameters
+# Compilation parameters
 
-NAME =		indulc
+NAME :=	indulc
 
-COMPILER =	clang
+CC :=	clang
 
-CFLAG =		-Wall -Wextra -Wconversion
+LIB_INDULC :=		indulc
+LIB_CJSON :=		cjson
+LIB_BLUEPRINT :=	blueprint
 
-LIB =		libindulc.a
+NAME_LIB_INDULC :=	lib$(LIB_INDULC).a
+NAME_LIB_CJSON :=	lib$(LIB_CJSON).so
+NAME_LIB_BLUEPRINT :=	lib$(LIB_BLUEPRINT).so
 
-MOD =		libcjson.so
+CFLAGS =	-Wall -Wextra -Wconversion -Wpedantic
+LDFLAGS =	-L$(DIR_LIB_INDULC) -L$(DIR_LIB_CJSON)$(DIR_BUILD) -L$(DIR_LIB_BLUEPRINT) -Wl,-rpath,$(DIR_LIB_CJSON)$(DIR_BUILD):$(DIR_LIB_BLUEPRINT)
+LDLIBS =	-l$(LIB_INDULC) -l$(LIB_CJSON) -l$(LIB_BLUEPRINT)
 
 # Directories
 
-HDR_DIR =	hdr/
-SRC_DIR =	src/
-OBJ_DIR =	obj/
-LIB_DIR =	lib/
-MOD_DIR =	submodules/cJSON/
-MOD_BUILD_DIR =	build/
+DIR_HDR :=	hdr/
+DIR_SRC :=	src/
+DIR_OBJ :=	obj/
 
-ARG_DIR =	arguments/
-FIL_DIR =	files/
-ISA_DIR =	isa/
-TOK_DIR =	tokenization/
-PRE_DIR =	preprocessing/
-SYM_DIR =	symbol_table/
-SYN_DIR =	syntax/
-MAC_DIR =	machine_code/
-UTI_DIR =	utils/
+DIR_BUILD :=	build/
+DIR_INCLUDE :=	include/
+
+DIR_LIB_INDULC :=	lib/
+DIR_LIB_CJSON :=	submodules/cJSON/
+DIR_LIB_BLUEPRINT :=	submodules/Factorio_Json_to_blueprint/
+
+DIR_ARG :=	arguments/
+DIR_FIL :=	files/
+DIR_ISA :=	isa/
+DIR_TOK :=	tokenization/
+DIR_PRE :=	preprocessing/
+DIR_SYM :=	symbol_table/
+DIR_SYN :=	syntax/
+DIR_MAC :=	machine_code/
+DIR_SIG :=	signals/
+DIR_BLU :=	blueprint/
+DIR_OUT :=	output_writing/
+DIR_UTI :=	utils/
 
 # Colors
 
-COLOR_DEFAULT =	\033[0m
-COLOR_GREEN =	\033[1;38;5;2m
-COLOR_BLUE =	\033[1;38;5;4m
-COLOR_WHITE =	\033[1;38;5;15m
+COLOR_DEFAULT :=	\033[0m
+COLOR_GREEN :=		\033[32;1m
+COLOR_BLUE :=		\033[34;1m
+COLOR_WHITE :=		\033[97;1m
 
 # Source headers
 
-HDR =	$(HDR_DIR) \
-	$(LIB_DIR)$(HDR_DIR) \
-	$(MOD_DIR)
+HDR :=	$(DIR_HDR) \
+	$(DIR_LIB_INDULC)$(DIR_HDR) \
+	$(DIR_LIB_CJSON) \
+	$(DIR_LIB_BLUEPRINT)$(DIR_INCLUDE)
 
 # Source code
 
-SRC =	main.c \
-	$(ARG_DIR)get_arguments.c \
-	$(ARG_DIR)check_arguments.c \
-	$(ARG_DIR)exec_options.c \
-	$(ARG_DIR)arguments_utils.c \
-	$(ISA_DIR)isa_loading.c \
-	$(ISA_DIR)check_isa_syntax.c \
-	$(ISA_DIR)get_isa.c \
-	$(ISA_DIR)isa_utils.c \
-	$(ISA_DIR)free_isa.c \
-	$(FIL_DIR)files.c \
-	$(TOK_DIR)tokenization.c \
-	$(TOK_DIR)free_tokens.c \
-	$(PRE_DIR)preprocessing.c \
-	$(PRE_DIR)preprocessing_utils.c \
-	$(PRE_DIR)free_macro.c \
-	$(SYM_DIR)symbol_table_building.c \
-	$(SYM_DIR)symbol_table_utils.c \
-	$(SYM_DIR)free_label.c \
-	$(SYN_DIR)syntax_analysis.c \
-	$(SYN_DIR)syntax_define.c \
-	$(SYN_DIR)syntax_label.c \
-	$(SYN_DIR)syntax_instruction.c \
-	$(MAC_DIR)machine_code_generation.c \
-	$(MAC_DIR)get_operand.c \
-	$(UTI_DIR)cmp.c
+SRC :=	main.c \
+	$(DIR_ARG)get.c \
+	$(DIR_ARG)check.c \
+	$(DIR_ARG)exec_options.c \
+	$(DIR_ISA)load.c \
+	$(DIR_ISA)check.c \
+	$(DIR_ISA)get.c \
+	$(DIR_ISA)utils.c \
+	$(DIR_ISA)free.c \
+	$(DIR_FIL)check.c \
+	$(DIR_FIL)init.c \
+	$(DIR_TOK)tokenization.c \
+	$(DIR_TOK)free.c \
+	$(DIR_PRE)preprocessing.c \
+	$(DIR_PRE)free.c \
+	$(DIR_SYM)building.c \
+	$(DIR_SYM)free.c \
+	$(DIR_SYN)analysis.c \
+	$(DIR_SYN)define.c \
+	$(DIR_SYN)label.c \
+	$(DIR_SYN)instruction.c \
+	$(DIR_MAC)generation.c \
+	$(DIR_MAC)get_operand.c \
+	$(DIR_MAC)utils.c \
+	$(DIR_SIG)load.c \
+	$(DIR_SIG)check.c \
+	$(DIR_SIG)get.c \
+	$(DIR_SIG)utils.c \
+	$(DIR_SIG)free.c \
+	$(DIR_BLU)build_json.c \
+	$(DIR_BLU)build_string.c \
+	$(DIR_OUT)write.c \
+	$(DIR_UTI)parse_json_file.c \
+	$(DIR_UTI)free.c \
+	$(DIR_UTI)cmp.c \
+	$(DIR_UTI)is.c
 
 # Compiled objects
 
-OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
+OBJ :=	$(addprefix $(DIR_OBJ), $(SRC:.c=.o))
 
 # Compilation
 
-$(NAME) : $(OBJ) $(LIB_DIR)$(LIB) $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD)
-	@ $(COMPILER) $(CFLAG) $(OBJ) $(LIB_DIR)$(LIB) $(MOD_DIR)$(MOD_BUILD_DIR)$(MOD) -Wl,-rpath,$(MOD_DIR)$(MOD_BUILD_DIR) -o $(NAME)
+$(NAME) : $(OBJ) $(NAME_LIB_INDULC) $(NAME_LIB_CJSON) $(NAME_LIB_BLUEPRINT)
+	@ $(CC) $(CFLAGS) $(LDFLAGS) $(OBJ) $(LDLIBS) -o $(NAME)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_GREEN)Executable ($(NAME)) compiled.$(COLOR_DEFAULT)"
 
-$(OBJ_DIR)%.o : $(SRC_DIR)%.c
+$(DIR_OBJ)%.o : $(DIR_SRC)%.c
 	@ mkdir -p $(dir $@)
-	@ $(COMPILER) $(CFLAG) $(addprefix -I,$(HDR)) -c $^ -o $@
+	@ $(CC) $(CFLAGS) $(addprefix -I,$(HDR)) -c $^ -o $@
 
-# Library
+# Libraries
 
-$(LIB_DIR)$(LIB) :
-	@ make -s -C $(LIB_DIR)
+$(NAME_LIB_INDULC) :
+	@ make -s -C $(DIR_LIB_INDULC)
 
-# Submodule
+$(NAME_LIB_CJSON) :
+	@ cmake -DCMAKE_POLICY_VERSION_MINIMUM=4.0 -DENABLE_CJSON_TEST=Off -B$(DIR_LIB_CJSON)$(DIR_BUILD) -S$(DIR_LIB_CJSON) > /dev/null
+	@ make -s -C $(DIR_LIB_CJSON)$(DIR_BUILD) > /dev/null
+	@ echo "$(COLOR_WHITE)[$(NAME_LIB_CJSON)] - $(COLOR_GREEN)Dynamic library ($(NAME_LIB_CJSON)) compiled.$(COLOR_DEFAULT)"
 
-$(MOD_DIR)$(MOD_BUILD_DIR)$(MOD) :
-	@ cmake -DCMAKE_POLICY_VERSION_MINIMUM=4.0 -DENABLE_CJSON_TEST=Off -B$(MOD_DIR)$(MOD_BUILD_DIR) -S$(MOD_DIR) > /dev/null
-	@ make -s -C $(MOD_DIR)$(MOD_BUILD_DIR) > /dev/null
-	@ echo "$(COLOR_WHITE)[$(MOD)] - $(COLOR_GREEN)Dynamic library ($(MOD)) compiled.$(COLOR_DEFAULT)"
+$(NAME_LIB_BLUEPRINT) :
+	@ make lib -s -C $(DIR_LIB_BLUEPRINT)
 
 # Rules
 
 all : $(NAME)
 
 fclean :
-	@ make fclean -s -C $(LIB_DIR)
-	@ rm -rf $(MOD_DIR)$(MOD_BUILD_DIR)
-	@ echo "$(COLOR_WHITE)[$(MOD)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
-	@ echo "$(COLOR_WHITE)[$(MOD)] - $(COLOR_BLUE)Dynamic library ($(MOD)) cleaned.$(COLOR_DEFAULT)"
-	@ rm -rf $(OBJ_DIR)
+	@ make fclean -s -C $(DIR_LIB_INDULC)
+	@ rm -rf $(DIR_LIB_CJSON)$(DIR_BUILD)
+	@ echo "$(COLOR_WHITE)[$(NAME_LIB_CJSON)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
+	@ echo "$(COLOR_WHITE)[$(NAME_LIB_CJSON)] - $(COLOR_BLUE)Dynamic library ($(NAME_LIB_CJSON)) cleaned.$(COLOR_DEFAULT)"
+	@ make fclean -s -C $(DIR_LIB_BLUEPRINT)
+	@ rm -rf $(DIR_OBJ)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 	@ rm -f $(NAME)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Executable ($(NAME)) cleaned.$(COLOR_DEFAULT)"
 
 clean :
-	@ make fclean -s -C $(LIB_DIR)
-	@ find $(MOD_DIR)$(MOD_BUILD_DIR) -name "*" | tail -n +2 | grep -v "\.so" | xargs rm -rf
-	@ echo "$(COLOR_WHITE)[$(MOD)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
-	@ rm -rf $(OBJ_DIR)
+	@ make fclean -s -C $(DIR_LIB_INDULC)
+	@ find $(DIR_LIB_CJSON)$(DIR_BUILD) -name "*" 2> /dev/null | tail -n +2 | grep -v "\.so" | xargs rm -rf
+	@ echo "$(COLOR_WHITE)[$(NAME_LIB_CJSON)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
+	@ make clean -s -C $(DIR_LIB_BLUEPRINT)
+	@ rm -rf $(DIR_OBJ)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 
 cleanindulc :
-	@ rm -rf $(OBJ_DIR)
+	@ rm -rf $(DIR_OBJ)
 	@ echo "$(COLOR_WHITE)[$(NAME)] - $(COLOR_BLUE)Objects cleaned.$(COLOR_DEFAULT)"
 
 re : fclean all
 
-reindulc : cleanindulc all	
+reindulc : cleanindulc all
 
 .PHONY : all fclean clean cleanindulc re reindulc

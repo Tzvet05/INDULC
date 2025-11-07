@@ -12,9 +12,9 @@ typedef struct	data	t_data;
 
 /* ----- STRUCTURES ----- */
 
-typedef struct token
+typedef struct	token
 {
-	char*	str;
+	char	*str;
 	size_t	lin;
 	size_t	col;
 }	t_token;
@@ -23,7 +23,6 @@ typedef struct token
 
 // tokenization/
 //	tokenization.c
-bool	tokenize(t_data* data);
-//	free_tokens.c
-void	free_tokens(t_lst* token_col);
-void	free_token(void* token);
+bool	tokenize(t_data *data);
+//	free.c
+void	free_tokens(t_lst **token_col);

@@ -15,14 +15,14 @@
 #define GET_PERMISSION(info, permission)	((info >> PERMISSION_POS) & PERMISSION_MASK & permission)
 
 // Bit masks
-#define REQUIREMENT_MASK	1
+#define REQUIREMENT_MASK	3
 #define PERMISSION_MASK		7
 
 // Bit positions
 #define REQUIREMENT_POS	0
-#define PERMISSION_POS	1
+#define PERMISSION_POS	2
 
-// fopen() modes
+// Function fopen modes
 #define FOPEN_READ_MODE		"r"
 #define FOPEN_WRITE_MODE	"w"
 
@@ -32,7 +32,8 @@
 enum
 {
 	MANDATORY,
-	OPTIONAL
+	OPTIONAL,
+	UNUSED
 };
 
 // Permissions
@@ -48,13 +49,19 @@ enum
 // File
 typedef struct file
 {
-	char*	name;
-	FILE*	stream;
+	char	*name;
+	FILE	*stream;
 	uint8_t	info;
 }	t_file;
 
 /* ----- PROTOTYPES ----- */
 
-bool	open_file(t_file* file, char* mode);
-void	close_file(t_file* file);
-bool	get_next_line(t_file* file, char** line);
+// file/
+//	open.c
+bool	file_open(t_file *file, char *mode);
+//	get_next_line.c
+bool	file_get_next_line(t_file *file, char **line);
+//	close.c
+void	file_close(t_file *file);
+//	free.c
+void	file_free(void *file);

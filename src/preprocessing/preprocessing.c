@@ -2,13 +2,15 @@
 #include <string.h>
 #include "lst.h"
 #include "data.h"
+#include "tokenization.h"
 #include "preprocessing.h"
 #include "cmp.h"
+#include "is.h"
 #include "error.h"
 
-static bool	add_macro(t_lst* tokens, t_lst** macro_table)
+static bool	add_macro(t_lst *tokens, t_lst **macro_table)
 {
-	t_lst*	macro = lst_find(*macro_table, ((t_token *)tokens->next->content)->str, cmp_macro);
+	t_lst	*macro = lst_find(*macro_table, ((t_token *)tokens->next->content)->str, cmp_macro);
 	if (macro != NULL)
 	{
 		((t_macro *)macro->content)->identifier = (t_token *)tokens->next->content;
@@ -17,7 +19,7 @@ static bool	add_macro(t_lst* tokens, t_lst** macro_table)
 	else if (strcmp(((t_token *)tokens->next->content)->str,
 		((t_token *)tokens->next->next->content)->str) != 0)
 	{
-		t_macro*	new_macro = malloc(sizeof(t_macro));
+		t_macro	*new_macro = malloc(sizeof(t_macro));
 		if (new_macro == NULL)
 			return (1);
 		new_macro->identifier = (t_token *)tokens->next->content;
@@ -31,11 +33,11 @@ static bool	add_macro(t_lst* tokens, t_lst** macro_table)
 	return (0);
 }
 
-static bool	substitute_macros(t_lst* macro_table, t_lst* tokens)
+static bool	substitute_macros(t_lst *macro_table, t_lst *tokens)
 {
 	while (tokens != NULL)
 	{
-		t_lst*	macro = (t_lst *)lst_find(macro_table,
+		t_lst	*macro = (t_lst *)lst_find(macro_table,
 			((t_token *)tokens->content)->str, cmp_macro);
 		if (macro != NULL)
 		{
@@ -50,9 +52,9 @@ static bool	substitute_macros(t_lst* macro_table, t_lst* tokens)
 	return (0);
 }
 
-bool	preprocess(t_data* data)
+bool	preprocess(t_data *data)
 {
-	t_lst*	tokens = data->tokens;
+	t_lst	*tokens = data->tokens;
 	while (tokens != NULL)
 	{
 		if (is_define((t_lst *)tokens->content) == 1)

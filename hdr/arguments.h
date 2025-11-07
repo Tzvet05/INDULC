@@ -8,119 +8,299 @@
 
 /* ----- MACROS ----- */
 
-// Default file names
-#define DEFAULT_OUTFILE_PROGRAM	"a.out"
-#define DEFAULT_INFILE_ISA	"isa.json"
-
 // Default options
-#define DEFAULT_OPTIONS	(t_option_parameter[]){NO, NO, NO, YES, NO, NO, NO, NO}
+#define DEFAULT_OPTIONS	(t_option_parameter []){PARAM_NO, PARAM_NO, PARAM_YES, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_ALL}
 
 // Options
 #define OPTION_PARSING_END	"--"
 #define OPTIONS	\
-(const t_parr){\
-	.len = 8, \
+{\
+	.len = 10, \
 	.obj_size = sizeof(t_option), \
-	.arr = (t_option[])\
+	.arr = (t_option [])\
 	{\
-		(t_option){\
-			.names = (char*[]){"--version", NULL}\
+		{\
+			.names = (char *[]){"--version", NULL}\
 		}, \
-		(t_option){\
-			.names = (char*[]){"--help", "-h", NULL}\
+		{\
+			.names = (char *[]){"--help", "-h", NULL}\
 		}, \
-		(t_option){\
-			.names = (char*[]){"--output-chars", "-c", NULL}, \
+		{\
+			.names = (char *[]){"--macro-warnings", "-mw", NULL}, \
 			.parameters = \
-			(t_parr){\
+			{\
 				.len = 2, \
 				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter[])\
+				.arr = (t_parameter [])\
 				{\
-					(t_parameter){\
+					{\
 						.name = "yes", \
-						.parameter = YES\
+						.parameter = PARAM_YES\
 					}, \
-					(t_parameter){\
+					{\
 						.name = "no", \
-						.parameter = NO\
+						.parameter = PARAM_NO\
 					}\
 				}\
 			}\
 		}, \
-		(t_option){\
-			.names = (char*[]){"--macro-warnings", "-m", NULL}, \
+		{\
+			.names = (char *[]){"--isa-only", "-j", NULL}, \
 			.parameters = \
-			(t_parr){\
+			{\
 				.len = 2, \
 				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter[])\
+				.arr = (t_parameter [])\
 				{\
-					(t_parameter){\
+					{\
 						.name = "yes", \
-						.parameter = YES\
+						.parameter = PARAM_YES\
 					}, \
-					(t_parameter){\
+					{\
 						.name = "no", \
-						.parameter = NO\
+						.parameter = PARAM_NO\
 					}\
 				}\
 			}\
 		}, \
-		(t_option){\
-			.names = (char*[]){"--isa-only", "-j", NULL}, \
+		{\
+			.names = (char *[]){"--syntax-only", "-s", NULL}, \
 			.parameters = \
-			(t_parr){\
+			{\
 				.len = 2, \
 				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter[])\
+				.arr = (t_parameter [])\
 				{\
-					(t_parameter){\
+					{\
 						.name = "yes", \
-						.parameter = YES\
+						.parameter = PARAM_YES\
 					}, \
-					(t_parameter){\
+					{\
 						.name = "no", \
-						.parameter = NO\
+						.parameter = PARAM_NO\
 					}\
 				}\
 			}\
 		}, \
-		(t_option){\
-			.names = (char*[]){"--syntax-only", "-s", NULL}, \
-			.parameters = \
-			(t_parr){\
-				.len = 2, \
-				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter[])\
-				{\
-					(t_parameter){\
-						.name = "yes", \
-						.parameter = YES\
-					}, \
-					(t_parameter){\
-						.name = "no", \
-						.parameter = NO\
-					}\
-				}\
-			}\
-		}, \
-		(t_option){\
-			.names = (char*[]){"--output-file", "-o", NULL}, \
+		{\
+			.names = (char *[]){"--isa-file", "-i", NULL}, \
 			.arguments = \
-			(t_parr){\
-				.len = 1, \
-				.obj_size = sizeof(char**), \
-				.arr = (char**[]){&((t_file *)data->files.arr)[OUTFILE_PROGRAM].name}\
+			{\
+				.len = 2, \
+				.obj_size = sizeof(t_argument), \
+				.arr = (t_argument [])\
+				{\
+					{\
+						.dst = &((t_file *)data->files.arr)[INFILE_ISA].info, \
+						.size = sizeof(uint8_t), \
+						.src = &(uint8_t){SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)}, \
+						.type = CPY\
+					}, \
+					{\
+						.dst = &((t_file *)data->files.arr)[INFILE_ISA].name\
+					}\
+				}\
 			}\
 		}, \
-		(t_option){\
-			.names = (char*[]){"--isa-file", "-i", NULL}, \
+		{\
+			.names = (char *[]){"--signals-file", "-si", NULL}, \
 			.arguments = \
-			(t_parr){\
-				.len = 1, \
-				.obj_size = sizeof(char**), \
-				.arr = (char**[]){&((t_file *)data->files.arr)[INFILE_ISA].name}\
+			{\
+				.len = 2, \
+				.obj_size = sizeof(t_argument), \
+				.arr = (t_argument [])\
+				{\
+					{\
+						.dst = &((t_file *)data->files.arr)[INFILE_SIGNALS].info, \
+						.size = sizeof(uint8_t), \
+						.src = &(uint8_t){SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)}, \
+						.type = CPY\
+					}, \
+					{\
+						.dst = &((t_file *)data->files.arr)[INFILE_SIGNALS].name\
+					}\
+				}\
+			}\
+		}, \
+		{\
+			.names = (char *[]){"--machine-code-output", "-mo", NULL}, \
+			.parameters = \
+			{\
+				.len = 3, \
+				.obj_size = sizeof(t_parameter), \
+				.arr = (t_parameter [])\
+				{\
+					{\
+						.name = "bin", \
+						.parameter = PARAM_BIN, \
+						.arguments = \
+						{\
+							.len = 2, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.type = CPY\
+								}, \
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].name, \
+									.size = strlen(DEFAULT_OUTFILE_MACHINE_CODE_BIN) + 1, \
+									.src = DEFAULT_OUTFILE_MACHINE_CODE_BIN, \
+									.type = DUP\
+								}\
+							}\
+						}\
+					}, \
+					{\
+						.name = "ascii", \
+						.parameter = PARAM_ASCII, \
+						.arguments = \
+						{\
+							.len = 2, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.type = CPY\
+								}, \
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].name, \
+									.size = strlen(DEFAULT_OUTFILE_MACHINE_CODE_TXT) + 1, \
+									.src = DEFAULT_OUTFILE_MACHINE_CODE_TXT, \
+									.type = DUP\
+								}\
+							}\
+						}\
+					}, \
+					{\
+						.name = "no", \
+						.parameter = PARAM_NO\
+					}\
+				}\
+			}\
+		}, \
+		{\
+			.names = (char *[]){"--json-output", "-jo", NULL}, \
+			.parameters = \
+			{\
+				.len = 3, \
+				.obj_size = sizeof(t_parameter), \
+				.arr = (t_parameter [])\
+				{\
+					{\
+						.name = "compact", \
+						.parameter = PARAM_COMPACT, \
+						.arguments = \
+						{\
+							.len = 2, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.type = CPY\
+								}, \
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].name, \
+									.size = strlen(DEFAULT_OUTFILE_JSON) + 1, \
+									.src = DEFAULT_OUTFILE_JSON, \
+									.type = DUP\
+								}\
+							}\
+						}\
+					}, \
+					{\
+						.name = "format", \
+						.parameter = PARAM_FORMAT, \
+						.arguments = \
+						{\
+							.len = 2, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.type = CPY\
+								}, \
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].name, \
+									.size = strlen(DEFAULT_OUTFILE_JSON) + 1, \
+									.src = DEFAULT_OUTFILE_JSON, \
+									.type = DUP\
+								}\
+							}\
+						}\
+					}, \
+					{\
+						.name = "no", \
+						.parameter = PARAM_NO\
+					}\
+				}\
+			}\
+		}, \
+		{\
+			.names = (char *[]){"--string-output", "-o", NULL}, \
+			.parameters = \
+			{\
+				.len = 4, \
+				.obj_size = sizeof(t_parameter), \
+				.arr = (t_parameter [])\
+				{\
+					{\
+						.name = "all", \
+						.parameter = PARAM_ALL\
+					}, \
+					{\
+						.name = "file", \
+						.parameter = PARAM_FILE\
+					}, \
+					{\
+						.name = "terminal", \
+						.parameter = PARAM_TERMINAL, \
+						.arguments = \
+						{\
+							.len = 1, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
+									.type = CPY\
+								}\
+							}\
+						}\
+					}, \
+					{\
+						.name = "no", \
+						.parameter = PARAM_NO, \
+						.arguments = \
+						{\
+							.len = 1, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
+									.type = CPY\
+								}\
+							}\
+						}\
+					}\
+				}\
 			}\
 		}\
 	}\
@@ -128,83 +308,110 @@
 
 // Option outputs
 #define EXECUTABLE_VERSION	"2.2.0"
-#define EXECUTABLE_HELP		"Usage: ./indulc {program input file}\n\
-	{program input file} is the input file from which the INDUL code is read. INDULC must have reading permissions for it. This argument is mandatory.\n\
-	The default output file in which the assembled machine code is written is named \"a.out\". If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.\n\
+#define EXECUTABLE_HELP		"Usage: ./indulc {input}\n\
+	{input} is the mandatory input file from which the INDUL code is read. INDULC must have reading permissions for it.\n\
 	The default input file from which the ISA is read is named \"isa.json\". INDULC must have reading permissions for it.\n\
+	The default input file from which the Factorio signals are read is named \"signals.json\". INDULC must have reading permissions for it.\n\
+	The optional default output file in which the blueprint string can be written is named \"string.txt\". If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.\n\
+	The optional output file in which the assembled machine code can be written is named \"machine_code.bin\" or \"machine_code.txt\". If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.\n\
+	The optional output file in which the Json blueprint object can be written is named \"blueprint.json\". If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.\n\
 \n\
 	Options can be added at any point in the arguments, except among an option's arguments.\n\
 	The \"--\" argument can be used to indicate the end of option parsing. Any argument following it will be treated as a regular argument rather than as an option.\n\
 	The default parameters and arguments are indicated with [ ].\n\
 	Option arguments are indicated with { }.\n\
 	The available options are :\n\
-		-h|--help			Show this message.\n\
-		--version			Show INDULC's version.\n\
-		-c|--output-chars=[no]|yes	Write machine code as ASCII characters rather than raw binary. Useful for debugging.\n\
-		-m|--macro-warnings=no|[yes]	Display macro-related warnings.\n\
-		-j|--isa-only=[no]|yes		Only check the ISA's syntax.\n\
-		-s|--syntax-only=[no]|yes	Only check the code's syntax.\n\
-		-o|--output-file {file}|[a.out]	Indicate output file to write to.\n\
-		-i|--isa-file {file}|[isa.json]	Indicate ISA file to read from.\n\
+		-h|--help					Show this message.\n\
+		--version					Show INDULC's version.\n\
+		-mw|--macro-warnings=no|[yes]			Display macro-related warnings.\n\
+		-j|--isa-only=[no]|yes				Only check the ISA's syntax.\n\
+		-s|--syntax-only=[no]|yes			Only check the code's syntax.\n\
+		-i|--isa-file {file}|[isa.json]			Indicate ISA file to read from.\n\
+		-si|--signals-file {file}|[signals.json]	Indicate Factorio signals file to read from.\n\
+		-mo|--machine-code-output=[no]|bin|ascii	Output machine code as raw binary or ASCII characters.\n\
+		-jo|--json-output=[no]|compact|format		Output Json blueprint object in compact or formatted manner.\n\
+		-o|--string-output=no|terminal|file|[all]	Output blueprint string in terminal, in file or in both.\n\
 \n\
 Refer to the README at the root of the repository for more informations.\n\
 \n\
-GitHub repository available at : github.com/Tzvet05/INDULC\n\
-Programmed by Tzvet for their Industrious CPUs, a series of RISC CPUs implemented in Factorio."
+INDULC is licensed under the MIT license.\n\
+GitHub repository available at : github.com/Tzvet05/INDULC. All contributions are welcome."
 
 /* ----- ENUMERATIONS ----- */
 
 // Option indexes
-enum	option_index
+enum
 {
 	OPTION_VERSION,
 	OPTION_HELP,
-	OPTION_OUTPUT_CHARS,
 	OPTION_MACRO_WARNINGS,
 	OPTION_ISA_ONLY,
 	OPTION_SYNTAX_ONLY,
-	OPTION_OUTPUT_FILE,
-	OPTION_ISA_FILE
+	OPTION_ISA_FILE,
+	OPTION_SIGNALS_FILE,
+	OPTION_MACHINE_CODE_OUTPUT,
+	OPTION_JSON_OUTPUT,
+	OPTION_STRING_OUTPUT
 };
-
-/* ----- TYPES DECLARATIONS ----- */
-
-typedef struct	file	t_file;
-typedef struct	data	t_data;
 
 // Option parameters
 typedef enum	option_parameter
 {
-	NO,
-	YES
+	PARAM_NO,
+	PARAM_YES,
+	PARAM_ALL,
+	PARAM_BIN,
+	PARAM_ASCII,
+	PARAM_COMPACT,
+	PARAM_FORMAT,
+	PARAM_TERMINAL,
+	PARAM_FILE
 }	t_option_parameter;
+
+// Argument copy type
+typedef enum	cpy_type
+{
+	CPY,
+	DUP
+}	t_cpy_type;
+
+/* ----- TYPES DECLARATIONS ----- */
+
+typedef struct	data	t_data;
 
 /* ----- STRUCTURES ----- */
 
-// Option parameter
-typedef struct parameter
+// Option/parameter argument
+typedef struct	argument
 {
-	char*			name;//		Name of the parameter
+	void		*dst;//	Pointer to the object to substitute
+	size_t		size;//	Size of the object to subtitute
+	void		*src;//	Pointer to the substituting object
+	t_cpy_type	type;//	Type of copying
+}	t_argument;
+
+// Option parameter
+typedef struct	parameter
+{
+	char			*name;//	Name of the parameter
 	t_option_parameter	parameter;//	Parameter
+	t_parr			arguments;//	Array of arguments (overwrites the default option arguments)
 }	t_parameter;
 
 // Option
-typedef struct option
+typedef struct	option
 {
-	char**	names;//	Array of option names
+	char	**names;//	Array of option names
 	t_parr	parameters;//	Array of option parameters
-	t_parr	arguments;//	Array of pointers to the strings to subsitute
+	t_parr	arguments;//	Array of arguments (overwritten by the parameter arguments)
 }	t_option;
 
 /* ----- PROTOTYPES ----- */
 
 // arguments/
-//	get_arguments.c
-bool	get_arguments(t_data* data, char** args);
-//	check_arguments.c
-bool	check_arguments(t_data* data);
+//	get.c
+bool	get_arguments(t_data *data, char **args);
+//	check.c
+bool	check_arguments(t_data *data);
 //	exec_options.c
-bool	exec_options(t_option_parameter* options, bool* error);
-//	arguments_utils.c
-bool	is_option(char* str);
-bool	has_parameter(char* str);
+bool	exec_options(t_option_parameter *options, bool *error);

@@ -1,5 +1,6 @@
 [submodule "submodules/cJSON"]
 	path = submodules/cJSON
 	url = https://github.com/DaveGamble/cJSON.git
-[submodule "submodules"]
-	path = submodules
+[submodule "submodules/Factorio_Json_to_blueprint"]
+	path = submodules/Factorio_Json_to_blueprint
+	url = git@github.com:Tzvet05/Factorio_Json_to_blueprint.git
