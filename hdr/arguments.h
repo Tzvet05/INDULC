@@ -180,7 +180,21 @@
 					}, \
 					{\
 						.name = "no", \
-						.parameter = PARAM_NO\
+						.parameter = PARAM_NO, \
+						.arguments = \
+						{\
+							.len = 1, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
+									.type = CPY\
+								}\
+							}\
+						}\
 					}\
 				}\
 			}\
@@ -243,7 +257,21 @@
 					}, \
 					{\
 						.name = "no", \
-						.parameter = PARAM_NO\
+						.parameter = PARAM_NO, \
+						.arguments = \
+						{\
+							.len = 1, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
+									.type = CPY\
+								}\
+							}\
+						}\
 					}\
 				}\
 			}\
@@ -258,11 +286,51 @@
 				{\
 					{\
 						.name = "all", \
-						.parameter = PARAM_ALL\
+						.parameter = PARAM_ALL, \
+						.arguments = \
+						{\
+							.len = 2, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.type = CPY\
+								}, \
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].name, \
+									.size = strlen(DEFAULT_OUTFILE_STRING) + 1, \
+									.src = DEFAULT_OUTFILE_STRING, \
+									.type = DUP\
+								}\
+							}\
+						}\
 					}, \
 					{\
 						.name = "file", \
-						.parameter = PARAM_FILE\
+						.parameter = PARAM_FILE, \
+						.arguments = \
+						{\
+							.len = 2, \
+							.obj_size = sizeof(t_argument), \
+							.arr = (t_argument [])\
+							{\
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].info, \
+									.size = sizeof(uint8_t), \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.type = CPY\
+								}, \
+								{\
+									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].name, \
+									.size = strlen(DEFAULT_OUTFILE_STRING) + 1, \
+									.src = DEFAULT_OUTFILE_STRING, \
+									.type = DUP\
+								}\
+							}\
+						}\
 					}, \
 					{\
 						.name = "terminal", \
