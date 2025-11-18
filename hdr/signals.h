@@ -15,6 +15,14 @@
 #define JSON_SIGNAL_NAME	"name"
 #define JSON_SIGNAL_TYPE	"type"
 
+/* ----- ENUMERATIONS ----- */
+
+enum
+{
+	LABEL,
+	DESCRIPTION
+};
+
 /* ----- TYPES DECLARATIONS ----- */
 
 typedef struct	data	t_data;
@@ -29,6 +37,7 @@ typedef struct	signal
 
 typedef struct	blueprint
 {
+	char	*text[2];
 	t_parr	types;
 	t_parr	qualities;
 	t_parr	signals;

@@ -9,13 +9,13 @@
 /* ----- MACROS ----- */
 
 // Default options
-#define DEFAULT_OPTIONS	(t_option_parameter []){PARAM_NO, PARAM_NO, PARAM_YES, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_ALL}
+#define DEFAULT_OPTIONS	(t_option_parameter []){PARAM_NO, PARAM_NO, PARAM_YES, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_ALL}
 
 // Options
 #define OPTION_PARSING_END	"--"
 #define OPTIONS	\
 {\
-	.len = 10, \
+	.len = 11, \
 	.obj_size = sizeof(t_option), \
 	.arr = (t_option [])\
 	{\
@@ -118,6 +118,23 @@
 					}, \
 					{\
 						.dst = &((t_file *)data->files.arr)[INPUT_SIGNALS].name\
+					}\
+				}\
+			}\
+		}, \
+		{\
+			.names = (char *[]){"--blueprint", "-b", NULL}, \
+			.arguments = \
+			{\
+				.len = 2, \
+				.obj_size = sizeof(t_argument), \
+				.arr = (t_argument [])\
+				{\
+					{\
+						.dst = &data->blueprint.text[LABEL]\
+					}, \
+					{\
+						.dst = &data->blueprint.text[DESCRIPTION]\
 					}\
 				}\
 			}\
@@ -396,6 +413,7 @@
 		-s|--syntax-only=[no]|yes			Only check the code's syntax.\n\
 		-i|--isa-file {file}|[isa.json]			Indicate ISA file to read from.\n\
 		-si|--signals-file {file}|[signals.json]	Indicate Factorio signals file to read from.\n\
+		-b|--blueprint {label} {description}		Add a custom label and description to the blueprint.\n\
 		-mo|--machine-code-output=[no]|bin|ascii	Output machine code as raw binary or ASCII characters.\n\
 		-jo|--json-output=[no]|compact|format		Output Json blueprint object in a compact or formatted manner.\n\
 		-o|--string-output=no|terminal|file|[all]	Output blueprint string in terminal, file or both.\n\
@@ -417,6 +435,7 @@ enum
 	OPTION_SYNTAX_ONLY,
 	OPTION_ISA_FILE,
 	OPTION_SIGNALS_FILE,
+	OPTION_BLUEPRINT,
 	OPTION_MACHINE_CODE_OUTPUT,
 	OPTION_JSON_OUTPUT,
 	OPTION_STRING_OUTPUT
