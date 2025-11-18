@@ -2,10 +2,10 @@ indulc
 obj/
 TODO
 programs/
-machine_code.bin
-machine_code.txt
-blueprint.json
-string.txt
+*_machine_code.bin
+*_machine_code.txt
+*_blueprint.json
+*_string.txt
 isa_test.json
 *.out
 *.a
