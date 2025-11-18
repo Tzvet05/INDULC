@@ -9,18 +9,22 @@
 /* ----- MACROS ----- */
 
 // Function macros
-#define SET_REQUIREMENT(requirement)		((requirement & REQUIREMENT_MASK) << REQUIREMENT_POS)
-#define SET_PERMISSION(permission)		((permission & PERMISSION_MASK) << PERMISSION_POS)
-#define GET_REQUIREMENT(info)			((info >> REQUIREMENT_POS) & REQUIREMENT_MASK)
-#define GET_PERMISSION(info, permission)	((info >> PERMISSION_POS) & PERMISSION_MASK & permission)
+#define SET_REQUIREMENT(requirement)	((requirement & MASK_REQUIREMENT) << POS_REQUIREMENT)
+#define SET_PERMISSION(permission)	((permission & MASK_PERMISSION) << POS_PERMISSION)
+#define SET_INFO(info)			((info & MASK_INFO) << POS_INFO)
+#define GET_REQUIREMENT(info)		((info >> POS_REQUIREMENT) & MASK_REQUIREMENT)
+#define GET_PERMISSION(info, mask)	((info >> POS_PERMISSION) & MASK_PERMISSION & mask)
+#define GET_INFO(info, mask)		((info >> POS_INFO) & MASK_INFO & mask)
 
 // Bit masks
-#define REQUIREMENT_MASK	3
-#define PERMISSION_MASK		7
+#define MASK_REQUIREMENT	3
+#define MASK_PERMISSION		7
+#define MASK_INFO		7
 
 // Bit positions
-#define REQUIREMENT_POS	0
-#define PERMISSION_POS	2
+#define POS_REQUIREMENT	0
+#define POS_PERMISSION	2
+#define POS_INFO	5
 
 // Function fopen modes
 #define FOPEN_READ_MODE		"r"
@@ -44,6 +48,10 @@ enum
 	EXEC =	(1 << 2)
 };
 
+/* ----- TYPES DECLARATIONS ----- */
+
+typedef struct	pstr	t_pstr;
+
 /* ----- STRUCTURES ----- */
 
 // File
@@ -59,6 +67,8 @@ typedef struct file
 // file/
 //	open.c
 bool	file_open(t_file *file, char *mode);
+//	get_name.c
+t_pstr	file_get_name(char *path);
 //	get_next_line.c
 bool	file_get_next_line(t_file *file, char **line);
 //	close.c

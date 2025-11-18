@@ -45,6 +45,7 @@ SRC :=	$(DIR_LST)new_back.c \
 	$(DIR_NBR)get_number.c \
 	$(DIR_NBR)get_charset.c \
 	$(DIR_FIL)open.c \
+	$(DIR_FIL)get_name.c \
 	$(DIR_FIL)get_next_line.c \
 	$(DIR_FIL)close.c \
 	$(DIR_FIL)free.c \
@@ -62,7 +63,7 @@ $(NAME) : $(OBJ)
 
 $(DIR_OBJ)%.o : $(DIR_SRC)%.c
 	@ mkdir -p $(dir $@)
-	@ $(CC) $(CFLAGS) $(addprefix -I,$(HDR)) -c $^ -o $@
+	@ $(CC) $(CFLAGS) $(addprefix -I, $(HDR)) -c $^ -o $@
 
 # Rules
 
