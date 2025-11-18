@@ -57,7 +57,7 @@ static bool	tokenize_words(t_data *data, char *line, size_t lin, size_t col)
 		if (token == NULL
 			|| lst_new_back((t_lst **)&(lst_last(data->tokens)->content), token) == 1)
 		{
-			free(token);
+			free_token(token);
 			fprintf(stderr, "%s: %s: %s: %s\n",
 				EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
 			return (1);

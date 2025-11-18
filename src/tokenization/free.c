@@ -2,7 +2,7 @@
 #include "lst.h"
 #include "tokenization.h"
 
-static void	free_token(void *token)
+void	free_token(void *token)
 {
 	free(((t_token *)token)->str);
 	free(token);

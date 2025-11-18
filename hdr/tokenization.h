@@ -25,4 +25,5 @@ typedef struct	token
 //	tokenization.c
 bool	tokenize(t_data *data);
 //	free.c
+void	free_token(void *token);
 void	free_tokens(t_lst **token_col);
