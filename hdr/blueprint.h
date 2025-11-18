@@ -8,6 +8,7 @@
 
 // Json blueprint key fields
 #define JSON_BLUEPRINT		"blueprint"
+#define JSON_DESCRIPTION	"description"
 #define JSON_ICONS		"icons"
 #define JSON_SIGNAL		"signal"
 #define JSON_NAME		"name"
@@ -31,8 +32,9 @@
 
 // Json blueprint value fields
 //	Blueprint
-#define JSON_BLUEPRINT_LABEL	"Program"
-#define JSON_BLUEPRINT_VERSION	562949957943296
+#define JSON_BLUEPRINT_DESCRIPTION	"Blueprint of an assembled INDUL program, stored in an array of constant combinators. Ready to be pasted onto the instruction ROM of a CPU."
+#define JSON_BLUEPRINT_LABEL		"INDUL program"
+#define JSON_BLUEPRINT_VERSION		562949958139904
 //	Items
 #define JSON_ITEM_BLUEPRINT		"blueprint"
 #define JSON_ITEM_CONSTANT_COMBINATOR	"constant-combinator"

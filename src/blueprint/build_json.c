@@ -146,15 +146,21 @@ bool	build_json_blueprint(t_data *data)
 	cJSON	*main_object = cJSON_CreateObject();
 	if (main_object == NULL)
 		return (1);
-	const char	*blueprint_label;
+	const char	*label, *description;
 	if (data->blueprint.text[LABEL] != NULL)
-		blueprint_label = data->blueprint.text[LABEL];
+		label = data->blueprint.text[LABEL];
 	else
-		blueprint_label = JSON_BLUEPRINT_LABEL;
+		label = JSON_BLUEPRINT_LABEL;
+	if (data->blueprint.text[DESCRIPTION] != NULL)
+		description = data->blueprint.text[DESCRIPTION];
+	else
+		description = JSON_BLUEPRINT_DESCRIPTION;
 	cJSON	*blueprint = cJSON_AddObjectToObject(main_object, JSON_BLUEPRINT);
-	if (blueprint == NULL || build_icons(blueprint) == 1 || build_entities(data, blueprint) == 1
+	if (blueprint == NULL
+		|| cJSON_AddStringToObject(blueprint, JSON_DESCRIPTION, description) == NULL
+		|| build_icons(blueprint) == 1 || build_entities(data, blueprint) == 1
 		|| cJSON_AddStringToObject(blueprint, JSON_ITEM, JSON_ITEM_BLUEPRINT) == NULL
-		|| cJSON_AddStringToObject(blueprint, JSON_LABEL, blueprint_label) == NULL
+		|| cJSON_AddStringToObject(blueprint, JSON_LABEL, label) == NULL
 		|| cJSON_AddNumberToObject(blueprint, JSON_VERSION, JSON_BLUEPRINT_VERSION) == NULL)
 	{
 		cJSON_Delete(main_object);
