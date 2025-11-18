@@ -182,8 +182,7 @@ static bool	get_registers(t_isa *isa, const cJSON *registers)
 		((t_register *)isa->registers.arr)[i_register].mnemonics.obj_size = sizeof(char *);
 		((t_register *)isa->registers.arr)[i_register].mnemonics.arr
 			= malloc(((t_register *)isa->registers.arr)[i_register].mnemonics.len
-				* ((t_register *)isa->registers.arr)
-					[i_register].mnemonics.obj_size);
+			* ((t_register *)isa->registers.arr)[i_register].mnemonics.obj_size);
 		if (((t_register *)isa->registers.arr)[i_register].mnemonics.arr == NULL)
 		{
 			((t_register *)isa->registers.arr)[i_register].mnemonics.len = 0;
