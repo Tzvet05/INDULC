@@ -46,8 +46,8 @@ static bool	get_qualities(t_blueprint *blueprint, const cJSON *qualities)
 	const cJSON	*quality;
 	cJSON_ArrayForEach(quality, qualities)
 	{
-		((char **)blueprint->qualities.arr)[i_quality] =
-			strdup(cJSON_GetStringValue(quality));
+		((char **)blueprint->qualities.arr)[i_quality]
+			= strdup(cJSON_GetStringValue(quality));
 		if (((char **)blueprint->qualities.arr)[i_quality] == NULL)
 		{
 			blueprint->qualities.len = i_quality + 1;
@@ -99,7 +99,6 @@ static bool	get_signals(t_blueprint *blueprint, const cJSON *signals)
 	if (blueprint->signals.arr == NULL || counts.arr == NULL)
 	{
 		blueprint->signals.len = 0;
-		free(blueprint->signals.arr);
 		free(counts.arr);
 		return (1);
 	}
@@ -119,13 +118,13 @@ static bool	get_signals(t_blueprint *blueprint, const cJSON *signals)
 		size_t	i_insert = ((size_t *)counts.arr)[i_count];
 		((size_t *)counts.arr)[i_count]++;
 		item_signal = cJSON_GetObjectItemCaseSensitive(signal, JSON_SIGNAL_NAME);
-		((t_signal *)blueprint->signals.arr)[i_insert].name =
-			strdup(cJSON_GetStringValue(item_signal));
+		((t_signal *)blueprint->signals.arr)[i_insert].name
+			= strdup(cJSON_GetStringValue(item_signal));
 		if (cJSON_HasObjectItem(signal, JSON_SIGNAL_TYPE) != 0)
 		{
 			item_signal = cJSON_GetObjectItemCaseSensitive(signal, JSON_SIGNAL_TYPE);
-			((t_signal *)blueprint->signals.arr)[i_insert].type =
-				get_type(&blueprint->types, cJSON_GetStringValue(item_signal));
+			((t_signal *)blueprint->signals.arr)[i_insert].type
+				= get_type(&blueprint->types, cJSON_GetStringValue(item_signal));
 		}
 		if (((t_signal *)blueprint->signals.arr)[i_insert].name == NULL)
 		{
