@@ -196,15 +196,15 @@ A comment can be started anywhere.
 
 ### Example
 
-Here is an example of a valid block of INDUL code :
+Here is an example of a valid block of INDUL code (based on the example ISA file `data/isa.json`) :
 ```
 %define START	10					; starting value
 %define STEP	2					; step value
 
-		ILOD	r1,		START		; initialize r1 with START
-		ILOD	r2,		STEP		; initialize r2 with STEP
+		LODI	r1,		START		; initialize r1 with START
+		LODI	r2,		STEP		; initialize r2 with STEP
 loop:	SUB		r1,		r2,		r1	; definition of label "loop", r1 = r1 - r2
-		BRH		nz,		loop		; jump to the label "loop" if the result of the substraction is not 0
+		BRHI	nz,		loop		; jump to the label "loop" if the result of the substraction is not 0
 		HLT							; stop program execution
 ```
 
@@ -303,7 +303,7 @@ The flag `even` with multiple mnemonics `even` and `ev` and code `2` can be stor
 }
 ```
 
-Refer to the `isa.json` file located at the root of the repository for an example of a complete ISA.
+Refer to the `data/isa.json` file for an example of a complete ISA.
 
 ## JSON SIGNALS SYNTAX
 
@@ -381,7 +381,7 @@ The instructions would be stored as signals in the following order :
 7. `"shape-vertical"` (`"virtual"`), `"normal"` (the third listed type is `"virtual"`)
 8. `"shape-vertical"` (`"virtual"`), `"uncommon"`
 
-Refer to the `signals.json` file located at the root of the repository for an example of a complete Factorio signals file.
+Refer to the `data/signals.json` file for an example of a complete Factorio signals file.
 
 ## ASSEMBLY PROCESS
 
