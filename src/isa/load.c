@@ -20,15 +20,15 @@ static void	set_instruction_data(t_isa *isa)
 
 bool	load_isa(t_data *data)
 {
-	if (file_open(&((t_file *)data->files.arr)[INFILE_ISA], FOPEN_READ_MODE) == 1)
+	if (file_open(&((t_file *)data->files.arr)[INPUT_ISA], FOPEN_READ_MODE) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
-			((t_file *)data->files.arr)[INFILE_ISA].name);
+			((t_file *)data->files.arr)[INPUT_ISA].name);
 		return (1);
 	}
-	const cJSON	*json = parse_json_file(&((t_file *)data->files.arr)[INFILE_ISA]);
-	file_close(&((t_file *)data->files.arr)[INFILE_ISA]);
+	const cJSON	*json = parse_json_file(&((t_file *)data->files.arr)[INPUT_ISA]);
+	file_close(&((t_file *)data->files.arr)[INPUT_ISA]);
 	if (json == NULL)
 		return (1);
 	if (check_isa_syntax(json) == 1)

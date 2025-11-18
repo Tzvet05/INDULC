@@ -6,7 +6,7 @@
 
 bool	check_arguments(t_data *data)
 {
-	if (((t_file *)data->files.arr)[INFILE_CODE].name == NULL
+	if (((t_file *)data->files.arr)[INPUT_CODE].name == NULL
 		&& data->options[OPTION_VERSION] == PARAM_NO
 		&& data->options[OPTION_HELP] == PARAM_NO)
 	{

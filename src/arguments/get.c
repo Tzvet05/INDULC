@@ -176,10 +176,10 @@ bool	get_arguments(t_data *data, char **args)
 		}
 		else
 		{
-			if (((t_file *)data->files.arr)[INFILE_CODE].name == NULL)
+			if (((t_file *)data->files.arr)[INPUT_CODE].name == NULL)
 			{
-				((t_file *)data->files.arr)[INFILE_CODE].name = strdup(args[i_arg]);
-				if (((t_file *)data->files.arr)[INFILE_CODE].name == NULL)
+				((t_file *)data->files.arr)[INPUT_CODE].name = strdup(args[i_arg]);
+				if (((t_file *)data->files.arr)[INPUT_CODE].name == NULL)
 				{
 					fprintf(stderr, "%s: %s: %s: %s\n",
 						EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC,

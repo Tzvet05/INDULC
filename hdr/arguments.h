@@ -91,13 +91,13 @@
 				.arr = (t_argument [])\
 				{\
 					{\
-						.dst = &((t_file *)data->files.arr)[INFILE_ISA].info, \
+						.dst = &((t_file *)data->files.arr)[INPUT_ISA].info, \
 						.size = sizeof(uint8_t), \
 						.src = &(uint8_t){SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)}, \
 						.type = CPY\
 					}, \
 					{\
-						.dst = &((t_file *)data->files.arr)[INFILE_ISA].name\
+						.dst = &((t_file *)data->files.arr)[INPUT_ISA].name\
 					}\
 				}\
 			}\
@@ -111,13 +111,13 @@
 				.arr = (t_argument [])\
 				{\
 					{\
-						.dst = &((t_file *)data->files.arr)[INFILE_SIGNALS].info, \
+						.dst = &((t_file *)data->files.arr)[INPUT_SIGNALS].info, \
 						.size = sizeof(uint8_t), \
 						.src = &(uint8_t){SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)}, \
 						.type = CPY\
 					}, \
 					{\
-						.dst = &((t_file *)data->files.arr)[INFILE_SIGNALS].name\
+						.dst = &((t_file *)data->files.arr)[INPUT_SIGNALS].name\
 					}\
 				}\
 			}\
@@ -140,15 +140,15 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].info, \
 									.size = sizeof(uint8_t), \
-									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].name, \
-									.size = strlen(DEFAULT_OUTFILE_MACHINE_CODE_BIN) + 1, \
-									.src = DEFAULT_OUTFILE_MACHINE_CODE_BIN, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].name, \
+									.size = strlen(TAIL_OUTPUT_MACHINE_CODE_BIN) + 1, \
+									.src = TAIL_OUTPUT_MACHINE_CODE_BIN, \
 									.type = DUP\
 								}\
 							}\
@@ -164,15 +164,15 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].info, \
 									.size = sizeof(uint8_t), \
-									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].name, \
-									.size = strlen(DEFAULT_OUTFILE_MACHINE_CODE_TXT) + 1, \
-									.src = DEFAULT_OUTFILE_MACHINE_CODE_TXT, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].name, \
+									.size = strlen(TAIL_OUTPUT_MACHINE_CODE_TXT) + 1, \
+									.src = TAIL_OUTPUT_MACHINE_CODE_TXT, \
 									.type = DUP\
 								}\
 							}\
@@ -188,7 +188,7 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
 									.type = CPY\
@@ -217,15 +217,15 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].info, \
 									.size = sizeof(uint8_t), \
-									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].name, \
-									.size = strlen(DEFAULT_OUTFILE_JSON) + 1, \
-									.src = DEFAULT_OUTFILE_JSON, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].name, \
+									.size = strlen(TAIL_OUTPUT_JSON) + 1, \
+									.src = TAIL_OUTPUT_JSON, \
 									.type = DUP\
 								}\
 							}\
@@ -241,15 +241,15 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].info, \
 									.size = sizeof(uint8_t), \
-									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].name, \
-									.size = strlen(DEFAULT_OUTFILE_JSON) + 1, \
-									.src = DEFAULT_OUTFILE_JSON, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].name, \
+									.size = strlen(TAIL_OUTPUT_JSON) + 1, \
+									.src = TAIL_OUTPUT_JSON, \
 									.type = DUP\
 								}\
 							}\
@@ -265,7 +265,7 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_JSON].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
 									.type = CPY\
@@ -294,15 +294,15 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].info, \
 									.size = sizeof(uint8_t), \
-									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].name, \
-									.size = strlen(DEFAULT_OUTFILE_STRING) + 1, \
-									.src = DEFAULT_OUTFILE_STRING, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].name, \
+									.size = strlen(TAIL_OUTPUT_STRING) + 1, \
+									.src = TAIL_OUTPUT_STRING, \
 									.type = DUP\
 								}\
 							}\
@@ -318,15 +318,15 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].info, \
 									.size = sizeof(uint8_t), \
-									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)}, \
+									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].name, \
-									.size = strlen(DEFAULT_OUTFILE_STRING) + 1, \
-									.src = DEFAULT_OUTFILE_STRING, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].name, \
+									.size = strlen(TAIL_OUTPUT_STRING) + 1, \
+									.src = TAIL_OUTPUT_STRING, \
 									.type = DUP\
 								}\
 							}\
@@ -342,7 +342,7 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
 									.type = CPY\
@@ -360,7 +360,7 @@
 							.arr = (t_argument [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTFILE_STRING].info, \
+									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
 									.type = CPY\
@@ -377,12 +377,12 @@
 // Option outputs
 #define EXECUTABLE_VERSION	"2.2.0"
 #define EXECUTABLE_HELP		"Usage: ./indulc {input}\n\
-	{input} is the mandatory input file from which the INDUL code is read. INDULC must have reading permissions for it.\n\
-	The default input file from which the ISA is read is named \"isa.json\". INDULC must have reading permissions for it.\n\
-	The default input file from which the Factorio signals are read is named \"signals.json\". INDULC must have reading permissions for it.\n\
-	The optional default output file in which the blueprint string can be written is named \"string.txt\". If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.\n\
-	The optional output file in which the assembled machine code can be written is named \"machine_code.bin\" or \"machine_code.txt\". If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.\n\
-	The optional output file in which the Json blueprint object can be written is named \"blueprint.json\". If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.\n\
+	{input} is the mandatory input file from which the INDUL code is read.\n\
+	The mandatory default input file from which the ISA is read is named \"isa.json\".\n\
+	The default input file from which the Factorio signals are read is named \"signals.json\".\n\
+	The optional default output file in which the blueprint string can be written is named \"[input]_string.txt\", where \"[input]\" is the name of the input file.\n\
+	The optional output file in which the assembled machine code can be written is named \"[input]_machine_code.bin\" or \"[input]_machine_code.txt\", where \"[input]\" is the name of the input file.\n\
+	The optional output file in which the Json blueprint object can be written is named \"[input]_blueprint.json\", where \"[input]\" is the name of the input file.\n\
 \n\
 	Options can be added at any point in the arguments, except among an option's arguments.\n\
 	The \"--\" argument can be used to indicate the end of option parsing. Any argument following it will be treated as a regular argument rather than as an option.\n\
@@ -397,10 +397,10 @@
 		-i|--isa-file {file}|[isa.json]			Indicate ISA file to read from.\n\
 		-si|--signals-file {file}|[signals.json]	Indicate Factorio signals file to read from.\n\
 		-mo|--machine-code-output=[no]|bin|ascii	Output machine code as raw binary or ASCII characters.\n\
-		-jo|--json-output=[no]|compact|format		Output Json blueprint object in compact or formatted manner.\n\
-		-o|--string-output=no|terminal|file|[all]	Output blueprint string in terminal, in file or in both.\n\
+		-jo|--json-output=[no]|compact|format		Output Json blueprint object in a compact or formatted manner.\n\
+		-o|--string-output=no|terminal|file|[all]	Output blueprint string in terminal, file or both.\n\
 \n\
-Refer to the README at the root of the repository for more informations.\n\
+Refer to the README at the root of the repository for more informations and details.\n\
 \n\
 INDULC is licensed under the MIT license.\n\
 GitHub repository available at : github.com/Tzvet05/INDULC. All contributions are welcome."

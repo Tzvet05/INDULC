@@ -86,11 +86,11 @@ static bool	tokenize_line(t_data *data, char *line, size_t lin)
 
 bool	tokenize(t_data *data)
 {
-	if (file_open(&((t_file *)data->files.arr)[INFILE_CODE], FOPEN_READ_MODE) == 1)
+	if (file_open(&((t_file *)data->files.arr)[INPUT_CODE], FOPEN_READ_MODE) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
-			((t_file *)data->files.arr)[INFILE_CODE].name);
+			((t_file *)data->files.arr)[INPUT_CODE].name);
 		return (1);
 	}
 	char	*line = NULL;
@@ -98,23 +98,23 @@ bool	tokenize(t_data *data)
 	while (1)
 	{
 		free(line);
-		if (file_get_next_line(&((t_file *)data->files.arr)[INFILE_CODE], &line) == 1)
+		if (file_get_next_line(&((t_file *)data->files.arr)[INPUT_CODE], &line) == 1)
 		{
 			fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
 				EXECUTABLE_NAME, LIB_LIBC, FUNC_GETLINE, ERROR_READ_FILE,
-				((t_file *)data->files.arr)[INFILE_CODE].name);
-			file_close(&((t_file *)data->files.arr)[INFILE_CODE]);
+				((t_file *)data->files.arr)[INPUT_CODE].name);
+			file_close(&((t_file *)data->files.arr)[INPUT_CODE]);
 			return (1);
 		}
 		if (line == NULL)
 		{
-			file_close(&((t_file *)data->files.arr)[INFILE_CODE]);
+			file_close(&((t_file *)data->files.arr)[INPUT_CODE]);
 			return (0);
 		}
 		if (tokenize_line(data, line, lin) == 1)
 		{
 			free(line);
-			file_close(&((t_file *)data->files.arr)[INFILE_CODE]);
+			file_close(&((t_file *)data->files.arr)[INPUT_CODE]);
 			return (1);
 		}
 		lin++;

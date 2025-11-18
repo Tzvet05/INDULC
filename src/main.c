@@ -29,7 +29,7 @@ static bool	convert_output(t_data *data)
 {
 	if (data->options[OPTION_MACHINE_CODE_OUTPUT] != PARAM_NO
 		&& write_machine_code(&data->output.machine_code,
-		&((t_file *)data->files.arr)[OUTFILE_MACHINE_CODE], data->options) == 1)
+		&((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE], data->options) == 1)
 		return (1);
 	if (data->isa.instruction_length > 32
 		|| (data->options[OPTION_JSON_OUTPUT] == PARAM_NO
@@ -45,14 +45,14 @@ static bool	convert_output(t_data *data)
 		return (1);
 	}
 	if (data->options[OPTION_JSON_OUTPUT] != PARAM_NO
-		&& write_json(data->output.json, &((t_file *)data->files.arr)[OUTFILE_JSON],
+		&& write_json(data->output.json, &((t_file *)data->files.arr)[OUTPUT_JSON],
 		data->options) == 1)
 		return (1);
 	if (data->options[OPTION_STRING_OUTPUT] == PARAM_NO)
 		return (0);
 	if (data->options[OPTION_STRING_OUTPUT] != PARAM_NO
 		&& (build_string_blueprint(data) == 1 || write_string(&data->output.string,
-		&((t_file *)data->files.arr)[OUTFILE_STRING], data->options) == 1))
+		&((t_file *)data->files.arr)[OUTPUT_STRING], data->options) == 1))
 			return (1);
 	return (0);
 }
@@ -81,21 +81,21 @@ static bool	run(t_data *data)
 int32_t	main(int32_t argc, char **argv)
 {
 	(void)argc;
-	t_data	data = (t_data){.options = DEFAULT_OPTIONS};
-	if (alloc_files(&data) == 1 || get_arguments(&data, &argv[1]) == 1
-		|| check_arguments(&data) == 1)
+	t_data	data = (t_data){.options = DEFAULT_OPTIONS, .files = (t_parr){
+		.len = N_FILES, .obj_size = sizeof(t_file), .arr = (t_file [N_FILES]){0}}};
+	if (get_arguments(&data, &argv[1]) == 1 || check_arguments(&data) == 1)
 	{
-		parr_clear(&data.files, file_free);
+		free_files(&data.files);
 		return (1);
 	}
 	bool	error = 0;
 	if (exec_options(data.options, &error) == 1)
 	{
-		parr_clear(&data.files, file_free);
+		free_files(&data.files);
 		return (error);
 	}
 	if (init_files(&data) == 1 || check_files(&data) == 1 || run(&data) == 1)
 		error = 1;
-	parr_clear(&data.files, file_free);
+	free_files(&data.files);
 	return (error);
 }

@@ -69,6 +69,7 @@ SRC :=	main.c \
 	$(DIR_ISA)free.c \
 	$(DIR_FIL)check.c \
 	$(DIR_FIL)init.c \
+	$(DIR_FIL)free.c \
 	$(DIR_TOK)tokenization.c \
 	$(DIR_TOK)free.c \
 	$(DIR_PRE)preprocessing.c \
@@ -107,7 +108,7 @@ $(NAME) : $(OBJ) $(NAME_LIB_INDULC) $(NAME_LIB_CJSON) $(NAME_LIB_BLUEPRINT)
 
 $(DIR_OBJ)%.o : $(DIR_SRC)%.c
 	@ mkdir -p $(dir $@)
-	@ $(CC) $(CFLAGS) $(addprefix -I,$(HDR)) -c $^ -o $@
+	@ $(CC) $(CFLAGS) $(addprefix -I, $(HDR)) -c $^ -o $@
 
 # Libraries
 

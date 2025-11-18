@@ -37,14 +37,20 @@ make
 Run the assembler using
 `./indulc {input}`
 
-`{input}` is the mandatory input text file containing the program to assemble.
-INDULC must have reading permissions for it.
+`{input}` is the mandatory input file from which the INDUL code is read.
 
-The default output file in which the assembled machine code is written is named `a.out`. This name can be changed using the "output file" option (see further down). If it does not exist, INDULC will create it. If it already exists, INDULC must have writing permissions for it.
+The mandatory default input file from which the ISA is read is named `isa.json`. This name can be changed using the "ISA file" option (see further down).
 
-The default input file from which the ISA is read is named `isa.json`. This name can be changed using the "ISA file" option (see further down). INDULC must have reading permissions for it.
+The default input file from which the Factorio signals are read is named `signals.json`. This name can be changed using the "signals file" option (see further down).
 
-The default input file from which the signals are read is named `signals.json`. This name can be changed using the "signals file" option (see further down). INDULC must have reading permissions for it.
+The optional default output file in which the blueprint string can be written is named `[input]_string.txt`, where `[input]` is the name of the input file.
+
+The optional output file in which the assembled machine code can be written is named `[input]_machine_code.bin` or `[input]_machine_code.txt`, where `[input]` is the name of the input file.
+
+The optional output file in which the Json blueprint object can be written is named `[input]_blueprint.json`, where `[input]` is the name of the input file.
+
+INDULC must have reading permissions for all the input files.
+If the output files do not exist, INDULC will create them. If they already exist, INDULC must have writing permissions for them, and they will be overwritten.
 
 ### Options
 

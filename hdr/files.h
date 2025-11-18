@@ -7,17 +7,22 @@
 /* ----- MACROS ----- */
 
 // Default file names
-#define DEFAULT_INFILE_ISA			"isa.json"
-#define DEFAULT_INFILE_SIGNALS			"signals.json"
-#define DEFAULT_OUTFILE_MACHINE_CODE_BIN	"machine_code.bin"
-#define DEFAULT_OUTFILE_MACHINE_CODE_TXT	"machine_code.txt"
-#define DEFAULT_OUTFILE_JSON			"blueprint.json"
-#define DEFAULT_OUTFILE_STRING			"string.txt"
+#define DEFAULT_INPUT_ISA	"isa.json"
+#define DEFAULT_INPUT_SIGNALS	"signals.json"
+
+// File tails
+#define TAIL_OUTPUT_MACHINE_CODE_BIN	"_machine_code.bin"
+#define TAIL_OUTPUT_MACHINE_CODE_TXT	"_machine_code.txt"
+#define TAIL_OUTPUT_JSON		"_blueprint.json"
+#define TAIL_OUTPUT_STRING		"_string.txt"
+
+// Number of files
+#define N_FILES	6
 
 // Default files
 #define DEFAULT_FILES	\
 {\
-	.len = 6, \
+	.len = N_FILES, \
 	.obj_size = sizeof(t_file), \
 	.arr = (t_file [])\
 	{\
@@ -25,11 +30,11 @@
 			.info = SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)\
 		}, \
 		{\
-			.name = DEFAULT_INFILE_ISA, \
+			.name = DEFAULT_INPUT_ISA, \
 			.info = SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)\
 		}, \
 		{\
-			.name = DEFAULT_INFILE_SIGNALS, \
+			.name = DEFAULT_INPUT_SIGNALS, \
 			.info = SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)\
 		}, \
 		{\
@@ -39,23 +44,29 @@
 			.info = SET_REQUIREMENT(UNUSED)\
 		}, \
 		{\
-			.name = DEFAULT_OUTFILE_STRING, \
-			.info = SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE)\
+			.name = TAIL_OUTPUT_STRING, \
+			.info = SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)\
 		}\
 	}\
 }
 
 /* ----- ENUMERATIONS ----- */
 
+// File info
+enum
+{
+	PREPEND =	(1 << 0)
+};
+
 // Files
 enum
 {
-	INFILE_CODE,
-	INFILE_ISA,
-	INFILE_SIGNALS,
-	OUTFILE_MACHINE_CODE,
-	OUTFILE_JSON,
-	OUTFILE_STRING
+	INPUT_CODE,
+	INPUT_ISA,
+	INPUT_SIGNALS,
+	OUTPUT_MACHINE_CODE,
+	OUTPUT_JSON,
+	OUTPUT_STRING
 };
 
 /* ----- TYPES DECLARATIONS ----- */
@@ -68,5 +79,6 @@ typedef struct	data	t_data;
 //	check.c
 bool	check_files(t_data *data);
 //	init.c
-bool	alloc_files(t_data *data);
 bool	init_files(t_data *data);
+//	free.c
+void	free_files(t_parr *files);

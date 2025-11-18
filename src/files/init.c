@@ -1,40 +1,54 @@
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+#include "pstr.h"
 #include "file.h"
 #include "data.h"
-#include "files.h"
 
-bool	alloc_files(t_data *data)
+static char	*prepend(char *str, t_pstr *pre)
 {
-	const t_parr	files = DEFAULT_FILES;
-	data->files.len = files.len;
-	data->files.obj_size = files.obj_size;
-	data->files.arr = calloc(data->files.len, data->files.obj_size);
-	if (data->files.arr == NULL)
-	{
-		data->files.len = 0;
-		return (1);
-	}
-	return (0);
+	size_t	len = strlen(str);
+	char	*prepended = malloc((len + pre->len + 1) * sizeof(char));
+	if (prepended == NULL)
+		return (NULL);
+	memcpy(prepended, pre->str, pre->len);
+	memcpy(&prepended[pre->len], str, len + 1);
+	return (prepended);
 }
 
 bool	init_files(t_data *data)
 {
+	t_pstr	input_name = file_get_name(((t_file *)data->files.arr)[INPUT_CODE].name);
 	const t_parr	files = DEFAULT_FILES;
 	for (size_t i = 0; i < files.len; i++)
 	{
-		if (((t_file *)data->files.arr)[i].info == 0)
+		char	*name;
+		t_file	*file = &((t_file *)data->files.arr)[i],
+			*default_file = &((t_file *)files.arr)[i];
+		if (file->name != NULL)
 		{
-			if (((t_file *)data->files.arr)[i].name == NULL
-				&& ((t_file *)files.arr)[i].name != NULL)
-			{
-				((t_file *)data->files.arr)[i].name
-					= strdup(((t_file *)files.arr)[i].name);
-				if (((t_file *)data->files.arr)[i].name == NULL)
-					return (1);
-			}
-			((t_file *)data->files.arr)[i].info = ((t_file *)files.arr)[i].info;
+			if (GET_INFO(file->info, PREPEND) != 0)
+				name = prepend(file->name, &input_name);
+			else
+				continue;
 		}
+		else
+		{
+			if (file->info == 0)
+				file->info = default_file->info;
+			if (default_file->name != NULL)
+			{
+				if (GET_INFO(file->info, PREPEND) != 0)
+					name = prepend(default_file->name, &input_name);
+				else
+					name = strdup(default_file->name);
+			}
+			else
+				continue;
+		}
+		if (name == NULL)
+			return (1);
+		free(file->name);
+		file->name = name;
 	}
 	return (0);
 }
