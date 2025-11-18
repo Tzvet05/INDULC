@@ -23,18 +23,20 @@ static bool	build_filter(t_data *data, cJSON *filters, size_t i_filter, size_t i
 	if (filter == NULL)
 		return (1);
 	cJSON_AddItemToArray(filters, filter);
-	return (cJSON_AddNumberToObject(filter, JSON_INDEX, (double)(i_filter + 1)) == NULL
+	if (cJSON_AddNumberToObject(filter, JSON_INDEX, (double)(i_filter + 1)) == NULL
 		|| cJSON_AddStringToObject(filter, JSON_NAME,
-		((t_signal *)data->blueprint.signals.arr)[i_signal].name) == NULL
-		|| (((t_signal *)data->blueprint.signals.arr)[i_signal].type != NULL
+		((t_signal *)data->blueprint.signals.arr)[i_signal].name) == NULL)
+		return (1);
+	if (((t_signal *)data->blueprint.signals.arr)[i_signal].type != NULL
 		&& cJSON_AddStringToObject(filter, JSON_TYPE,
 		((t_signal *)data->blueprint.signals.arr)[i_signal].type) == NULL)
-		|| (data->blueprint.qualities.len > 0
-		&& cJSON_AddStringToObject(filter, JSON_QUALITY,
+		return (1);
+	if (data->blueprint.qualities.len > 0 && cJSON_AddStringToObject(filter, JSON_QUALITY,
 		((char **)data->blueprint.qualities.arr)[i_quality]) == NULL)
-		|| cJSON_AddStringToObject(filter, JSON_COMPARATOR,
-		JSON_ENTITY_FILTER_COMPARATOR) == NULL
-		|| cJSON_AddNumberToObject(filter, JSON_COUNT,
+		return (1);
+	if (cJSON_AddStringToObject(filter, JSON_COMPARATOR, JSON_ENTITY_FILTER_COMPARATOR) == NULL)
+		return (1);
+	return (cJSON_AddNumberToObject(filter, JSON_COUNT,
 		(double)convert_instruction_number(data, i_instruction)) == NULL);
 }
 
@@ -95,8 +97,9 @@ static bool	build_entity(t_data *data, cJSON *entities, size_t i_entity, size_t 
 	if (section == NULL)
 		return (1);
 	cJSON_AddItemToArray(arr_sections, section);
-	return (cJSON_AddNumberToObject(section, JSON_INDEX, JSON_ENTITY_SECTION_INDEX + 1) == NULL
-		|| build_filters(data, section, i_instruction) == 1);
+	if (cJSON_AddNumberToObject(section, JSON_INDEX, JSON_ENTITY_SECTION_INDEX + 1) == NULL)
+		return (1);
+	return (build_filters(data, section, i_instruction));
 }
 
 static bool	build_entities(t_data *data, cJSON *blueprint)
@@ -133,7 +136,9 @@ static bool	build_icon(cJSON *icons, size_t i_icon)
 static bool	build_icons(cJSON *blueprint)
 {
 	cJSON	*icons = cJSON_AddArrayToObject(blueprint, JSON_ICONS);
-	return (icons == NULL || build_icon(icons, 0));
+	if (icons == NULL)
+		return (1);
+	return (build_icon(icons, 0));
 }
 
 bool	build_json_blueprint(t_data *data)
