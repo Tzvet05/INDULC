@@ -9,7 +9,7 @@ bool	file_get_next_line(t_file *file, char **line)
 	{
 		free(*line);
 		*line = NULL;
-		if (ferror(file->stream) == 1)
+		if (ferror(file->stream) != 0)
 			return (1);
 	}
 	return (0);
