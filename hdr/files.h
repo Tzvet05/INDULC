@@ -7,8 +7,8 @@
 /* ----- MACROS ----- */
 
 // Default file names
-#define DEFAULT_INPUT_ISA	"isa.json"
-#define DEFAULT_INPUT_SIGNALS	"signals.json"
+#define DEFAULT_INPUT_ISA	"data/isa.json"
+#define DEFAULT_INPUT_SIGNALS	"data/signals.json"
 
 // File tails
 #define TAIL_OUTPUT_MACHINE_CODE_BIN	"_machine_code.bin"
