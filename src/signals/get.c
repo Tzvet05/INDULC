@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parr.h"
+#include "pstr.h"
 #include "blueprint.h"
 #include "signals.h"
 

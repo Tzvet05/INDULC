@@ -5,7 +5,6 @@
 #include <sys/types.h>
 #include "cJSON.h"
 #include "parr.h"
-#include "pstr.h"
 
 /* ----- MACROS ----- */
 
@@ -30,6 +29,7 @@ enum
 /* ----- TYPES DECLARATIONS ----- */
 
 typedef struct	data	t_data;
+typedef struct	pstr	t_pstr;
 
 /* ----- STRUCTURES ----- */
 

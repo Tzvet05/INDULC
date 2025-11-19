@@ -1,4 +1,5 @@
 #include "file.h"
+#include "pstr.h"
 #include "data.h"
 #include "signals.h"
 #include "json.h"

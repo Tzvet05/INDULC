@@ -72,6 +72,7 @@ enum
 /* ----- TYPES DECLARATIONS ----- */
 
 typedef struct	data	t_data;
+typedef struct	parr	t_parr;
 
 /* ----- PROTOTYPES ----- */
 

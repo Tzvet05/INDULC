@@ -3,6 +3,7 @@
 /* ----- INCLUDES ----- */
 
 #include <sys/types.h>
+#include <stdbool.h>
 
 /* ----- TYPES DECLARATIONS ----- */
 

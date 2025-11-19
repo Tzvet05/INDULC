@@ -6,8 +6,8 @@
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	token	t_token;
 typedef struct	isa	t_isa;
+typedef struct	lst	t_lst;
 
 /* ----- PROTOTYPES ----- */
 
