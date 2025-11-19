@@ -108,6 +108,15 @@ The "isa file" option can be used to specify the name of the input Json file fro
 
 The "signals file" option can be used to specify the name of the input Json file from which the Factorio signals are read. INDULC must have reading permissions for it.
 
+#### Blueprint
+
+`-b|--blueprint {label} {description}`
+
+`{label}` is the label (name) of the blueprint item.
+`{description}` is the description of the blueprint item.
+
+The "blueprint" option can be used to set a custom label and description for the blueprint item.
+
 #### Machine code output
 
 `-mo|--machine-code-output=[no]|bin|ascii`

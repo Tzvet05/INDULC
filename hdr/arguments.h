@@ -413,7 +413,7 @@
 		-s|--syntax-only=[no]|yes			Only check the code's syntax.\n\
 		-i|--isa-file {file}|[isa.json]			Indicate ISA file to read from.\n\
 		-si|--signals-file {file}|[signals.json]	Indicate Factorio signals file to read from.\n\
-		-b|--blueprint {label} {description}		Add a custom label and description to the blueprint.\n\
+		-b|--blueprint {label} {description}		Set custom label and description for the blueprint item.\n\
 		-mo|--machine-code-output=[no]|bin|ascii	Output machine code as raw binary or ASCII characters.\n\
 		-jo|--json-output=[no]|compact|format		Output Json blueprint object in a compact or formatted manner.\n\
 		-o|--string-output=no|terminal|file|[all]	Output blueprint string in terminal, file or both.\n\
