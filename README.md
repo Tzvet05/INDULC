@@ -39,9 +39,9 @@ Run the assembler using
 
 `{input}` is the mandatory input file from which the INDUL code is read.
 
-The mandatory default input file from which the ISA is read is named `isa.json`. This name can be changed using the "ISA file" option (see further down).
+The mandatory default input file from which the ISA is read is named `isa.json` and is located in `data/`. This name can be changed using the "ISA file" option (see further down).
 
-The default input file from which the Factorio signals are read is named `signals.json`. This name can be changed using the "signals file" option (see further down).
+The default input file from which the Factorio signals are read is named `signals.json` and is located in `data/`. This name can be changed using the "signals file" option (see further down).
 
 The optional default output file in which the blueprint string can be written is named `[input]_string.txt`, where `[input]` is the name of the input file.
 
@@ -94,7 +94,7 @@ When the "syntax only" option is enabled, INDULC only checks the INDUL code's sy
 
 #### ISA file
 
-`-i|--isa-file {file}|[isa.json]`
+`-i|--isa-file {file}|[data/isa.json]`
 
 `{file}` is the name of the ISA file.
 
@@ -102,7 +102,7 @@ The "isa file" option can be used to specify the name of the input Json file fro
 
 #### Signals file
 
-`-si|--signals-file {file}|[signals.json]`
+`-si|--signals-file {file}|[data/signals.json]`
 
 `{file}` is the name of the signals file.
 
