@@ -22,7 +22,8 @@ bool	load_blueprint(t_data *data)
 		cJSON_Delete((cJSON *)json);
 		return (1);
 	}
-	if (init_blueprint(&data->blueprint, json) == 1)
+	t_pstr	input_name = file_get_name(((t_file *)data->files.arr)[INPUT_CODE].name);
+	if (init_blueprint(&data->blueprint, &input_name, json) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s\n",
 			EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);

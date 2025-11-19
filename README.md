@@ -112,8 +112,9 @@ The "signals file" option can be used to specify the name of the input Json file
 
 `-b|--blueprint {label} {description}`
 
-`{label}` is the label (name) of the blueprint item.
-`{description}` is the description of the blueprint item.
+`{label}` is the label (name) of the blueprint item. The default value of this string is the assembled file's name.
+
+`{description}` is the description of the blueprint item. The default value of this string is a static description string.
 
 The "blueprint" option can be used to set a custom label and description for the blueprint item.
 

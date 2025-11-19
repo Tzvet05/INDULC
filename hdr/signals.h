@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include "cJSON.h"
 #include "parr.h"
+#include "pstr.h"
 
 /* ----- MACROS ----- */
 
@@ -14,6 +15,9 @@
 #define JSON_SIGNALS		"signals"
 #define JSON_SIGNAL_NAME	"name"
 #define JSON_SIGNAL_TYPE	"type"
+
+// Number of blueprint texts
+#define N_TEXTS	2
 
 /* ----- ENUMERATIONS ----- */
 
@@ -37,7 +41,7 @@ typedef struct	signal
 
 typedef struct	blueprint
 {
-	char	*text[2];
+	char	*text[N_TEXTS];
 	t_parr	types;
 	t_parr	qualities;
 	t_parr	signals;
@@ -51,7 +55,7 @@ bool	load_blueprint(t_data *data);
 //	check.c
 bool	check_blueprint_syntax(const cJSON *blueprint);
 //	get.c
-bool	init_blueprint(t_blueprint *blueprint, const cJSON *json_blueprint);
+bool	init_blueprint(t_blueprint *blueprint, t_pstr *input_name, const cJSON *json_blueprint);
 //	utils.c
 char	*get_type(t_parr *types, char *type);
 ssize_t	get_i_type(t_parr *types, char *type);

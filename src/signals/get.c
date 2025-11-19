@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "parr.h"
+#include "blueprint.h"
 #include "signals.h"
 
 static bool	get_types(t_blueprint *blueprint, const cJSON *types)
@@ -137,8 +138,19 @@ static bool	get_signals(t_blueprint *blueprint, const cJSON *signals)
 	return (0);
 }
 
-bool	init_blueprint(t_blueprint *blueprint, const cJSON *json_blueprint)
+static bool	init_blueprint_text(t_blueprint *blueprint, t_pstr *input_name)
 {
+	if (blueprint->text[LABEL] == NULL)
+		blueprint->text[LABEL] = strndup(input_name->str, input_name->len);
+	if (blueprint->text[DESCRIPTION] == NULL)
+		blueprint->text[DESCRIPTION] = strdup(JSON_BLUEPRINT_DESCRIPTION);
+	return (blueprint->text[LABEL] == NULL || blueprint->text[DESCRIPTION] == NULL);
+}
+
+bool	init_blueprint(t_blueprint *blueprint, t_pstr *input_name, const cJSON *json_blueprint)
+{
+	if (init_blueprint_text(blueprint, input_name) == 1)
+		return (1);
 	const cJSON	*item_blueprint;
 	if (cJSON_HasObjectItem(json_blueprint, JSON_TYPES) != 0)
 	{
