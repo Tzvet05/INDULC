@@ -13,24 +13,24 @@ Clone and go into the repository using
 git clone --recurse-submodules git@github.com:Tzvet05/INDULC.git && cd INDULC/
 ```
 
-Compile the program using
+Compile the executable using
 ```sh
 make
 ```
 
 ### Makefile rules
 
-`make (all)` compiles the libraries and the program.
+`make (all)` compiles the libraries and the executable.
 
 `make fclean` removes everything that got compiled.
 
 `make clean` removes everything that got compiled except the executable and its dynamic library.
 
-`make cleanindulc` removes the program's object files.
+`make cleanindulc` removes the executable's object files.
 
-`make re` removes everything that got compiled and recompiles the libraries and the program.
+`make re` removes everything that got compiled and recompiles the libraries and the executable.
 
-`make reindulc` removes the program's object files and recompiles the program.
+`make reindulc` removes the executable's object files and recompiles the executable.
 
 ## USAGE
 
