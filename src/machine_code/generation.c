@@ -60,14 +60,13 @@ static bool	allocate_instructions_buffer(t_isa *isa, t_lst *tokens, t_parr *buff
 {
 	buffer->obj_size = (isa->instruction_length + 7) / 8;
 	buffer->len = count_instructions(isa, tokens);
-	buffer->arr = malloc(buffer->len * buffer->obj_size);
+	buffer->arr = calloc(buffer->len, buffer->obj_size);
 	if (buffer->arr == NULL)
 	{
 		fprintf(stderr, "%s: %s: %s: %s\n",
 			EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
 		return (1);
 	}
-	bzero(buffer->arr, buffer->len * buffer->obj_size);
 	return (0);
 }
 

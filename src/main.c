@@ -7,7 +7,6 @@
 #include "symbol_table.h"
 #include "syntax.h"
 #include "machine_code.h"
-#include "signals.h"
 #include "blueprint.h"
 #include "output_writing.h"
 #include "error.h"

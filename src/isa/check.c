@@ -396,7 +396,7 @@ static bool	check_isa_flags(const cJSON *isa)
 bool	check_isa_syntax(const cJSON *isa)
 {
 	bool	error = 0;
-	ssize_t	number = INT64_MAX;
+	size_t	number = UINT64_MAX;
 	if (cJSON_HasObjectItem(isa, JSON_INSTRUCTION_LENGTH) == 0)
 	{
 		fprintf(stderr, "%s: %s (\"%s\"): %s\n",
@@ -417,23 +417,25 @@ bool	check_isa_syntax(const cJSON *isa)
 		}
 		else
 		{
-			double	number = cJSON_GetNumberValue(instruction_length);
-			if ((ssize_t)number <= 0)
+			double	number_value = cJSON_GetNumberValue(instruction_length);
+			if ((ssize_t)number_value <= 0)
 			{
 				fprintf(stderr, "%s: %s (\"%s\"): %s (must be > 0)\n",
 					EXECUTABLE_NAME, ERROR_JSON_SYNTAX, JSON_INSTRUCTION_LENGTH,
 					ERROR_JSON_INVALID_NUMBER);
 				error = 1;
 			}
-			else if ((ssize_t)number > 32)
+			else if ((ssize_t)number_value > 32)
 				fprintf(stderr, "%s: %s (\"%s\"): %s (should be <= 32; Json and string blueprint building will not occur as Factorio signals can only hold 32-bit values)\n",
 					EXECUTABLE_NAME, WARNING_JSON_SYNTAX,
 					JSON_INSTRUCTION_LENGTH, ERROR_JSON_INVALID_NUMBER);
+			else
+				number = (size_t)number_value;
 		}
 	}
 	if (check_isa_registers(isa) == 1)
 		error = 1;
-	if (check_isa_instructions(isa, (size_t)number) == 1)
+	if (check_isa_instructions(isa, number) == 1)
 		error = 1;
 	if (check_isa_flags(isa) == 1)
 		error = 1;
