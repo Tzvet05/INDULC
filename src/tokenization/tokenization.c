@@ -58,8 +58,9 @@ static bool	tokenize_words(t_data *data, char *line, size_t lin, size_t col)
 			|| lst_new_back((t_lst **)&(lst_last(data->tokens)->content), token) == 1)
 		{
 			free_token(token);
-			fprintf(stderr, "%s: %s: %s: %s\n",
-				EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+			fprintf(stderr, "%s: %s: %s: %s: %s\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC,
+				ERROR_ALLOC);
 			return (1);
 		}
 		i += len;
@@ -75,8 +76,8 @@ static bool	tokenize_line(t_data *data, char *line, size_t lin)
 		return (0);
 	if (lst_new_back(&data->tokens, NULL) == 1)
 	{
-		fprintf(stderr, "%s: %s: %s: %s\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+		fprintf(stderr, "%s: %s: %s: %s: %s\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC, ERROR_ALLOC);
 		return (1);
 	}
 	if (tokenize_words(data, &line[i], lin, i) == 1)
@@ -88,8 +89,8 @@ bool	tokenize(t_data *data)
 {
 	if (file_open(&((t_file *)data->files.arr)[INPUT_CODE], FOPEN_READ_MODE) == 1)
 	{
-		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
+		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
 			((t_file *)data->files.arr)[INPUT_CODE].name);
 		return (1);
 	}
@@ -100,9 +101,9 @@ bool	tokenize(t_data *data)
 		free(line);
 		if (file_get_next_line(&((t_file *)data->files.arr)[INPUT_CODE], &line) == 1)
 		{
-			fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-				EXECUTABLE_NAME, LIB_LIBC, FUNC_GETLINE, ERROR_READ_FILE,
-				((t_file *)data->files.arr)[INPUT_CODE].name);
+			fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_GETLINE,
+				ERROR_READ_FILE, ((t_file *)data->files.arr)[INPUT_CODE].name);
 			file_close(&((t_file *)data->files.arr)[INPUT_CODE]);
 			return (1);
 		}

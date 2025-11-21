@@ -22,8 +22,8 @@ bool	load_isa(t_data *data)
 {
 	if (file_open(&((t_file *)data->files.arr)[INPUT_ISA], FOPEN_READ_MODE) == 1)
 	{
-		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
+		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
 			((t_file *)data->files.arr)[INPUT_ISA].name);
 		return (1);
 	}
@@ -43,8 +43,8 @@ bool	load_isa(t_data *data)
 	}
 	if (init_isa(&data->isa, json) == 1)
 	{
-		fprintf(stderr, "%s: %s: %s: %s\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+		fprintf(stderr, "%s: %s: %s: %s: %s\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC, ERROR_ALLOC);
 		free_isa(&data->isa);
 		cJSON_Delete((cJSON *)json);
 		return (1);

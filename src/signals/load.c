@@ -9,8 +9,8 @@ bool	load_blueprint(t_data *data)
 {
 	if (file_open(&((t_file *)data->files.arr)[INPUT_SIGNALS], FOPEN_READ_MODE) == 1)
 	{
-		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
+		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
 			((t_file *)data->files.arr)[INPUT_SIGNALS].name);
 		return (1);
 	}
@@ -26,8 +26,8 @@ bool	load_blueprint(t_data *data)
 	t_pstr	input_name = file_get_name(((t_file *)data->files.arr)[INPUT_CODE].name);
 	if (init_blueprint(&data->blueprint, &input_name, json) == 1)
 	{
-		fprintf(stderr, "%s: %s: %s: %s\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+		fprintf(stderr, "%s: %s: %s: %s: %s\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC, ERROR_ALLOC);
 		free_blueprint(&data->blueprint);
 		cJSON_Delete((cJSON *)json);
 		return (1);

@@ -20,8 +20,9 @@ static ssize_t	get_option_arguments(t_parr *arguments, char **args, bool parse_o
 			*dst = malloc(argument->size);
 			if (*dst == NULL)
 			{
-				fprintf(stderr, "%s: %s: %s: %s\n",
-					EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+				fprintf(stderr, "%s: %s: %s: %s: %s\n",
+					EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC,
+					ERROR_ALLOC);
 				return (-1);
 			}
 			memcpy(*dst, argument->src, argument->size);
@@ -46,8 +47,9 @@ static ssize_t	get_option_arguments(t_parr *arguments, char **args, bool parse_o
 		*dst = strdup(args[i_string]);
 		if (*dst == NULL)
 		{
-			fprintf(stderr, "%s: %s: %s: %s\n",
-				EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+			fprintf(stderr, "%s: %s: %s: %s: %s\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC,
+				ERROR_ALLOC);
 			return (-1);
 		}
 		i_argument++;
@@ -181,9 +183,9 @@ bool	get_arguments(t_data *data, char **args)
 				((t_file *)data->files.arr)[INPUT_CODE].name = strdup(args[i_arg]);
 				if (((t_file *)data->files.arr)[INPUT_CODE].name == NULL)
 				{
-					fprintf(stderr, "%s: %s: %s: %s\n",
-						EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC,
-						ERROR_FAILED_ALLOC);
+					fprintf(stderr, "%s: %s: %s: %s: %s\n",
+						EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC,
+						FUNC_MALLOC, ERROR_ALLOC);
 					return (1);
 				}
 			}

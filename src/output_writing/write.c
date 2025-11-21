@@ -9,8 +9,9 @@ bool	write_machine_code(t_parr *machine_code, t_file *file, t_option_parameter *
 {
 	if (file_open(file, FOPEN_WRITE_MODE) == 1)
 	{
-		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE, file->name);
+		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
+			file->name);
 		return (1);
 	}
 	if (options[OPTION_MACHINE_CODE_OUTPUT] == PARAM_BIN)
@@ -22,8 +23,9 @@ bool	write_machine_code(t_parr *machine_code, t_file *file, t_option_parameter *
 		char	*buffer = malloc(len * sizeof(char));
 		if (buffer == NULL)
 		{
-			fprintf(stderr, "%s: %s: %s: %s\n",
-				EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+			fprintf(stderr, "%s: %s: %s: %s: %s\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC,
+				ERROR_ALLOC);
 			file_close(file);
 			return (1);
 		}
@@ -52,8 +54,9 @@ bool	write_machine_code(t_parr *machine_code, t_file *file, t_option_parameter *
 	}
 	if (ferror(file->stream) != 0)
 	{
-		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_FWRITE, ERROR_WRITE_FILE, file->name);
+		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FWRITE, ERROR_WRITE_FILE,
+			file->name);
 		file_close(file);
 		return (1);
 	}
@@ -69,8 +72,9 @@ bool	write_json(const cJSON *json, t_file *file, t_option_parameter *options)
 		str = cJSON_Print(json);
 		if (str == NULL)
 		{
-			fprintf(stderr, "%s: %s: %s: %s\n",
-				EXECUTABLE_NAME, LIB_CJSON, FUNC_CJSON_PRINT, ERROR_CJSON_PRINT);
+			fprintf(stderr, "%s: %s: %s: %s: %s\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_CJSON, FUNC_CJSON_PRINT,
+				ERROR_CJSON_PRINT);
 			return (1);
 		}
 	}
@@ -79,16 +83,17 @@ bool	write_json(const cJSON *json, t_file *file, t_option_parameter *options)
 		str = cJSON_PrintUnformatted(json);
 		if (str == NULL)
 		{
-			fprintf(stderr, "%s: %s: %s: %s\n",
-				EXECUTABLE_NAME, LIB_CJSON, FUNC_CJSON_PRINT,
+			fprintf(stderr, "%s: %s: %s: %s: %s\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_CJSON, FUNC_CJSON_PRINT,
 				ERROR_CJSON_PRINT_UNFORMATTED);
 			return (1);
 		}
 	}
 	if (file_open(file, FOPEN_WRITE_MODE) == 1)
 	{
-		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE, file->name);
+		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
+			file->name);
 		free((void *)str);
 		return (1);
 	}
@@ -96,8 +101,9 @@ bool	write_json(const cJSON *json, t_file *file, t_option_parameter *options)
 	free((void *)str);
 	if (ferror(file->stream) != 0)
 	{
-		fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_FWRITE, ERROR_WRITE_FILE, file->name);
+		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FWRITE, ERROR_WRITE_FILE,
+			file->name);
 		file_close(file);
 		return (1);
 	}
@@ -112,16 +118,17 @@ bool	write_string(t_parr *string, t_file *file, t_option_parameter *options)
 	{
 		if (file_open(file, FOPEN_WRITE_MODE) == 1)
 		{
-			fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-				EXECUTABLE_NAME, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE, file->name);
+			fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN,
+				ERROR_OPEN_FILE, file->name);
 			return (1);
 		}
 		fwrite(string->arr, string->obj_size, string->len, file->stream);
 		if (ferror(file->stream) != 0)
 		{
-			fprintf(stderr, "%s: %s: %s: %s: \"%s\"\n",
-				EXECUTABLE_NAME, LIB_LIBC, FUNC_FWRITE, ERROR_WRITE_FILE,
-				file->name);
+			fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FWRITE,
+				ERROR_WRITE_FILE, file->name);
 			file_close(file);
 			return (1);
 		}
@@ -134,8 +141,9 @@ bool	write_string(t_parr *string, t_file *file, t_option_parameter *options)
 			(char *)string->arr);
 		if (ferror(stdout) != 0)
 		{
-			fprintf(stderr, "%s: %s: %s: %s\n",
-				EXECUTABLE_NAME, LIB_LIBC, FUNC_FWRITE, ERROR_WRITE_STDOUT);
+			fprintf(stderr, "%s: %s: %s: %s: %s\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FWRITE,
+				ERROR_WRITE_STDOUT);
 			return (1);
 		}
 	}

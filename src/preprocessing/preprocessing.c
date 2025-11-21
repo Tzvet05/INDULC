@@ -61,15 +61,17 @@ bool	preprocess(t_data *data)
 		{
 			if (add_macro((t_lst *)tokens->content, &data->macro_table) == 1)
 			{
-				fprintf(stderr, "%s: %s: %s: %s\n",
-					EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+				fprintf(stderr, "%s: %s: %s: %s: %s\n",
+					EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC,
+					ERROR_ALLOC);
 				return (1);
 			}
 		}
 		else if (substitute_macros(data->macro_table, (t_lst *)tokens->content) == 1)
 		{
-			fprintf(stderr, "%s: %s: %s: %s\n",
-				EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+			fprintf(stderr, "%s: %s: %s: %s: %s\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC,
+				ERROR_ALLOC);
 			return (1);
 		}
 		tokens = tokens->next;

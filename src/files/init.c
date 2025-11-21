@@ -48,8 +48,9 @@ bool	init_files(t_data *data)
 		}
 		if (name == NULL)
 		{
-			fprintf(stderr, "%s: %s: %s: %s\n",
-				EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+			fprintf(stderr, "%s: %s: %s: %s: %s\n",
+				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC,
+				ERROR_ALLOC);
 			return (1);
 		}
 		free(file->name);

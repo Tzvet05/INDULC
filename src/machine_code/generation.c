@@ -63,8 +63,8 @@ static bool	allocate_instructions_buffer(t_isa *isa, t_lst *tokens, t_parr *buff
 	buffer->arr = calloc(buffer->len, buffer->obj_size);
 	if (buffer->arr == NULL)
 	{
-		fprintf(stderr, "%s: %s: %s: %s\n",
-			EXECUTABLE_NAME, LIB_LIBC, FUNC_MALLOC, ERROR_FAILED_ALLOC);
+		fprintf(stderr, "%s: %s: %s: %s: %s\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC, ERROR_ALLOC);
 		return (1);
 	}
 	return (0);

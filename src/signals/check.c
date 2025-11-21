@@ -158,7 +158,7 @@ static bool	check_signals_type(const cJSON *blueprint)
 		{
 			fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\"): %s\n",
 				EXECUTABLE_NAME, ERROR_JSON_SYNTAX, JSON_SIGNALS, i_signal - 1,
-				JSON_SIGNAL_TYPE, ERROR_JSON_INVALID_TYPE);
+				JSON_SIGNAL_TYPE, ERROR_JSON_SIGNAL_TYPE);
 			error = 1;
 			continue;
 		}
@@ -176,7 +176,7 @@ static bool	check_signals_type(const cJSON *blueprint)
 		{
 			fprintf(stderr, "%s: %s (\"%s\" (index %zu): \"%s\"): %s\n",
 				EXECUTABLE_NAME, ERROR_JSON_SYNTAX, JSON_SIGNALS, i_signal - 1,
-				JSON_SIGNAL_TYPE, ERROR_JSON_INVALID_TYPE);
+				JSON_SIGNAL_TYPE, ERROR_JSON_SIGNAL_TYPE);
 			error = 1;
 		}
 	}

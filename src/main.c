@@ -38,8 +38,8 @@ static bool	convert_output(t_data *data)
 		return (1);
 	if (build_json_blueprint(data) == 1)
 	{
-		fprintf(stderr, "%s: %s: %s: %s\n",
-			EXECUTABLE_NAME, LIB_CJSON, FUNC_CJSON_CREATE_OBJECT,
+		fprintf(stderr, "%s: %s: %s: %s: %s\n",
+			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_CJSON, FUNC_CJSON_CREATE_OBJECT,
 			ERROR_CJSON_CREATE_OBJECT);
 		return (1);
 	}
