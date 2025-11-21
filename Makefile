@@ -73,8 +73,10 @@ SRC :=	main.c \
 	$(DIR_TOK)tokenization.c \
 	$(DIR_TOK)free.c \
 	$(DIR_PRE)preprocessing.c \
+	$(DIR_PRE)check.c \
 	$(DIR_PRE)free.c \
 	$(DIR_SYM)building.c \
+	$(DIR_SYM)check.c \
 	$(DIR_SYM)free.c \
 	$(DIR_SYN)analysis.c \
 	$(DIR_SYN)define.c \

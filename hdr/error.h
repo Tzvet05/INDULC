@@ -130,6 +130,7 @@
 //		Defines
 #define WARNING_DEFINE	"define statement"
 //			Generic
+#define WARNING_DEFINE_UNUSED		"useless macro definition"
 #define WARNING_DEFINE_USELESS		"useless macro (identifier is identical to its substitute)"
 #define WARNING_DEFINE_FLAG		"conflicting identifier (identifier is identical to a flag's mnemonic provided by the ISA)"
 #define WARNING_DEFINE_INSTRUCTION	"conflicting identifier (identifier is identical to an instruction's mnemonic provided by the ISA)"
@@ -137,11 +138,15 @@
 #define WARNING_DEFINE_NUMBER		"hazardous identifier (identifier is a number)"
 #define WARNING_DEFINE_DEFINE		"hazardous identifier (identifier is identical to the macro declaration keyword)"
 #define WARNING_DEFINE_LABEL		"hazardous identifier (identifier is identical to the label declaration keyword)"
+//		Labels
+#define WARNING_LABEL	"label statement"
+//			Generic
+#define WARNING_LABEL_UNUSED	"useless label declaration"
 //		Instructions
 #define WARNING_INSTRUCTION	"instruction"
-//		Immediates
+//			Immediates
 #define WARNING_INSTRUCTION_IMMEDIATE	"immediate operand"
-//		Labels
+//			Labels
 #define WARNING_INSTRUCTION_LABEL	"label resolution"
 //	Json syntax
 #define WARNING_JSON_SYNTAX	COLOR(YELLOW, "Json syntax warning")

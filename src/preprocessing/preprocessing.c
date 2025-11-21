@@ -13,8 +13,15 @@ static bool	add_macro(t_lst *tokens, t_lst **macro_table)
 	t_lst	*macro = lst_find(*macro_table, ((t_token *)tokens->next->content)->str, cmp_macro);
 	if (macro != NULL)
 	{
+		if (((t_macro *)macro->content)->n_uses == 0)
+			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
+				EXECUTABLE_NAME, WARNING_SYNTAX,
+				((t_token *)tokens->content)->lin,
+				((t_token *)tokens->content)->col, WARNING_DEFINE,
+				WARNING_DEFINE_UNUSED, ((t_token *)tokens->next->content)->str);
 		((t_macro *)macro->content)->identifier = (t_token *)tokens->next->content;
 		((t_macro *)macro->content)->substitute = (t_token *)tokens->next->next->content;
+		((t_macro *)macro->content)->n_uses = 0;
 	}
 	else if (strcmp(((t_token *)tokens->next->content)->str,
 		((t_token *)tokens->next->next->content)->str) != 0)
@@ -24,6 +31,7 @@ static bool	add_macro(t_lst *tokens, t_lst **macro_table)
 			return (1);
 		new_macro->identifier = (t_token *)tokens->next->content;
 		new_macro->substitute = (t_token *)tokens->next->next->content;
+		new_macro->n_uses = 0;
 		if (lst_new_back(macro_table, new_macro) == 1)
 		{
 			free_macro(new_macro);
@@ -46,6 +54,7 @@ static bool	substitute_macros(t_lst *macro_table, t_lst *tokens)
 				= strdup(((t_macro *)macro->content)->substitute->str);
 			if (((t_token *)tokens->content)->str == NULL)
 				return (1);
+			((t_macro *)macro->content)->n_uses++;
 		}
 		tokens = tokens->next;
 	}
@@ -76,5 +85,6 @@ bool	preprocess(t_data *data)
 		}
 		tokens = tokens->next;
 	}
+	check_macros(data->macro_table);
 	return (0);
 }

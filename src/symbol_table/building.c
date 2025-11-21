@@ -7,21 +7,6 @@
 #include "is.h"
 #include "error.h"
 
-static bool	check_label(t_lst *tokens, t_lst *symbol_table)
-{
-	t_lst	*label = lst_find(symbol_table, ((t_token *)tokens->content)->str, cmp_label);
-	if (label != NULL)
-	{
-		fprintf(stderr, "%s: %s (%zu:%zu): %s: \"%s\" (previously declared at %zu:%zu)\n",
-			EXECUTABLE_NAME, ERROR_SYNTAX, ((t_token *)tokens->content)->lin,
-			((t_token *)tokens->content)->col, ERROR_LABEL_DUPLICATE,
-			((t_token *)tokens->content)->str, ((t_label *)label->content)->name->lin,
-			((t_label *)label->content)->name->col);
-		return (1);
-	}
-	return (0);
-}
-
 static bool	add_label(t_lst *tokens, t_lst **symbol_table, size_t line)
 {
 	t_label	*new_label = malloc(sizeof(t_label));
@@ -29,6 +14,7 @@ static bool	add_label(t_lst *tokens, t_lst **symbol_table, size_t line)
 		return (1);
 	new_label->name = (t_token *)tokens->content;
 	new_label->line = line;
+	new_label->n_uses = 0;
 	if (lst_new_back(symbol_table, new_label) == 1)
 	{
 		free_label(new_label);
@@ -59,5 +45,6 @@ bool	build_symbol_table(t_data *data)
 			line++;
 		tokens = tokens->next;
 	}
+	check_labels(data);
 	return (0);
 }

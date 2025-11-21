@@ -12,13 +12,10 @@ static void	check_define_identifier(t_data *data, t_lst *tokens)
 {
 	if (strcmp(((t_token *)tokens->next->content)->str,
 		((t_token *)tokens->next->next->content)->str) == 0)
-	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, WARNING_SYNTAX, ((t_token *)tokens->next->content)->lin,
 			((t_token *)tokens->next->content)->col, WARNING_DEFINE,
 			WARNING_DEFINE_USELESS, ((t_token *)tokens->next->content)->str);
-		return;
-	}
 	if (data->options[OPTION_MACRO_WARNINGS] == PARAM_YES)
 	{
 		if (parr_find(&data->isa.flags, ((t_token *)tokens->next->content)->str,
