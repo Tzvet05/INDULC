@@ -27,8 +27,8 @@
 #define POS_INFO	5
 
 // Function fopen modes
-#define FOPEN_READ_MODE		"r"
-#define FOPEN_WRITE_MODE	"w"
+#define FOPEN_MODE_READ		"r"
+#define FOPEN_MODE_WRITE	"w"
 
 /* ----- ENUMERATIONS ----- */
 

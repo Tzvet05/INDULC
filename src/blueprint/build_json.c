@@ -73,7 +73,7 @@ static bool	build_entity(t_data *data, cJSON *entities, size_t i_entity, size_t 
 	if (entity == NULL)
 		return (1);
 	cJSON_AddItemToArray(entities, entity);
-	if (cJSON_AddNumberToObject(entity, JSON_ENTITY_NUMBER, (double)i_entity + 1) == NULL
+	if (cJSON_AddNumberToObject(entity, JSON_ENTITY_NUMBER, (double)(i_entity + 1)) == NULL
 		|| cJSON_AddStringToObject(entity, JSON_NAME,
 		JSON_ITEM_CONSTANT_COMBINATOR) == NULL)
 		return (1);
@@ -130,7 +130,7 @@ static bool	build_icon(cJSON *icons, size_t i_icon)
 	cJSON	*signal = cJSON_AddObjectToObject(icon, JSON_SIGNAL);
 	return (signal == NULL
 		|| cJSON_AddStringToObject(signal, JSON_NAME, JSON_ITEM_CONSTANT_COMBINATOR) == NULL
-		|| cJSON_AddNumberToObject(icon, JSON_INDEX, (double)i_icon + 1) == NULL);
+		|| cJSON_AddNumberToObject(icon, JSON_INDEX, (double)(i_icon + 1)) == NULL);
 }
 
 static bool	build_icons(cJSON *blueprint)

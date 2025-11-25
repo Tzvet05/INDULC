@@ -80,8 +80,8 @@ static bool	run(t_data *data)
 int32_t	main(int32_t argc, char **argv)
 {
 	(void)argc;
-	t_data	data = (t_data){.options = DEFAULT_OPTIONS, .files = (t_parr){
-		.len = N_FILES, .obj_size = sizeof(t_file), .arr = (t_file [N_FILES]){0}}};
+	t_data	data = (t_data){.options = DEFAULT_OPTIONS, .files = (t_parr){.len = N_FILES,
+		.obj_size = sizeof(t_file), .arr = (t_file [N_FILES]){0}}};
 	if (get_arguments(&data, &argv[1]) == 1 || check_arguments(&data) == 1)
 	{
 		free_files(&data.files);

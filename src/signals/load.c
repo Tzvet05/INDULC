@@ -7,7 +7,7 @@
 
 bool	load_blueprint(t_data *data)
 {
-	if (file_open(&((t_file *)data->files.arr)[INPUT_SIGNALS], FOPEN_READ_MODE) == 1)
+	if (file_open(&((t_file *)data->files.arr)[INPUT_SIGNALS], FOPEN_MODE_READ) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,

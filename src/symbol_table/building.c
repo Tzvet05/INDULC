@@ -12,7 +12,7 @@ static bool	add_label(t_lst *tokens, t_lst **symbol_table, size_t line)
 	t_label	*new_label = malloc(sizeof(t_label));
 	if (new_label == NULL)
 		return (1);
-	new_label->name = (t_token *)tokens->content;
+	new_label->name = tokens->content;
 	new_label->line = line;
 	new_label->n_uses = 0;
 	if (lst_new_back(symbol_table, new_label) == 1)
@@ -29,11 +29,11 @@ bool	build_symbol_table(t_data *data)
 	t_lst	*tokens = data->tokens;
 	while (tokens != NULL)
 	{
-		if (is_label((t_lst *)tokens->content) == 1)
+		if (is_label(tokens->content) == 1)
 		{
-			if (check_label((t_lst *)tokens->content, data->symbol_table) == 1)
+			if (check_label(tokens->content, data->symbol_table) == 1)
 				return (1);
-			if (add_label((t_lst *)tokens->content, &data->symbol_table, line) == 1)
+			if (add_label(tokens->content, &data->symbol_table, line) == 1)
 			{
 				fprintf(stderr, "%s: %s: %s: %s: %s\n",
 					EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC,
@@ -41,7 +41,7 @@ bool	build_symbol_table(t_data *data)
 				return (1);
 			}
 		}
-		if (has_instruction(&data->isa, (t_lst *)tokens->content) == 1)
+		if (has_instruction(&data->isa, tokens->content) == 1)
 			line++;
 		tokens = tokens->next;
 	}

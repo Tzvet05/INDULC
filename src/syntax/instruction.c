@@ -99,7 +99,7 @@ bool	check_instruction_syntax(t_data *data, t_lst **tokens_ptr)
 	while (tokens->next != NULL && i_opword < instr->n_opwords)
 	{
 		tokens = tokens->next;
-		if (check_operand_syntax(data, instr, (t_token *)tokens->content, i_opword) == 1)
+		if (check_operand_syntax(data, instr, tokens->content, i_opword) == 1)
 			error = 1;
 		i_opword++;
 	}

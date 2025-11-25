@@ -31,13 +31,12 @@ const cJSON	*parse_json_file(t_file *file)
 		free(buffer);
 		return (NULL);
 	}
-	cJSON	*json = cJSON_Parse(buffer);
+	const cJSON	*json = cJSON_Parse(buffer);
 	if (json == NULL)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\": ",
 			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_CJSON, FUNC_CJSON_PARSE,
-			ERROR_CJSON_PARSE,
-			file->name);
+			ERROR_CJSON_PARSE, file->name);
 		const char	*error = cJSON_GetErrorPtr();
 		if (error != NULL)
 			fprintf(stderr, "%s", error);
@@ -47,5 +46,5 @@ const cJSON	*parse_json_file(t_file *file)
 		return (NULL);
 	}
 	free(buffer);
-	return ((const cJSON *)json);
+	return (json);
 }

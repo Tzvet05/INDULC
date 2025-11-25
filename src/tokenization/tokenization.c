@@ -49,8 +49,7 @@ static size_t	get_len_until_token(char *line)
 static bool	tokenize_words(t_data *data, char *line, size_t lin, size_t col)
 {
 	size_t		i = 0;
-	while (line[i] != '\0'
-		&& strncmp(&line[i], COMMENT_KEYWORD, strlen(COMMENT_KEYWORD)) != 0)
+	while (line[i] != '\0' && strncmp(&line[i], COMMENT_KEYWORD, strlen(COMMENT_KEYWORD)) != 0)
 	{
 		size_t	len = get_len_token(&line[i]);
 		t_token	*token = tokenize_word(&line[i], len, lin, col + i + 1);
@@ -87,7 +86,7 @@ static bool	tokenize_line(t_data *data, char *line, size_t lin)
 
 bool	tokenize(t_data *data)
 {
-	if (file_open(&((t_file *)data->files.arr)[INPUT_CODE], FOPEN_READ_MODE) == 1)
+	if (file_open(&((t_file *)data->files.arr)[INPUT_CODE], FOPEN_MODE_READ) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,

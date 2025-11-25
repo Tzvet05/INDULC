@@ -8,11 +8,10 @@ static void	set_instruction_data(t_isa *isa)
 	for (size_t i_instruction = 0; i_instruction < isa->instructions.len; i_instruction++)
 	{
 		size_t	n_opwords = 0;
-		for (size_t i_bitfield = 0;
-			i_bitfield < ((t_instruction *)isa->instructions.arr)[i_instruction]
-			.bitfields.len; i_bitfield++)
-			if (((t_bitfield *)((t_instruction *)isa->instructions.arr)[i_instruction]
-				.bitfields.arr)[i_bitfield].type != CONSTANT)
+		for (size_t i_bitfield = 0; i_bitfield < ((t_instruction *)isa->instructions.arr)
+			[i_instruction].bitfields.len; i_bitfield++)
+			if (((t_bitfield *)((t_instruction *)isa->instructions.arr)
+				[i_instruction].bitfields.arr)[i_bitfield].type != CONSTANT)
 				n_opwords++;
 		((t_instruction *)isa->instructions.arr)[i_instruction].n_opwords = n_opwords;
 	}
@@ -20,7 +19,7 @@ static void	set_instruction_data(t_isa *isa)
 
 bool	load_isa(t_data *data)
 {
-	if (file_open(&((t_file *)data->files.arr)[INPUT_ISA], FOPEN_READ_MODE) == 1)
+	if (file_open(&((t_file *)data->files.arr)[INPUT_ISA], FOPEN_MODE_READ) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,

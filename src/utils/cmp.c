@@ -7,17 +7,17 @@
 
 bool	cmp_label(void *label, void *str)
 {
-	return (strcmp(((t_label *)label)->name->str, (char *)str) != 0);
+	return (strcmp(((t_label *)label)->name->str, str) != 0);
 }
 
 bool	cmp_macro(void *macro, void *str)
 {
-	return (strcmp(((t_macro *)macro)->identifier->str, (char *)str) != 0);
+	return (strcmp(((t_macro *)macro)->identifier->str, str) != 0);
 }
 
 bool	cmp_token(void *token, void *str)
 {
-	return (strcmp(((t_token *)token)->str, (char *)str) != 0);
+	return (strcmp(((t_token *)token)->str, str) != 0);
 }
 
 bool	cmp_mnemonics(void *mnemonics, void *str)

@@ -7,7 +7,7 @@
 
 bool	write_machine_code(t_parr *machine_code, t_file *file, t_option_parameter *options)
 {
-	if (file_open(file, FOPEN_WRITE_MODE) == 1)
+	if (file_open(file, FOPEN_MODE_WRITE) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
@@ -66,7 +66,7 @@ bool	write_machine_code(t_parr *machine_code, t_file *file, t_option_parameter *
 
 bool	write_json(const cJSON *json, t_file *file, t_option_parameter *options)
 {
-	const char	*str;
+	char	*str;
 	if (options[OPTION_JSON_OUTPUT] == PARAM_FORMAT)
 	{
 		str = cJSON_Print(json);
@@ -89,16 +89,16 @@ bool	write_json(const cJSON *json, t_file *file, t_option_parameter *options)
 			return (1);
 		}
 	}
-	if (file_open(file, FOPEN_WRITE_MODE) == 1)
+	if (file_open(file, FOPEN_MODE_WRITE) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
 			file->name);
-		free((void *)str);
+		free(str);
 		return (1);
 	}
 	fwrite(str, sizeof(*str), strlen(str), file->stream);
-	free((void *)str);
+	free(str);
 	if (ferror(file->stream) != 0)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
@@ -116,7 +116,7 @@ bool	write_string(t_parr *string, t_file *file, t_option_parameter *options)
 	if (options[OPTION_STRING_OUTPUT] == PARAM_FILE
 		|| options[OPTION_STRING_OUTPUT] == PARAM_ALL)
 	{
-		if (file_open(file, FOPEN_WRITE_MODE) == 1)
+		if (file_open(file, FOPEN_MODE_WRITE) == 1)
 		{
 			fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
 				EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN,
