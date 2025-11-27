@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "lst.h"
+#include "point.h"
 #include "data.h"
 #include "tokenization.h"
 #include "symbol_table.h"
@@ -7,13 +8,13 @@
 #include "is.h"
 #include "error.h"
 
-static bool	add_label(t_lst *tokens, t_lst **symbol_table, size_t line)
+static bool	add_label(t_lst *tokens, t_lst **symbol_table, t_point *pos)
 {
 	t_label	*new_label = malloc(sizeof(t_label));
 	if (new_label == NULL)
 		return (1);
 	new_label->name = tokens->content;
-	new_label->line = line;
+	new_label->line = (size_t)pos->y;
 	new_label->n_uses = 0;
 	if (lst_new_back(symbol_table, new_label) == 1)
 	{
@@ -25,7 +26,7 @@ static bool	add_label(t_lst *tokens, t_lst **symbol_table, size_t line)
 
 bool	build_symbol_table(t_data *data)
 {
-	size_t	line = 0;
+	t_point	pos = {0};
 	t_lst	*tokens = data->tokens;
 	while (tokens != NULL)
 	{
@@ -33,7 +34,7 @@ bool	build_symbol_table(t_data *data)
 		{
 			if (check_label(tokens->content, data->symbol_table) == 1)
 				return (1);
-			if (add_label(tokens->content, &data->symbol_table, line) == 1)
+			if (add_label(tokens->content, &data->symbol_table, &pos) == 1)
 			{
 				fprintf(stderr, "%s: %s: %s: %s: %s\n",
 					EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_MALLOC,
@@ -42,7 +43,7 @@ bool	build_symbol_table(t_data *data)
 			}
 		}
 		if (has_instruction(&data->isa, tokens->content) == 1)
-			line++;
+			pos.y++;
 		tokens = tokens->next;
 	}
 	check_labels(data);
