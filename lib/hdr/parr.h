@@ -8,11 +8,11 @@
 /* ----- STRUCTURES ----- */
 
 // Pascal-style-string-like array
-typedef struct parr
+typedef struct	parr
 {
-	void	*arr;
-	size_t	obj_size;
 	size_t	len;
+	size_t	obj_size;
+	void	*arr;
 }	t_parr;
 
 /* ----- PROTOTYPES ----- */

@@ -2,14 +2,16 @@
 #include <string.h>
 #include "file.h"
 #include "lst.h"
+#include "pstr.h"
 #include "point.h"
 #include "data.h"
 #include "tokenization.h"
 #include "files.h"
 #include "syntax.h"
+#include "cmp.h"
 #include "error.h"
 
-static size_t	get_len_until_token(char *line)
+static size_t	get_len_ignore(char *line)
 {
 	size_t	i = 0;
 	while (line[i] != '\0' && strchr(IGNORED_CHARS, line[i]) != NULL)
@@ -17,42 +19,48 @@ static size_t	get_len_until_token(char *line)
 	return (i);
 }
 
-static size_t	get_len_token(char *line)
+static size_t	get_len_token(const t_parr *keywords, char *line)
 {
-	if (strncmp(line, LABEL_KEYWORD, strlen(LABEL_KEYWORD)) == 0)
-		return (strlen(LABEL_KEYWORD));
+	t_keyword	*keyword = NULL;
 	size_t	i = 0;
-	while (strchr(IGNORED_CHARS, line[i]) == NULL
-		&& strncmp(&line[i], COMMENT_KEYWORD, strlen(COMMENT_KEYWORD)) != 0
-		&& strncmp(&line[i], LABEL_KEYWORD, strlen(LABEL_KEYWORD)) != 0)
+	while (keyword == NULL && strchr(IGNORED_CHARS, line[i]) == NULL)
+	{
 		i++;
+		keyword = parse_keyword(keywords, line, i);
+	}
 	return (i);
 }
 
-static t_token	*tokenize_word(char *line, size_t len, t_point *pos)
+static t_token	*tokenize_word(t_pstr *word, t_point *pos)
 {
 	t_token	*token = malloc(sizeof(t_token));
 	if (token == NULL)
 		return (NULL);
-	token->str = strndup(line, len);
+	token->str = strndup(word->str, word->len);
 	if (token->str == NULL)
 	{
 		free(token);
 		return (NULL);
 	}
-	token->lin = (size_t)pos->y;
-	token->col = (size_t)pos->x;
+	token->lin = (size_t)pos->y + 1;
+	token->col = (size_t)pos->x + 1;
 	return (token);
 }
 
-static bool	tokenize_words(t_lst **line_tokens, char *line, t_point *pos)
+static bool	tokenize_words(const t_parr *keywords, t_lst **line_tokens, char *line,
+	t_point *pos)
 {
-	size_t	i = get_len_until_token(line);
-	while (line[i] != '\0' && strncmp(&line[i], COMMENT_KEYWORD, strlen(COMMENT_KEYWORD)) != 0)
+	t_pstr	word = {.str = &line[pos->x], .len = 0};
+	pos->x += word.len + get_len_ignore(&word.str[word.len]);
+	word.str = &line[pos->x];
+	t_keyword	*keyword = parse_keyword(keywords, line, (size_t)pos->x);
+	if (keyword != NULL)
+		word.len = strlen(keyword->str);
+	else
+		word.len = get_len_token(keywords, word.str);
+	while (word.len > 0 && (keyword == NULL || GET_BEHAVIOR(keyword->info) != PARSE_STOP))
 	{
-		size_t	len = get_len_token(&line[i]);
-		pos->x = (ssize_t)i + 1;
-		t_token	*token = tokenize_word(&line[i], len, pos);
+		t_token	*token = tokenize_word(&word, pos);
 		if (token == NULL || lst_new_back(line_tokens, token) == 1)
 		{
 			free_token(token);
@@ -61,16 +69,21 @@ static bool	tokenize_words(t_lst **line_tokens, char *line, t_point *pos)
 				ERROR_ALLOC);
 			return (1);
 		}
-		i += len;
-		i += get_len_until_token(&line[i]);
+		pos->x += word.len + get_len_ignore(&word.str[word.len]);
+		word.str = &line[pos->x];
+		keyword = parse_keyword(keywords, line, (size_t)pos->x);
+		if (keyword != NULL)
+			word.len = strlen(keyword->str);
+		else
+			word.len = get_len_token(keywords, word.str);
 	}
 	return (0);
 }
 
-static bool	tokenize_line(t_lst **tokens, char *line, t_point *pos)
+static bool	tokenize_line(const t_parr *keywords, t_lst **tokens, char *line, t_point *pos)
 {
 	t_lst	*line_tokens = NULL;
-	if (tokenize_words(&line_tokens, line, pos) == 1)
+	if (tokenize_words(keywords, &line_tokens, line, pos) == 1)
 		return (1);
 	if (line_tokens == NULL)
 		return (0);
@@ -92,8 +105,9 @@ bool	tokenize(t_data *data)
 			((t_file *)data->files.arr)[INPUT_CODE].name);
 		return (1);
 	}
+	const t_parr	keywords = KEYWORDS;
 	char	*line = NULL;
-	t_point	pos = {.y = 1, .x = 0};
+	t_point	pos = {0};
 	while (1)
 	{
 		free(line);
@@ -110,12 +124,13 @@ bool	tokenize(t_data *data)
 			file_close(&((t_file *)data->files.arr)[INPUT_CODE]);
 			return (0);
 		}
-		if (tokenize_line(&data->tokens, line, &pos) == 1)
+		if (tokenize_line(&keywords, &data->tokens, line, &pos) == 1)
 		{
 			free(line);
 			file_close(&((t_file *)data->files.arr)[INPUT_CODE]);
 			return (1);
 		}
 		pos.y++;
+		pos.x = 0;
 	}
 }

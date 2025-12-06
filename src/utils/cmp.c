@@ -1,9 +1,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include "parr.h"
+#include "pstr.h"
 #include "tokenization.h"
 #include "preprocessing.h"
 #include "symbol_table.h"
+#include "syntax.h"
 
 bool	cmp_label(void *label, void *str)
 {
@@ -18,6 +20,12 @@ bool	cmp_macro(void *macro, void *str)
 bool	cmp_token(void *token, void *str)
 {
 	return (strcmp(((t_token *)token)->str, str) != 0);
+}
+
+bool	cmp_keyword(void *keyword, void *word)
+{
+	return (((t_pstr *)word)->len == 0 || strncmp(((t_keyword *)keyword)->str,
+		((t_pstr *)word)->str, ((t_pstr *)word)->len) != 0);
 }
 
 bool	cmp_mnemonics(void *mnemonics, void *str)

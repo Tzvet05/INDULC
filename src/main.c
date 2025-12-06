@@ -52,7 +52,7 @@ static bool	convert_output(t_data *data)
 	if (data->options[OPTION_STRING_OUTPUT] != PARAM_NO
 		&& (build_string_blueprint(data) == 1 || write_string(&data->output.string,
 		&((t_file *)data->files.arr)[OUTPUT_STRING], data->options) == 1))
-			return (1);
+		return (1);
 	return (0);
 }
 
@@ -77,12 +77,12 @@ static bool	run(t_data *data)
 	return (error);
 }
 
-int32_t	main(int32_t argc, char **argv)
+int32_t	main(int32_t n_args, char **args)
 {
-	(void)argc;
+	(void)n_args;
 	t_data	data = (t_data){.options = DEFAULT_OPTIONS, .files = (t_parr){.len = N_FILES,
 		.obj_size = sizeof(t_file), .arr = (t_file [N_FILES]){0}}};
-	if (get_arguments(&data, &argv[1]) == 1 || check_arguments(&data) == 1)
+	if (get_arguments(&data, &args[1]) == 1 || check_arguments(&data) == 1)
 	{
 		free_files(&data.files);
 		return (1);

@@ -8,7 +8,7 @@
 bool	check_label_syntax(t_lst **tokens_ptr)
 {
 	t_lst	*tokens = *tokens_ptr;
-	ssize_t	i = lst_find_index(tokens, LABEL_KEYWORD, cmp_token);
+	ssize_t	i = lst_find_index(tokens, KEYWORD_LABEL, cmp_token);
 	if (i == -1)
 		return (0);
 	*tokens_ptr = lst_get_node(tokens, (size_t)i + 1);

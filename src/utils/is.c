@@ -19,7 +19,7 @@ bool	has_parameter(char *str)
 
 bool	is_define(t_lst *tokens)
 {
-	return (strcmp(((t_token *)tokens->content)->str, DEFINE_KEYWORD) == 0
+	return (strcmp(((t_token *)tokens->content)->str, KEYWORD_DEFINE) == 0
 		&& tokens->next != NULL && tokens->next->next != NULL
 		&& tokens->next->next->next == NULL);
 }
@@ -27,7 +27,7 @@ bool	is_define(t_lst *tokens)
 bool	is_label(t_lst *tokens)
 {
 	return (tokens->next != NULL
-		&& strcmp(((t_token *)tokens->next->content)->str, LABEL_KEYWORD) == 0);
+		&& strcmp(((t_token *)tokens->next->content)->str, KEYWORD_LABEL) == 0);
 }
 
 bool	has_instruction(t_isa *isa, t_lst *tokens)

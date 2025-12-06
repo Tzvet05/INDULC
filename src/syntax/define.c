@@ -46,13 +46,13 @@ static void	check_define_identifier(t_data *data, t_lst *tokens)
 				((t_token *)tokens->next->content)->lin,
 				((t_token *)tokens->next->content)->col, WARNING_DEFINE,
 				WARNING_DEFINE_NUMBER, ((t_token *)tokens->next->content)->str);
-		if (strcmp(((t_token *)tokens->next->content)->str, DEFINE_KEYWORD) == 0)
+		if (strcmp(((t_token *)tokens->next->content)->str, KEYWORD_DEFINE) == 0)
 			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 				EXECUTABLE_NAME, WARNING_SYNTAX,
 				((t_token *)tokens->next->content)->lin,
 				((t_token *)tokens->next->content)->col, WARNING_DEFINE,
 				WARNING_DEFINE_DEFINE, ((t_token *)tokens->next->content)->str);
-		if (strcmp(((t_token *)tokens->next->content)->str, LABEL_KEYWORD) == 0)
+		if (strcmp(((t_token *)tokens->next->content)->str, KEYWORD_LABEL) == 0)
 			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 				EXECUTABLE_NAME, WARNING_SYNTAX,
 				((t_token *)tokens->next->content)->lin,
@@ -64,7 +64,7 @@ static void	check_define_identifier(t_data *data, t_lst *tokens)
 bool	check_define_syntax(t_data *data, t_lst **tokens_ptr)
 {
 	t_lst	*tokens = *tokens_ptr;
-	if (strcmp(((t_token *)tokens->content)->str, DEFINE_KEYWORD) != 0)
+	if (strcmp(((t_token *)tokens->content)->str, KEYWORD_DEFINE) != 0)
 		return (0);
 	t_lst	*tokens_first = tokens;
 	*tokens_ptr = lst_last(tokens)->next;

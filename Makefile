@@ -13,7 +13,7 @@ NAME_LIB_CJSON :=	lib$(LIB_CJSON).so
 NAME_LIB_BLUEPRINT :=	lib$(LIB_BLUEPRINT).so
 
 CFLAGS =	-Wall -Wextra -Wconversion -Wpedantic
-LDFLAGS =	-L$(DIR_LIB_INDULC) -L$(DIR_LIB_CJSON)$(DIR_BUILD) -L$(DIR_LIB_BLUEPRINT) -Wl,-rpath,$(DIR_LIB_CJSON)$(DIR_BUILD):$(DIR_LIB_BLUEPRINT)
+LDFLAGS =	-Wl,-Bsymbolic -L$(DIR_LIB_INDULC) -L$(DIR_LIB_CJSON)$(DIR_BUILD) -L$(DIR_LIB_BLUEPRINT) -Wl,-rpath,$(DIR_LIB_CJSON)$(DIR_BUILD):$(DIR_LIB_BLUEPRINT)
 LDLIBS =	-l$(LIB_INDULC) -l$(LIB_CJSON) -l$(LIB_BLUEPRINT)
 
 # Directories
@@ -71,6 +71,7 @@ SRC :=	main.c \
 	$(DIR_FIL)init.c \
 	$(DIR_FIL)free.c \
 	$(DIR_TOK)tokenization.c \
+	$(DIR_TOK)parse.c \
 	$(DIR_TOK)free.c \
 	$(DIR_PRE)preprocessing.c \
 	$(DIR_PRE)check.c \

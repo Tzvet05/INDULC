@@ -16,8 +16,8 @@ static bool	add_macro(t_lst *tokens, t_lst **macro_table)
 		if (((t_macro *)macro->content)->n_uses == 0)
 			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 				EXECUTABLE_NAME, WARNING_SYNTAX,
-				((t_token *)tokens->content)->lin,
-				((t_token *)tokens->content)->col, WARNING_DEFINE,
+				((t_macro *)macro->content)->identifier->lin,
+				((t_macro *)macro->content)->identifier->col, WARNING_DEFINE,
 				WARNING_DEFINE_UNUSED, ((t_token *)tokens->next->content)->str);
 		((t_macro *)macro->content)->identifier = tokens->next->content;
 		((t_macro *)macro->content)->substitute = tokens->next->next->content;

@@ -8,7 +8,7 @@
 /* ----- STRUCTURES ----- */
 
 // Linked list
-typedef struct lst
+typedef struct	lst
 {
 	void		*content;
 	struct lst	*next;

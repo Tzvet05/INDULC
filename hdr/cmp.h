@@ -11,4 +11,5 @@
 bool	cmp_label(void *label, void *str);
 bool	cmp_macro(void *macro, void *str);
 bool	cmp_token(void *token, void *str);
+bool	cmp_keyword(void *keyword, void *word);
 bool	cmp_mnemonics(void *mnemonics, void *str);

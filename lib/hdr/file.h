@@ -55,7 +55,7 @@ typedef struct	pstr	t_pstr;
 /* ----- STRUCTURES ----- */
 
 // File
-typedef struct file
+typedef struct	file
 {
 	char	*name;
 	FILE	*stream;

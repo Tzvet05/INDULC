@@ -640,10 +640,6 @@
 		},
 		{
 			"type": "recipe",
-			"name": "rocket-part"
-		},
-		{
-			"type": "recipe",
 			"name": "uranium-processing"
 		},
 		{
@@ -763,11 +759,6 @@
 			"name": "jellynut-seed"
 		},
 		{
-			"name": "tree-seed",
-			"count": 1,
-			"import_from": "gleba"
-		},
-		{
 			"name": "yumako"
 		},
 		{
@@ -777,33 +768,33 @@
 			"name": "iron-bacteria"
 		},
 		{
+			"type": "recipe",
+			"name": "iron-bacteria-cultivation"
+		},
+		{
 			"name": "copper-bacteria"
 		},
 		{
 			"type": "recipe",
-			"name": "nutrients-from-spoilage"
+			"name": "copper-bacteria-cultivation"
 		},
 		{
 			"name": "spoilage"
-		},
-		{
-			"type": "recipe",
-			"name": "nutrients-from-yumako-mash"
 		},
 		{
 			"name": "nutrients"
 		},
 		{
 			"type": "recipe",
+			"name": "nutrients-from-spoilage"
+		},
+		{
+			"type": "recipe",
+			"name": "nutrients-from-yumako-mash"
+		},
+		{
+			"type": "recipe",
 			"name": "nutrients-from-bioflux"
-		},
-		{
-			"type": "recipe",
-			"name": "iron-bacteria-cultivation"
-		},
-		{
-			"type": "recipe",
-			"name": "copper-bacteria-cultivation"
 		},
 		{
 			"name": "bioflux"
@@ -841,13 +832,14 @@
 			"name": "biter-egg"
 		},
 		{
-			"name": "pentapod-egg",
-			"count": 1,
-			"import_from": "nauvis"
+			"name": "pentapod-egg"
 		},
 		{
 			"type": "recipe",
 			"name": "wood-processing"
+		},
+		{
+			"name": "tree-seed"
 		},
 		{
 			"type": "recipe",
@@ -914,10 +906,10 @@
 			"name": "metallurgic-science-pack"
 		},
 		{
-			"name": "electromagnetic-science-pack"
+			"name": "agricultural-science-pack"
 		},
 		{
-			"name": "agricultural-science-pack"
+			"name": "electromagnetic-science-pack"
 		},
 		{
 			"name": "cryogenic-science-pack"
@@ -927,6 +919,10 @@
 		},
 		{
 			"name": "rocket-silo"
+		},
+		{
+			"type": "recipe",
+			"name": "rocket-part"
 		},
 		{
 			"name": "cargo-landing-pad"
@@ -1193,22 +1189,22 @@
 			"name": "slowdown-capsule"
 		},
 		{
-			"name": "defender-capsule"
-		},
-		{
 			"type": "entity",
 			"name": "defender"
+		},
+		{
+			"name": "defender-capsule"
 		},
 		{
 			"type": "entity",
 			"name": "distractor"
 		},
 		{
-			"type": "entity",
-			"name": "destroyer"
+			"name": "distractor-capsule"
 		},
 		{
-			"name": "distractor-capsule"
+			"type": "entity",
+			"name": "destroyer"
 		},
 		{
 			"name": "destroyer-capsule"
