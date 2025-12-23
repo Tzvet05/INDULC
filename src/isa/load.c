@@ -3,31 +3,31 @@
 #include "json.h"
 #include "error.h"
 
-static void	set_instruction_data(t_isa *isa)
+static void	set_instruction_data(isa_t *isa)
 {
 	for (size_t i_instruction = 0; i_instruction < isa->instructions.len; i_instruction++)
 	{
 		size_t	n_opwords = 0;
-		for (size_t i_bitfield = 0; i_bitfield < ((t_instruction *)isa->instructions.arr)
+		for (size_t i_bitfield = 0; i_bitfield < ((instruction_t *)isa->instructions.arr)
 			[i_instruction].bitfields.len; i_bitfield++)
-			if (((t_bitfield *)((t_instruction *)isa->instructions.arr)
+			if (((bitfield_t *)((instruction_t *)isa->instructions.arr)
 				[i_instruction].bitfields.arr)[i_bitfield].type != CONSTANT)
 				n_opwords++;
-		((t_instruction *)isa->instructions.arr)[i_instruction].n_opwords = n_opwords;
+		((instruction_t *)isa->instructions.arr)[i_instruction].n_opwords = n_opwords;
 	}
 }
 
-bool	load_isa(t_data *data)
+bool	load_isa(data_t *data)
 {
-	if (file_open(&((t_file *)data->files.arr)[INPUT_ISA], FOPEN_MODE_READ) == 1)
+	if (file_open(&((file_t *)data->files.arr)[INPUT_ISA], FOPEN_MODE_READ) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
-			((t_file *)data->files.arr)[INPUT_ISA].name);
+			((file_t *)data->files.arr)[INPUT_ISA].name);
 		return (1);
 	}
-	const cJSON	*json = parse_json_file(&((t_file *)data->files.arr)[INPUT_ISA]);
-	file_close(&((t_file *)data->files.arr)[INPUT_ISA]);
+	const cJSON	*json = parse_json_file(&((file_t *)data->files.arr)[INPUT_ISA]);
+	file_close(&((file_t *)data->files.arr)[INPUT_ISA]);
 	if (json == NULL)
 		return (1);
 	if (check_isa_syntax(json) == 1)

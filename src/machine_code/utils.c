@@ -2,7 +2,7 @@
 #include "isa.h"
 #include "is.h"
 
-size_t	count_instructions(t_isa *isa, t_lst *tokens)
+size_t	count_instructions(isa_t *isa, lst_t *tokens)
 {
 	size_t	n_instructions = 0;
 	while (tokens != NULL)

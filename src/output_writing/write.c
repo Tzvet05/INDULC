@@ -5,7 +5,7 @@
 #include "arguments.h"
 #include "error.h"
 
-bool	write_machine_code(t_parr *machine_code, t_file *file, t_option_parameter *options)
+bool	write_machine_code(parr_t *machine_code, file_t *file, option_parameter_t *options)
 {
 	if (file_open(file, FOPEN_MODE_WRITE) == 1)
 	{
@@ -64,7 +64,7 @@ bool	write_machine_code(t_parr *machine_code, t_file *file, t_option_parameter *
 	return (0);
 }
 
-bool	write_json(const cJSON *json, t_file *file, t_option_parameter *options)
+bool	write_json(const cJSON *json, file_t *file, option_parameter_t *options)
 {
 	char	*str;
 	if (options[OPTION_JSON_OUTPUT] == PARAM_FORMAT)
@@ -111,7 +111,7 @@ bool	write_json(const cJSON *json, t_file *file, t_option_parameter *options)
 	return (0);
 }
 
-bool	write_string(t_parr *string, t_file *file, t_option_parameter *options)
+bool	write_string(parr_t *string, file_t *file, option_parameter_t *options)
 {
 	if (options[OPTION_STRING_OUTPUT] == PARAM_FILE
 		|| options[OPTION_STRING_OUTPUT] == PARAM_ALL)

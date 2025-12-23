@@ -8,9 +8,9 @@
 #include "is.h"
 #include "error.h"
 
-static bool	add_label(t_lst *tokens, t_lst **symbol_table, t_point *pos)
+static bool	add_label(lst_t *tokens, lst_t **symbol_table, point_t *pos)
 {
-	t_label	*new_label = malloc(sizeof(t_label));
+	label_t	*new_label = malloc(sizeof(label_t));
 	if (new_label == NULL)
 		return (1);
 	new_label->name = tokens->content;
@@ -24,10 +24,10 @@ static bool	add_label(t_lst *tokens, t_lst **symbol_table, t_point *pos)
 	return (0);
 }
 
-bool	build_symbol_table(t_data *data)
+bool	build_symbol_table(data_t *data)
 {
-	t_point	pos = {0};
-	t_lst	*tokens = data->tokens;
+	point_t	pos = {0};
+	lst_t	*tokens = data->tokens;
 	while (tokens != NULL)
 	{
 		if (is_label(tokens->content) == 1)

@@ -13,7 +13,7 @@ static bool	exec_option_help(void)
 	return (0);
 }
 
-bool	exec_options(t_option_parameter *options, bool *error)
+bool	exec_options(option_parameter_t *options, bool *error)
 {
 	if (options[OPTION_VERSION] == PARAM_YES)
 	{

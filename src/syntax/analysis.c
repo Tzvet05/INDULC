@@ -4,15 +4,15 @@
 #include "tokenization.h"
 #include "error.h"
 
-static bool	check_remaining_tokens_syntax(t_lst **tokens_ptr)
+static bool	check_remaining_tokens_syntax(lst_t **tokens_ptr)
 {
-	t_lst	*tokens = *tokens_ptr;
+	lst_t	*tokens = *tokens_ptr;
 	fprintf(stderr, "%s: %s (%zu:%zu): %s: ",
 		EXECUTABLE_NAME, ERROR_SYNTAX,
-		((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col, ERROR_TOKEN);
+		((token_t *)tokens->content)->lin, ((token_t *)tokens->content)->col, ERROR_TOKEN);
 	while (tokens != NULL)
 	{
-		fprintf(stderr, "\"%s\"", ((t_token *)tokens->content)->str);
+		fprintf(stderr, "\"%s\"", ((token_t *)tokens->content)->str);
 		if (tokens->next != NULL)
 			fprintf(stderr, ", ");
 		tokens = tokens->next;
@@ -22,13 +22,13 @@ static bool	check_remaining_tokens_syntax(t_lst **tokens_ptr)
 	return (1);
 }
 
-bool	analyse_syntax(t_data *data)
+bool	analyse_syntax(data_t *data)
 {
 	bool	error = 0;
-	t_lst	*tokens_lin = data->tokens;
+	lst_t	*tokens_lin = data->tokens;
 	while (tokens_lin != NULL)
 	{
-		t_lst	*tokens_col = tokens_lin->content;
+		lst_t	*tokens_col = tokens_lin->content;
 		if (tokens_col != NULL && check_define_syntax(data, &tokens_col) == 1)
 			error = 1;
 		if (tokens_col != NULL && check_label_syntax(&tokens_col) == 1)

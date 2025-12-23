@@ -253,7 +253,7 @@ static bool	check_isa_instructions(const cJSON *isa, size_t instruction_length)
 													i_bitfield, JSON_INSTRUCTION_BITFIELD_TYPE, ERROR_JSON_BITFIELD_TYPE);
 												error = 1;
 											}
-											else if ((t_bitfield_type)number == CONSTANT && cJSON_HasObjectItem(bitfield, JSON_INSTRUCTION_BITFIELD_VALUE) != 0)
+											else if ((bitfield_type_t)number == CONSTANT && cJSON_HasObjectItem(bitfield, JSON_INSTRUCTION_BITFIELD_VALUE) != 0)
 											{
 												const cJSON	*value = cJSON_GetObjectItemCaseSensitive(bitfield, JSON_INSTRUCTION_BITFIELD_VALUE);
 												if (cJSON_IsNumber(value) == 0)

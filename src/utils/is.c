@@ -17,23 +17,23 @@ bool	has_parameter(char *str)
 	return (strchr(str, '=') != NULL);
 }
 
-bool	is_define(t_lst *tokens)
+bool	is_define(lst_t *tokens)
 {
-	return (strcmp(((t_token *)tokens->content)->str, KEYWORD_DEFINE) == 0
+	return (strcmp(((token_t *)tokens->content)->str, KEYWORD_DEFINE) == 0
 		&& tokens->next != NULL && tokens->next->next != NULL
 		&& tokens->next->next->next == NULL);
 }
 
-bool	is_label(t_lst *tokens)
+bool	is_label(lst_t *tokens)
 {
 	return (tokens->next != NULL
-		&& strcmp(((t_token *)tokens->next->content)->str, KEYWORD_LABEL) == 0);
+		&& strcmp(((token_t *)tokens->next->content)->str, KEYWORD_LABEL) == 0);
 }
 
-bool	has_instruction(t_isa *isa, t_lst *tokens)
+bool	has_instruction(isa_t *isa, lst_t *tokens)
 {
 	if (is_label(tokens) == 1)
 		tokens = tokens->next->next;
-	return (tokens != NULL && parr_find(&isa->instructions, ((t_token *)tokens->content)->str,
+	return (tokens != NULL && parr_find(&isa->instructions, ((token_t *)tokens->content)->str,
 		cmp_mnemonics) != NULL);
 }

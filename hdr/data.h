@@ -9,19 +9,19 @@
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	lst	t_lst;
+typedef struct	lst	lst_t;
 
 /* ----- STRUCTURES ----- */
 
 // Generic data storage
 typedef struct	data
 {
-	t_option_parameter	*options;
-	t_parr			files;
-	t_lst			*tokens;
-	t_lst			*macro_table;
-	t_lst			*symbol_table;
-	t_isa			isa;
-	t_blueprint		blueprint;
-	t_output		output;
-}	t_data;
+	option_parameter_t	*options;
+	parr_t			files;
+	lst_t			*tokens;
+	lst_t			*macro_table;
+	lst_t			*symbol_table;
+	isa_t			isa;
+	blueprint_t		blueprint;
+	output_t		output;
+}	data_t;

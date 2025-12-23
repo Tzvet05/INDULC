@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "parr.h"
 
-void	*parr_find(t_parr *parr, void *to_find, bool (*cmp)(void*, void*))
+void	*parr_find(parr_t *parr, void *to_find, bool (*cmp)(void*, void*))
 {
 	uint8_t	*ptr = parr->arr;
 	for (size_t i = 0; i < parr->len; i++)

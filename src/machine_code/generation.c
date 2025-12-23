@@ -11,7 +11,7 @@
 #include "is.h"
 #include "error.h"
 
-static void	add_operand(t_parr *buffer, size_t i_instr, size_t i_start_bit, ssize_t operand,
+static void	add_operand(parr_t *buffer, size_t i_instr, size_t i_start_bit, ssize_t operand,
 	size_t len_operand)
 {
 	size_t	i_bit = i_start_bit + len_operand - 1, i_byte = i_bit / 8;
@@ -29,24 +29,24 @@ static void	add_operand(t_parr *buffer, size_t i_instr, size_t i_start_bit, ssiz
 	}
 }
 
-static void	encode_instruction(t_data *data, t_lst *tokens, t_instruction *instr,
-	t_parr *buffer, size_t i_instr)
+static void	encode_instruction(data_t *data, lst_t *tokens, instruction_t *instr,
+	parr_t *buffer, size_t i_instr)
 {
 	ssize_t	operand;
 	size_t	i_bit = ((data->isa.instruction_length + 7) & 0xFFFFFFFFFFFFFFF8)
 		- data->isa.instruction_length;
 	for (size_t i_bitfield = 0; i_bitfield < instr->bitfields.len; i_bitfield++)
 	{
-		t_bitfield	*bitfield = &((t_bitfield *)instr->bitfields.arr)[i_bitfield];
+		bitfield_t	*bitfield = &((bitfield_t *)instr->bitfields.arr)[i_bitfield];
 		if (bitfield->type == REGISTER)
-			operand = (ssize_t)((t_register *)parr_find(&data->isa.registers,
-				((t_token *)tokens->content)->str, cmp_mnemonics))->index;
+			operand = (ssize_t)((_register_t *)parr_find(&data->isa.registers,
+				((token_t *)tokens->content)->str, cmp_mnemonics))->index;
 		else if (bitfield->type == IMMEDIATE)
 			operand = get_immediate_operand(data->symbol_table,
-				(t_token *)tokens->content);
+				(token_t *)tokens->content);
 		else if (bitfield->type == FLAG)
-			operand = (ssize_t)((t_flag *)parr_find(&data->isa.flags,
-				((t_token *)tokens->content)->str, cmp_mnemonics))->code;
+			operand = (ssize_t)((flag_t *)parr_find(&data->isa.flags,
+				((token_t *)tokens->content)->str, cmp_mnemonics))->code;
 		else
 			operand = bitfield->value;
 		add_operand(buffer, i_instr, i_bit, operand, bitfield->len);
@@ -56,7 +56,7 @@ static void	encode_instruction(t_data *data, t_lst *tokens, t_instruction *instr
 	}
 }
 
-static bool	allocate_instructions_buffer(t_isa *isa, t_lst *tokens, t_parr *buffer)
+static bool	allocate_instructions_buffer(isa_t *isa, lst_t *tokens, parr_t *buffer)
 {
 	buffer->obj_size = (isa->instruction_length + 7) / 8;
 	buffer->len = count_instructions(isa, tokens);
@@ -70,22 +70,22 @@ static bool	allocate_instructions_buffer(t_isa *isa, t_lst *tokens, t_parr *buff
 	return (0);
 }
 
-bool	generate_machine_code(t_data *data)
+bool	generate_machine_code(data_t *data)
 {
-	t_parr	buffer;
+	parr_t	buffer;
 	if (allocate_instructions_buffer(&data->isa, data->tokens, &buffer) == 1)
 		return (1);
 	size_t	i_instr = 0;
-	t_lst	*tokens_lin = data->tokens;
+	lst_t	*tokens_lin = data->tokens;
 	while (tokens_lin != NULL)
 	{
-		t_lst	*tokens_col = tokens_lin->content;
+		lst_t	*tokens_col = tokens_lin->content;
 		if (is_label(tokens_col) == 1)
 			tokens_col = tokens_col->next->next;
 		if (tokens_col != NULL)
 		{
-			t_instruction	*instr = parr_find(&data->isa.instructions,
-				((t_token *)tokens_col->content)->str, cmp_mnemonics);
+			instruction_t	*instr = parr_find(&data->isa.instructions,
+				((token_t *)tokens_col->content)->str, cmp_mnemonics);
 			if (instr != NULL)
 			{
 				encode_instruction(data, tokens_col->next, instr, &buffer, i_instr);

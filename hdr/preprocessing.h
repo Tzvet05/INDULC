@@ -7,26 +7,26 @@
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	data	t_data;
-typedef struct	token	t_token;
-typedef struct	lst	t_lst;
+typedef struct	data	data_t;
+typedef struct	token	token_t;
+typedef struct	lst	lst_t;
 
 /* ----- STRUCTURES ----- */
 
 // Macro
 typedef struct	macro
 {
-	t_token	*identifier;
-	t_token	*substitute;
+	token_t	*identifier;
+	token_t	*substitute;
 	size_t	n_uses;
-}	t_macro;
+}	macro_t;
 
 /* ----- PROTOTYPES ----- */
 
 // preprocessing/
 //	preprocessing.c
-bool	preprocess(t_data *data);
+bool	preprocess(data_t *data);
 //	check.c
-void	check_macros(t_lst *macro_table);
+void	check_macros(lst_t *macro_table);
 //	free.c
 void	free_macro(void *macro);

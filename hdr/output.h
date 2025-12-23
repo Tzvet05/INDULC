@@ -9,7 +9,7 @@
 
 typedef struct	output
 {
-	t_parr	machine_code;
+	parr_t	machine_code;
 	cJSON	*json;
-	t_parr	string;
-}	t_output;
+	parr_t	string;
+}	output_t;

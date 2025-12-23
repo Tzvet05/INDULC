@@ -11,4 +11,4 @@ typedef struct	pstr
 {
 	size_t	len;
 	char	*str;
-}	t_pstr;
+}	pstr_t;

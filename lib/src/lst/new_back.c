@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include "lst.h"
 
-bool	lst_new_back(t_lst **lst, void *content)
+bool	lst_new_back(lst_t **lst, void *content)
 {
-	t_lst	*new = malloc(sizeof(t_lst));
+	lst_t	*new = malloc(sizeof(lst_t));
 	if (new == NULL)
 		return (1);
 	new->content = content;

@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include "lst.h"
 
-t_lst	*lst_last(t_lst *lst)
+lst_t	*lst_last(lst_t *lst)
 {
 	if (lst == NULL)
 		return (NULL);

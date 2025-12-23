@@ -1,6 +1,6 @@
 #include "file.h"
 
-void	file_close(t_file *file)
+void	file_close(file_t *file)
 {
 	if (file->stream != NULL)
 	{

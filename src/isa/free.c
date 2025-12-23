@@ -4,21 +4,21 @@
 
 static void	free_instruction(void *instruction)
 {
-	parr_clear(&((t_instruction *)instruction)->mnemonics, free_string);
-	parr_clear(&((t_instruction *)instruction)->bitfields, NULL);
+	parr_clear(&((instruction_t *)instruction)->mnemonics, free_string);
+	parr_clear(&((instruction_t *)instruction)->bitfields, NULL);
 }
 
 static void	free_flag(void *flag)
 {
-	parr_clear(&((t_flag *)flag)->mnemonics, free_string);
+	parr_clear(&((flag_t *)flag)->mnemonics, free_string);
 }
 
 static void	free_register(void *_register)
 {
-	parr_clear(&((t_register *)_register)->mnemonics, free_string);
+	parr_clear(&((_register_t *)_register)->mnemonics, free_string);
 }
 
-void	free_isa(t_isa *isa)
+void	free_isa(isa_t *isa)
 {
 	parr_clear(&isa->registers, free_register);
 	parr_clear(&isa->flags, free_flag);

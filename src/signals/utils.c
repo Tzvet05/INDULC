@@ -2,7 +2,7 @@
 #include <string.h>
 #include "parr.h"
 
-char	*get_type(t_parr *types, char *type)
+char	*get_type(parr_t *types, char *type)
 {
 	for (size_t i = 0; i < types->len; i++)
 		if (strcmp(((char **)types->arr)[i], type) == 0)
@@ -10,7 +10,7 @@ char	*get_type(t_parr *types, char *type)
 	return (NULL);
 }
 
-ssize_t	get_i_type(t_parr *types, char *type)
+ssize_t	get_i_type(parr_t *types, char *type)
 {
 	for (size_t i = 0; i < types->len; i++)
 		if (strcmp(((char **)types->arr)[i], type) == 0)

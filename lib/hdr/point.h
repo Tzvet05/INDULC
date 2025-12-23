@@ -11,4 +11,4 @@ typedef struct	point
 {
 	ssize_t	x;
 	ssize_t	y;
-}	t_point;
+}	point_t;

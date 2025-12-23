@@ -44,12 +44,12 @@
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	data	t_data;
+typedef struct	data	data_t;
 
 /* ----- PROTOTYPES ----- */
 
 // blueprint/
 //	build_json.c
-bool	build_json_blueprint(t_data *data);
+bool	build_json_blueprint(data_t *data);
 //	build_string.c
-bool	build_string_blueprint(t_data *data);
+bool	build_string_blueprint(data_t *data);

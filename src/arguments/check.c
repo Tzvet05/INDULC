@@ -4,9 +4,9 @@
 #include "files.h"
 #include "error.h"
 
-bool	check_arguments(t_data *data)
+bool	check_arguments(data_t *data)
 {
-	if (((t_file *)data->files.arr)[INPUT_CODE].name == NULL
+	if (((file_t *)data->files.arr)[INPUT_CODE].name == NULL
 		&& data->options[OPTION_VERSION] == PARAM_NO
 		&& data->options[OPTION_HELP] == PARAM_NO)
 	{

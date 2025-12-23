@@ -50,7 +50,7 @@ enum
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	pstr	t_pstr;
+typedef struct	pstr	pstr_t;
 
 /* ----- STRUCTURES ----- */
 
@@ -60,18 +60,18 @@ typedef struct	file
 	char	*name;
 	FILE	*stream;
 	uint8_t	info;
-}	t_file;
+}	file_t;
 
 /* ----- PROTOTYPES ----- */
 
 // file/
 //	open.c
-bool	file_open(t_file *file, char *mode);
+bool	file_open(file_t *file, char *mode);
 //	get_name.c
-t_pstr	file_get_name(char *path);
+pstr_t	file_get_name(char *path);
 //	get_next_line.c
-bool	file_get_next_line(t_file *file, char **line);
+bool	file_get_next_line(file_t *file, char **line);
 //	close.c
-void	file_close(t_file *file);
+void	file_close(file_t *file);
 //	free.c
 void	file_free(void *file);

@@ -6,13 +6,13 @@
 #include "is.h"
 #include "error.h"
 
-static ssize_t	get_option_arguments(t_parr *arguments, char **args, bool parse_options)
+static ssize_t	get_option_arguments(parr_t *arguments, char **args, bool parse_options)
 {
 	size_t	i_argument = 0;
 	while (i_argument < arguments->len
-		&& ((t_argument *)arguments->arr)[i_argument].src != NULL)
+		&& ((argument_t *)arguments->arr)[i_argument].src != NULL)
 	{
-		t_argument	*argument = &((t_argument *)arguments->arr)[i_argument];
+		argument_t	*argument = &((argument_t *)arguments->arr)[i_argument];
 		if (argument->type == DUP)
 		{
 			uint8_t	**dst = argument->dst;
@@ -42,7 +42,7 @@ static ssize_t	get_option_arguments(t_parr *arguments, char **args, bool parse_o
 				ERROR_ARGUMENT_OPTION_ARGUMENTS_OPTION, args[i_string]);
 			return (-1);
 		}
-		char	**dst = ((t_argument *)arguments->arr)[i_argument].dst;
+		char	**dst = ((argument_t *)arguments->arr)[i_argument].dst;
 		free(*dst);
 		*dst = strdup(args[i_string]);
 		if (*dst == NULL)
@@ -65,7 +65,7 @@ static ssize_t	get_option_arguments(t_parr *arguments, char **args, bool parse_o
 	return ((ssize_t)i_string);
 }
 
-static t_parameter	*get_option_parameter(t_option *option, char *arg)
+static parameter_t	*get_option_parameter(option_t *option, char *arg)
 {
 	char	*beginning_parameter = strchr(arg, '=');
 	if (beginning_parameter == NULL || *(beginning_parameter + 1) == '\0')
@@ -79,9 +79,9 @@ static t_parameter	*get_option_parameter(t_option *option, char *arg)
 	size_t	i_parameter = 0;
 	while (i_parameter < option->parameters.len)
 	{
-		if (strcmp(((t_parameter *)option->parameters.arr)[i_parameter].name,
+		if (strcmp(((parameter_t *)option->parameters.arr)[i_parameter].name,
 			beginning_parameter) == 0)
-			return (&((t_parameter *)option->parameters.arr)[i_parameter]);
+			return (&((parameter_t *)option->parameters.arr)[i_parameter]);
 		i_parameter++;
 	}
 	fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
@@ -90,13 +90,13 @@ static t_parameter	*get_option_parameter(t_option *option, char *arg)
 	return (NULL);
 }
 
-static ssize_t	get_i_option(const t_parr *options, char *arg)
+static ssize_t	get_i_option(const parr_t *options, char *arg)
 {
 	size_t	i_option = 0;
 	while (i_option < options->len)
 	{
 		size_t	i_name = 0;
-		char	*name = ((t_option *)options->arr)[i_option].names[i_name];
+		char	*name = ((option_t *)options->arr)[i_option].names[i_name];
 		while (name != NULL)
 		{
 			size_t	len_name = strlen(name);
@@ -104,14 +104,14 @@ static ssize_t	get_i_option(const t_parr *options, char *arg)
 				&& (arg[len_name] == '=' || arg[len_name] == '\0'))
 				return ((ssize_t)i_option);
 			i_name++;
-			name = ((t_option *)options->arr)[i_option].names[i_name];
+			name = ((option_t *)options->arr)[i_option].names[i_name];
 		}
 		i_option++;
 	}
 	return (-1);
 }
 
-static ssize_t	get_option(t_data *data, const t_parr *options, char **args, bool parse_options)
+static ssize_t	get_option(data_t *data, const parr_t *options, char **args, bool parse_options)
 {
 	size_t	i_arg = 0;
 	ssize_t	i_option = get_i_option(options, args[i_arg]);
@@ -122,8 +122,8 @@ static ssize_t	get_option(t_data *data, const t_parr *options, char **args, bool
 			ERROR_ARGUMENT_OPTION_NAME, args[i_arg]);
 		return (-1);
 	}
-	t_option	*option = &((t_option *)options->arr)[i_option];
-	t_parameter	*parameter;
+	option_t	*option = &((option_t *)options->arr)[i_option];
+	parameter_t	*parameter;
 	if (option->parameters.len > 0)
 	{
 		parameter = get_option_parameter(option, args[i_arg]);
@@ -144,7 +144,7 @@ static ssize_t	get_option(t_data *data, const t_parr *options, char **args, bool
 			args[i_arg]);
 		return (-1);
 	}
-	t_parr	*arguments;
+	parr_t	*arguments;
 	if (parameter != NULL && parameter->arguments.len > 0)
 		arguments = &parameter->arguments;
 	else if (option->parameters.len == 0)
@@ -156,9 +156,9 @@ static ssize_t	get_option(t_data *data, const t_parr *options, char **args, bool
 	return (0);
 }
 
-bool	get_arguments(t_data *data, char **args)
+bool	get_arguments(data_t *data, char **args)
 {
-	const t_parr	options = OPTIONS;
+	const parr_t	options = OPTIONS;
 	bool	parse_options = 1, error = 0;
 	size_t	i_arg = 0;
 	while (args[i_arg] != NULL)
@@ -178,10 +178,10 @@ bool	get_arguments(t_data *data, char **args)
 		}
 		else
 		{
-			if (((t_file *)data->files.arr)[INPUT_CODE].name == NULL)
+			if (((file_t *)data->files.arr)[INPUT_CODE].name == NULL)
 			{
-				((t_file *)data->files.arr)[INPUT_CODE].name = strdup(args[i_arg]);
-				if (((t_file *)data->files.arr)[INPUT_CODE].name == NULL)
+				((file_t *)data->files.arr)[INPUT_CODE].name = strdup(args[i_arg]);
+				if (((file_t *)data->files.arr)[INPUT_CODE].name == NULL)
 				{
 					fprintf(stderr, "%s: %s: %s: %s: %s\n",
 						EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC,

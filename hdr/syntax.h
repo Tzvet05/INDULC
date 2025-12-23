@@ -30,8 +30,8 @@
 #define KEYWORDS	\
 {\
 	.len = 3, \
-	.obj_size = sizeof(t_keyword), \
-	.arr = (t_keyword [])\
+	.obj_size = sizeof(keyword_t), \
+	.arr = (keyword_t [])\
 	{\
 		{\
 			.str = KEYWORD_COMMENT, \
@@ -68,8 +68,8 @@ enum
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	lst	t_lst;
-typedef struct	data	t_data;
+typedef struct	lst	lst_t;
+typedef struct	data	data_t;
 
 /* ----- STRUCTURES ----- */
 
@@ -78,16 +78,16 @@ typedef struct	keyword
 {
 	char	*str;
 	uint8_t	info;
-}	t_keyword;
+}	keyword_t;
 
 /* ----- PROTOTYPES ----- */
 
 // syntax/
 //	analysis.c
-bool	analyse_syntax(t_data *data);
+bool	analyse_syntax(data_t *data);
 //	define.c
-bool	check_define_syntax(t_data *data, t_lst **tokens_ptr);
+bool	check_define_syntax(data_t *data, lst_t **tokens_ptr);
 //	label.c
-bool	check_label_syntax(t_lst **tokens_ptr);
+bool	check_label_syntax(lst_t **tokens_ptr);
 //	instruction.c
-bool	check_instruction_syntax(t_data *data, t_lst **tokens_ptr);
+bool	check_instruction_syntax(data_t *data, lst_t **tokens_ptr);

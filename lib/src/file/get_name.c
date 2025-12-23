@@ -1,9 +1,9 @@
 #include <string.h>
 #include "pstr.h"
 
-t_pstr	file_get_name(char *path)
+pstr_t	file_get_name(char *path)
 {
-	t_pstr	file = (t_pstr){.len = strlen(path), .str = path};
+	pstr_t	file = (pstr_t){.len = strlen(path), .str = path};
 	char	*ptr = strrchr(file.str, '/');
 	if (ptr != NULL)
 	{

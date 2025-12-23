@@ -6,8 +6,8 @@
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	isa	t_isa;
-typedef struct	lst	t_lst;
+typedef struct	isa	isa_t;
+typedef struct	lst	lst_t;
 
 /* ----- PROTOTYPES ----- */
 
@@ -15,6 +15,6 @@ typedef struct	lst	t_lst;
 //	is.c
 bool	is_option(char *str);
 bool	has_parameter(char *str);
-bool	is_define(t_lst *tokens);
-bool	is_label(t_lst *tokens);
-bool	has_instruction(t_isa *isa, t_lst *tokens);
+bool	is_define(lst_t *tokens);
+bool	is_label(lst_t *tokens);
+bool	has_instruction(isa_t *isa, lst_t *tokens);

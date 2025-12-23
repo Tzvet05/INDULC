@@ -9,7 +9,7 @@
 #include "nbr.h"
 #include "error.h"
 
-static bool	check_register_operand_syntax(t_isa *isa, t_token *token)
+static bool	check_register_operand_syntax(isa_t *isa, token_t *token)
 {
 	if (parr_find(&isa->registers, token->str, cmp_mnemonics) == NULL)
 	{
@@ -22,12 +22,12 @@ static bool	check_register_operand_syntax(t_isa *isa, t_token *token)
 	return (0);
 }
 
-static bool	check_immediate_operand_syntax(t_lst *symbol_table, t_token *token, size_t bit_len)
+static bool	check_immediate_operand_syntax(lst_t *symbol_table, token_t *token, size_t bit_len)
 {
-	t_lst	*label = lst_find(symbol_table, token->str, cmp_label);
+	lst_t	*label = lst_find(symbol_table, token->str, cmp_label);
 	if (label != NULL)
 	{
-		if (will_overflow_int((ssize_t)((t_label *)label->content)->line, bit_len) == 1)
+		if (will_overflow_int((ssize_t)((label_t *)label->content)->line, bit_len) == 1)
 			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: %s: \"%s\"\n",
 				EXECUTABLE_NAME, WARNING_SYNTAX, token->lin, token->col,
 				WARNING_INSTRUCTION, WARNING_INSTRUCTION_LABEL,
@@ -50,7 +50,7 @@ static bool	check_immediate_operand_syntax(t_lst *symbol_table, t_token *token, 
 	return (0);
 }
 
-static bool	check_flag_operand_syntax(t_isa *isa, t_token *token)
+static bool	check_flag_operand_syntax(isa_t *isa, token_t *token)
 {
 	if (parr_find(&isa->flags, token->str, cmp_mnemonics) == NULL)
 	{
@@ -63,22 +63,22 @@ static bool	check_flag_operand_syntax(t_isa *isa, t_token *token)
 	return (0);
 }
 
-static t_bitfield	*get_bitfield(t_instruction *instr, size_t i_opword_target)
+static bitfield_t	*get_bitfield(instruction_t *instr, size_t i_opword_target)
 {
 	size_t	i_bitfield = 0, i_opword = 0;
 	while (i_opword < i_opword_target + 1)
 	{
-		if (((t_bitfield *)instr->bitfields.arr)[i_bitfield].type != CONSTANT)
+		if (((bitfield_t *)instr->bitfields.arr)[i_bitfield].type != CONSTANT)
 			i_opword++;
 		i_bitfield++;
 	}
-	return (&((t_bitfield *)instr->bitfields.arr)[i_bitfield - 1]);
+	return (&((bitfield_t *)instr->bitfields.arr)[i_bitfield - 1]);
 }
 
-static bool	check_operand_syntax(t_data *data, t_instruction *instr, t_token *token,
+static bool	check_operand_syntax(data_t *data, instruction_t *instr, token_t *token,
 	size_t i_opword)
 {
-	t_bitfield	*bitfield = get_bitfield(instr, i_opword);
+	bitfield_t	*bitfield = get_bitfield(instr, i_opword);
 	if (bitfield->type == REGISTER)
 		return (check_register_operand_syntax(&data->isa, token));
 	if (bitfield->type == IMMEDIATE)
@@ -86,11 +86,11 @@ static bool	check_operand_syntax(t_data *data, t_instruction *instr, t_token *to
 	return (check_flag_operand_syntax(&data->isa, token));
 }
 
-bool	check_instruction_syntax(t_data *data, t_lst **tokens_ptr)
+bool	check_instruction_syntax(data_t *data, lst_t **tokens_ptr)
 {
-	t_lst	*tokens = *tokens_ptr;
-	t_instruction	*instr = parr_find(&data->isa.instructions,
-		((t_token *)tokens->content)->str, cmp_mnemonics);
+	lst_t	*tokens = *tokens_ptr;
+	instruction_t	*instr = parr_find(&data->isa.instructions,
+		((token_t *)tokens->content)->str, cmp_mnemonics);
 	if (instr == NULL)
 		return (0);
 	*tokens_ptr = lst_last(tokens)->next;
@@ -107,8 +107,8 @@ bool	check_instruction_syntax(t_data *data, t_lst **tokens_ptr)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX,
-			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col
-				+ strlen(((t_token *)tokens->content)->str) + 1,
+			((token_t *)tokens->content)->lin, ((token_t *)tokens->content)->col
+				+ strlen(((token_t *)tokens->content)->str) + 1,
 			ERROR_INSTRUCTION, ERROR_INSTRUCTION_TOO_FEW_ARGS);
 		return (1);
 	}
@@ -117,11 +117,11 @@ bool	check_instruction_syntax(t_data *data, t_lst **tokens_ptr)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: ",
 			EXECUTABLE_NAME, ERROR_SYNTAX,
-			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
+			((token_t *)tokens->content)->lin, ((token_t *)tokens->content)->col,
 			ERROR_INSTRUCTION, ERROR_INSTRUCTION_TOO_MANY_ARGS);
 		while (tokens != NULL)
 		{
-			fprintf(stderr, "\"%s\"", ((t_token *)tokens->content)->str);
+			fprintf(stderr, "\"%s\"", ((token_t *)tokens->content)->str);
 			if (tokens->next != NULL)
 				fprintf(stderr, ", ");
 			tokens = tokens->next;

@@ -11,7 +11,7 @@
 #include "output_writing.h"
 #include "error.h"
 
-static bool	assemble(t_data *data)
+static bool	assemble(data_t *data)
 {
 	if (tokenize(data) == 1 || preprocess(data) == 1 || build_symbol_table(data) == 1
 		|| analyse_syntax(data) == 1)
@@ -24,11 +24,11 @@ static bool	assemble(t_data *data)
 	return (generate_machine_code(data));
 }
 
-static bool	convert_output(t_data *data)
+static bool	convert_output(data_t *data)
 {
 	if (data->options[OPTION_MACHINE_CODE_OUTPUT] != PARAM_NO
 		&& write_machine_code(&data->output.machine_code,
-		&((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE], data->options) == 1)
+		&((file_t *)data->files.arr)[OUTPUT_MACHINE_CODE], data->options) == 1)
 		return (1);
 	if (data->isa.instruction_length > 32
 		|| (data->options[OPTION_JSON_OUTPUT] == PARAM_NO
@@ -44,19 +44,19 @@ static bool	convert_output(t_data *data)
 		return (1);
 	}
 	if (data->options[OPTION_JSON_OUTPUT] != PARAM_NO
-		&& write_json(data->output.json, &((t_file *)data->files.arr)[OUTPUT_JSON],
+		&& write_json(data->output.json, &((file_t *)data->files.arr)[OUTPUT_JSON],
 		data->options) == 1)
 		return (1);
 	if (data->options[OPTION_STRING_OUTPUT] == PARAM_NO)
 		return (0);
 	if (data->options[OPTION_STRING_OUTPUT] != PARAM_NO
 		&& (build_string_blueprint(data) == 1 || write_string(&data->output.string,
-		&((t_file *)data->files.arr)[OUTPUT_STRING], data->options) == 1))
+		&((file_t *)data->files.arr)[OUTPUT_STRING], data->options) == 1))
 		return (1);
 	return (0);
 }
 
-static bool	run(t_data *data)
+static bool	run(data_t *data)
 {
 	if (load_isa(data) == 1)
 		return (1);
@@ -80,8 +80,8 @@ static bool	run(t_data *data)
 int32_t	main(int32_t n_args, char **args)
 {
 	(void)n_args;
-	t_data	data = (t_data){.options = DEFAULT_OPTIONS, .files = (t_parr){.len = N_FILES,
-		.obj_size = sizeof(t_file), .arr = (t_file [N_FILES]){0}}};
+	data_t	data = (data_t){.options = DEFAULT_OPTIONS, .files = (parr_t){.len = N_FILES,
+		.obj_size = sizeof(file_t), .arr = (file_t [N_FILES]){0}}};
 	if (get_arguments(&data, &args[1]) == 1 || check_arguments(&data) == 1)
 	{
 		free_files(&data.files);

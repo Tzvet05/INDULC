@@ -5,7 +5,7 @@
 #include "signals.h"
 #include "blueprint.h"
 
-static int64_t	convert_instruction_number(t_data *data, size_t i_instruction)
+static int64_t	convert_instruction_number(data_t *data, size_t i_instruction)
 {
 	int64_t	buffer = 0;
 	uint8_t	*ptr = (uint8_t *)data->output.machine_code.arr
@@ -16,7 +16,7 @@ static int64_t	convert_instruction_number(t_data *data, size_t i_instruction)
 	return (buffer);
 }
 
-static bool	build_filter(t_data *data, cJSON *filters, size_t i_filter, size_t i_signal,
+static bool	build_filter(data_t *data, cJSON *filters, size_t i_filter, size_t i_signal,
 	size_t i_quality, size_t i_instruction)
 {
 	cJSON	*filter = cJSON_CreateObject();
@@ -25,11 +25,11 @@ static bool	build_filter(t_data *data, cJSON *filters, size_t i_filter, size_t i
 	cJSON_AddItemToArray(filters, filter);
 	if (cJSON_AddNumberToObject(filter, JSON_INDEX, (double)(i_filter + 1)) == NULL
 		|| cJSON_AddStringToObject(filter, JSON_NAME,
-		((t_signal *)data->blueprint.signals.arr)[i_signal].name) == NULL)
+		((signal_t *)data->blueprint.signals.arr)[i_signal].name) == NULL)
 		return (1);
-	if (((t_signal *)data->blueprint.signals.arr)[i_signal].type != NULL
+	if (((signal_t *)data->blueprint.signals.arr)[i_signal].type != NULL
 		&& cJSON_AddStringToObject(filter, JSON_TYPE,
-		((t_signal *)data->blueprint.signals.arr)[i_signal].type) == NULL)
+		((signal_t *)data->blueprint.signals.arr)[i_signal].type) == NULL)
 		return (1);
 	if (data->blueprint.qualities.len > 0 && cJSON_AddStringToObject(filter, JSON_QUALITY,
 		((char **)data->blueprint.qualities.arr)[i_quality]) == NULL)
@@ -40,7 +40,7 @@ static bool	build_filter(t_data *data, cJSON *filters, size_t i_filter, size_t i
 		(double)convert_instruction_number(data, i_instruction)) == NULL);
 }
 
-static bool	build_filters(t_data *data, cJSON *section, size_t i_instruction)
+static bool	build_filters(data_t *data, cJSON *section, size_t i_instruction)
 {
 	cJSON	*filters = cJSON_AddArrayToObject(section, JSON_FILTERS);
 	if (filters == NULL)
@@ -66,8 +66,8 @@ static bool	build_filters(t_data *data, cJSON *section, size_t i_instruction)
 	return (0);
 }
 
-static bool	build_entity(t_data *data, cJSON *entities, size_t i_entity, size_t i_instruction,
-	t_point pos)
+static bool	build_entity(data_t *data, cJSON *entities, size_t i_entity, size_t i_instruction,
+	point_t pos)
 {
 	cJSON	*entity = cJSON_CreateObject();
 	if (entity == NULL)
@@ -102,12 +102,12 @@ static bool	build_entity(t_data *data, cJSON *entities, size_t i_entity, size_t 
 	return (build_filters(data, section, i_instruction));
 }
 
-static bool	build_entities(t_data *data, cJSON *blueprint)
+static bool	build_entities(data_t *data, cJSON *blueprint)
 {
 	cJSON	*entities = cJSON_AddArrayToObject(blueprint, JSON_ENTITIES);
 	if (entities == NULL)
 		return (1);
-	t_point	position = {0};
+	point_t	position = {0};
 	size_t	instructions_per_entity = data->blueprint.signals.len
 		* MAX(data->blueprint.qualities.len, 1);
 	for (size_t i_entity = 0; i_entity < (data->output.machine_code.len
@@ -141,7 +141,7 @@ static bool	build_icons(cJSON *blueprint)
 	return (build_icon(icons, 0));
 }
 
-bool	build_json_blueprint(t_data *data)
+bool	build_json_blueprint(data_t *data)
 {
 	cJSON	*main_object = cJSON_CreateObject();
 	if (main_object == NULL)

@@ -28,8 +28,8 @@ enum
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	data	t_data;
-typedef struct	pstr	t_pstr;
+typedef struct	data	data_t;
+typedef struct	pstr	pstr_t;
 
 /* ----- STRUCTURES ----- */
 
@@ -37,27 +37,27 @@ typedef struct	signal
 {
 	char	*name;
 	char	*type;
-}	t_signal;
+}	signal_t;
 
 typedef struct	blueprint
 {
 	char	*text[N_TEXTS];
-	t_parr	types;
-	t_parr	qualities;
-	t_parr	signals;
-}	t_blueprint;
+	parr_t	types;
+	parr_t	qualities;
+	parr_t	signals;
+}	blueprint_t;
 
 /* ----- PROTOTYPES ----- */
 
 // signals/
 //	load.c
-bool	load_blueprint(t_data *data);
+bool	load_blueprint(data_t *data);
 //	check.c
 bool	check_blueprint_syntax(const cJSON *blueprint);
 //	get.c
-bool	init_blueprint(t_blueprint *blueprint, t_pstr *input_name, const cJSON *json_blueprint);
+bool	init_blueprint(blueprint_t *blueprint, pstr_t *input_name, const cJSON *json_blueprint);
 //	utils.c
-char	*get_type(t_parr *types, char *type);
-ssize_t	get_i_type(t_parr *types, char *type);
+char	*get_type(parr_t *types, char *type);
+ssize_t	get_i_type(parr_t *types, char *type);
 //	free.c
-void	free_blueprint(t_blueprint *blueprint);
+void	free_blueprint(blueprint_t *blueprint);

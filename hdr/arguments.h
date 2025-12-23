@@ -9,15 +9,15 @@
 /* ----- MACROS ----- */
 
 // Default options
-#define DEFAULT_OPTIONS	(t_option_parameter []){PARAM_NO, PARAM_NO, PARAM_YES, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_ALL}
+#define DEFAULT_OPTIONS	(option_parameter_t []){PARAM_NO, PARAM_NO, PARAM_YES, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_NO, PARAM_ALL}
 
 // Options
 #define OPTION_PARSING_END	"--"
 #define OPTIONS	\
 {\
 	.len = 11, \
-	.obj_size = sizeof(t_option), \
-	.arr = (t_option [])\
+	.obj_size = sizeof(option_t), \
+	.arr = (option_t [])\
 	{\
 		{\
 			.names = (char *[]){"--version", NULL}\
@@ -30,8 +30,8 @@
 			.parameters = \
 			{\
 				.len = 2, \
-				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter [])\
+				.obj_size = sizeof(parameter_t), \
+				.arr = (parameter_t [])\
 				{\
 					{\
 						.name = "yes", \
@@ -49,8 +49,8 @@
 			.parameters = \
 			{\
 				.len = 2, \
-				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter [])\
+				.obj_size = sizeof(parameter_t), \
+				.arr = (parameter_t [])\
 				{\
 					{\
 						.name = "yes", \
@@ -68,8 +68,8 @@
 			.parameters = \
 			{\
 				.len = 2, \
-				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter [])\
+				.obj_size = sizeof(parameter_t), \
+				.arr = (parameter_t [])\
 				{\
 					{\
 						.name = "yes", \
@@ -87,17 +87,17 @@
 			.arguments = \
 			{\
 				.len = 2, \
-				.obj_size = sizeof(t_argument), \
-				.arr = (t_argument [])\
+				.obj_size = sizeof(argument_t), \
+				.arr = (argument_t [])\
 				{\
 					{\
-						.dst = &((t_file *)data->files.arr)[INPUT_ISA].info, \
+						.dst = &((file_t *)data->files.arr)[INPUT_ISA].info, \
 						.size = sizeof(uint8_t), \
 						.src = &(uint8_t){SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)}, \
 						.type = CPY\
 					}, \
 					{\
-						.dst = &((t_file *)data->files.arr)[INPUT_ISA].name\
+						.dst = &((file_t *)data->files.arr)[INPUT_ISA].name\
 					}\
 				}\
 			}\
@@ -107,17 +107,17 @@
 			.arguments = \
 			{\
 				.len = 2, \
-				.obj_size = sizeof(t_argument), \
-				.arr = (t_argument [])\
+				.obj_size = sizeof(argument_t), \
+				.arr = (argument_t [])\
 				{\
 					{\
-						.dst = &((t_file *)data->files.arr)[INPUT_SIGNALS].info, \
+						.dst = &((file_t *)data->files.arr)[INPUT_SIGNALS].info, \
 						.size = sizeof(uint8_t), \
 						.src = &(uint8_t){SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)}, \
 						.type = CPY\
 					}, \
 					{\
-						.dst = &((t_file *)data->files.arr)[INPUT_SIGNALS].name\
+						.dst = &((file_t *)data->files.arr)[INPUT_SIGNALS].name\
 					}\
 				}\
 			}\
@@ -127,8 +127,8 @@
 			.arguments = \
 			{\
 				.len = 2, \
-				.obj_size = sizeof(t_argument), \
-				.arr = (t_argument [])\
+				.obj_size = sizeof(argument_t), \
+				.arr = (argument_t [])\
 				{\
 					{\
 						.dst = &data->blueprint.text[LABEL]\
@@ -144,8 +144,8 @@
 			.parameters = \
 			{\
 				.len = 3, \
-				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter [])\
+				.obj_size = sizeof(parameter_t), \
+				.arr = (parameter_t [])\
 				{\
 					{\
 						.name = "bin", \
@@ -153,17 +153,17 @@
 						.arguments = \
 						{\
 							.len = 2, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_MACHINE_CODE].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].name, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_MACHINE_CODE].name, \
 									.size = strlen(TAIL_OUTPUT_MACHINE_CODE_BIN) + 1, \
 									.src = TAIL_OUTPUT_MACHINE_CODE_BIN, \
 									.type = DUP\
@@ -177,17 +177,17 @@
 						.arguments = \
 						{\
 							.len = 2, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_MACHINE_CODE].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].name, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_MACHINE_CODE].name, \
 									.size = strlen(TAIL_OUTPUT_MACHINE_CODE_TXT) + 1, \
 									.src = TAIL_OUTPUT_MACHINE_CODE_TXT, \
 									.type = DUP\
@@ -201,11 +201,11 @@
 						.arguments = \
 						{\
 							.len = 1, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_MACHINE_CODE].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_MACHINE_CODE].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
 									.type = CPY\
@@ -221,8 +221,8 @@
 			.parameters = \
 			{\
 				.len = 3, \
-				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter [])\
+				.obj_size = sizeof(parameter_t), \
+				.arr = (parameter_t [])\
 				{\
 					{\
 						.name = "compact", \
@@ -230,17 +230,17 @@
 						.arguments = \
 						{\
 							.len = 2, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_JSON].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].name, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_JSON].name, \
 									.size = strlen(TAIL_OUTPUT_JSON) + 1, \
 									.src = TAIL_OUTPUT_JSON, \
 									.type = DUP\
@@ -254,17 +254,17 @@
 						.arguments = \
 						{\
 							.len = 2, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_JSON].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].name, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_JSON].name, \
 									.size = strlen(TAIL_OUTPUT_JSON) + 1, \
 									.src = TAIL_OUTPUT_JSON, \
 									.type = DUP\
@@ -278,11 +278,11 @@
 						.arguments = \
 						{\
 							.len = 1, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_JSON].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_JSON].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
 									.type = CPY\
@@ -298,8 +298,8 @@
 			.parameters = \
 			{\
 				.len = 4, \
-				.obj_size = sizeof(t_parameter), \
-				.arr = (t_parameter [])\
+				.obj_size = sizeof(parameter_t), \
+				.arr = (parameter_t [])\
 				{\
 					{\
 						.name = "all", \
@@ -307,17 +307,17 @@
 						.arguments = \
 						{\
 							.len = 2, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_STRING].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].name, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_STRING].name, \
 									.size = strlen(TAIL_OUTPUT_STRING) + 1, \
 									.src = TAIL_OUTPUT_STRING, \
 									.type = DUP\
@@ -331,17 +331,17 @@
 						.arguments = \
 						{\
 							.len = 2, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_STRING].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(OPTIONAL) | SET_PERMISSION(WRITE) | SET_INFO(PREPEND)}, \
 									.type = CPY\
 								}, \
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].name, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_STRING].name, \
 									.size = strlen(TAIL_OUTPUT_STRING) + 1, \
 									.src = TAIL_OUTPUT_STRING, \
 									.type = DUP\
@@ -355,11 +355,11 @@
 						.arguments = \
 						{\
 							.len = 1, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_STRING].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
 									.type = CPY\
@@ -373,11 +373,11 @@
 						.arguments = \
 						{\
 							.len = 1, \
-							.obj_size = sizeof(t_argument), \
-							.arr = (t_argument [])\
+							.obj_size = sizeof(argument_t), \
+							.arr = (argument_t [])\
 							{\
 								{\
-									.dst = &((t_file *)data->files.arr)[OUTPUT_STRING].info, \
+									.dst = &((file_t *)data->files.arr)[OUTPUT_STRING].info, \
 									.size = sizeof(uint8_t), \
 									.src = &(uint8_t){SET_REQUIREMENT(UNUSED)}, \
 									.type = CPY\
@@ -453,18 +453,18 @@ typedef enum	option_parameter
 	PARAM_FORMAT,
 	PARAM_TERMINAL,
 	PARAM_FILE
-}	t_option_parameter;
+}	option_parameter_t;
 
 // Argument copy type
 typedef enum	cpy_type
 {
 	CPY,
 	DUP
-}	t_cpy_type;
+}	cpy_type_t;
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	data	t_data;
+typedef struct	data	data_t;
 
 /* ----- STRUCTURES ----- */
 
@@ -474,31 +474,31 @@ typedef struct	argument
 	void		*dst;//	Pointer to the object to substitute
 	size_t		size;//	Size of the object to subtitute
 	void		*src;//	Pointer to the substituting object
-	t_cpy_type	type;//	Type of copying
-}	t_argument;
+	cpy_type_t	type;//	Type of copying
+}	argument_t;
 
 // Option parameter
 typedef struct	parameter
 {
 	char			*name;//	Name of the parameter
-	t_option_parameter	parameter;//	Parameter
-	t_parr			arguments;//	Array of arguments (overwrites the default option arguments)
-}	t_parameter;
+	option_parameter_t	parameter;//	Parameter
+	parr_t			arguments;//	Array of arguments (overwrites the default option arguments)
+}	parameter_t;
 
 // Option
 typedef struct	option
 {
 	char	**names;//	Array of option names
-	t_parr	parameters;//	Array of option parameters
-	t_parr	arguments;//	Array of arguments (overwritten by the parameter arguments)
-}	t_option;
+	parr_t	parameters;//	Array of option parameters
+	parr_t	arguments;//	Array of arguments (overwritten by the parameter arguments)
+}	option_t;
 
 /* ----- PROTOTYPES ----- */
 
 // arguments/
 //	get.c
-bool	get_arguments(t_data *data, char **args);
+bool	get_arguments(data_t *data, char **args);
 //	check.c
-bool	check_arguments(t_data *data);
+bool	check_arguments(data_t *data);
 //	exec_options.c
-bool	exec_options(t_option_parameter *options, bool *error);
+bool	exec_options(option_parameter_t *options, bool *error);

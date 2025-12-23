@@ -12,20 +12,20 @@ typedef struct	lst
 {
 	void		*content;
 	struct lst	*next;
-}	t_lst;
+}	lst_t;
 
 /* ----- PROTOTYPES ----- */
 
 // lst/
 //	last.c
-t_lst	*lst_last(t_lst *lst);
+lst_t	*lst_last(lst_t *lst);
 //	new_back.c
-bool	lst_new_back(t_lst **lst, void *content);
+bool	lst_new_back(lst_t **lst, void *content);
 //	clear.c
-void	lst_clear(t_lst **lst, void (*del)(void*));
+void	lst_clear(lst_t **lst, void (*del)(void*));
 //	find_index.c
-ssize_t	lst_find_index(t_lst *lst, void *to_find, bool (*cmp)(void*, void*));
+ssize_t	lst_find_index(lst_t *lst, void *to_find, bool (*cmp)(void*, void*));
 //	get_node.c
-t_lst	*lst_get_node(t_lst *lst, size_t i);
+lst_t	*lst_get_node(lst_t *lst, size_t i);
 //	find.c
-t_lst	*lst_find(t_lst *lst, void *to_find, bool (*cmp)(void*, void*));
+lst_t	*lst_find(lst_t *lst, void *to_find, bool (*cmp)(void*, void*));

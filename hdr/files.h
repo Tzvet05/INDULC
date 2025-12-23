@@ -23,8 +23,8 @@
 #define DEFAULT_FILES	\
 {\
 	.len = N_FILES, \
-	.obj_size = sizeof(t_file), \
-	.arr = (t_file [])\
+	.obj_size = sizeof(file_t), \
+	.arr = (file_t [])\
 	{\
 		{\
 			.info = SET_REQUIREMENT(MANDATORY) | SET_PERMISSION(READ)\
@@ -71,15 +71,15 @@ enum
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	data	t_data;
-typedef struct	parr	t_parr;
+typedef struct	data	data_t;
+typedef struct	parr	parr_t;
 
 /* ----- PROTOTYPES ----- */
 
 // files/
 //	check.c
-bool	check_files(t_data *data);
+bool	check_files(data_t *data);
 //	init.c
-bool	init_files(t_data *data);
+bool	init_files(data_t *data);
 //	free.c
-void	free_files(t_parr *files);
+void	free_files(parr_t *files);

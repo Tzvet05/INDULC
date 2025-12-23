@@ -5,17 +5,17 @@
 #include "json.h"
 #include "error.h"
 
-bool	load_blueprint(t_data *data)
+bool	load_blueprint(data_t *data)
 {
-	if (file_open(&((t_file *)data->files.arr)[INPUT_SIGNALS], FOPEN_MODE_READ) == 1)
+	if (file_open(&((file_t *)data->files.arr)[INPUT_SIGNALS], FOPEN_MODE_READ) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s: \"%s\"\n",
 			EXECUTABLE_NAME, ERROR_FUNCTION, LIB_LIBC, FUNC_FOPEN, ERROR_OPEN_FILE,
-			((t_file *)data->files.arr)[INPUT_SIGNALS].name);
+			((file_t *)data->files.arr)[INPUT_SIGNALS].name);
 		return (1);
 	}
-	const cJSON	*json = parse_json_file(&((t_file *)data->files.arr)[INPUT_SIGNALS]);
-	file_close(&((t_file *)data->files.arr)[INPUT_SIGNALS]);
+	const cJSON	*json = parse_json_file(&((file_t *)data->files.arr)[INPUT_SIGNALS]);
+	file_close(&((file_t *)data->files.arr)[INPUT_SIGNALS]);
 	if (json == NULL)
 		return (1);
 	if (check_blueprint_syntax(json) == 1)
@@ -23,7 +23,7 @@ bool	load_blueprint(t_data *data)
 		cJSON_Delete((cJSON *)json);
 		return (1);
 	}
-	t_pstr	input_name = file_get_name(((t_file *)data->files.arr)[INPUT_CODE].name);
+	pstr_t	input_name = file_get_name(((file_t *)data->files.arr)[INPUT_CODE].name);
 	if (init_blueprint(&data->blueprint, &input_name, json) == 1)
 	{
 		fprintf(stderr, "%s: %s: %s: %s: %s\n",

@@ -5,10 +5,10 @@
 
 static void	free_signal(void *signal)
 {
-	free(((t_signal *)signal)->name);
+	free(((signal_t *)signal)->name);
 }
 
-void	free_blueprint(t_blueprint *blueprint)
+void	free_blueprint(blueprint_t *blueprint)
 {
 	free(blueprint->text[LABEL]);
 	free(blueprint->text[DESCRIPTION]);

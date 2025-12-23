@@ -5,9 +5,9 @@
 #include "cmp.h"
 #include "error.h"
 
-bool	check_label_syntax(t_lst **tokens_ptr)
+bool	check_label_syntax(lst_t **tokens_ptr)
 {
-	t_lst	*tokens = *tokens_ptr;
+	lst_t	*tokens = *tokens_ptr;
 	ssize_t	i = lst_find_index(tokens, KEYWORD_LABEL, cmp_token);
 	if (i == -1)
 		return (0);
@@ -16,8 +16,8 @@ bool	check_label_syntax(t_lst **tokens_ptr)
 	{
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s\n",
 			EXECUTABLE_NAME, ERROR_SYNTAX,
-			((t_token *)tokens->content)->lin,
-			MAX(((t_token *)tokens->content)->col, (size_t)2) - 1,
+			((token_t *)tokens->content)->lin,
+			MAX(((token_t *)tokens->content)->col, (size_t)2) - 1,
 			ERROR_LABEL, ERROR_LABEL_TOO_FEW_ARGS);
 		return (1);
 	}
@@ -26,11 +26,11 @@ bool	check_label_syntax(t_lst **tokens_ptr)
 		tokens = tokens->next;
 		fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: ",
 			EXECUTABLE_NAME, ERROR_SYNTAX,
-			((t_token *)tokens->content)->lin, ((t_token *)tokens->content)->col,
+			((token_t *)tokens->content)->lin, ((token_t *)tokens->content)->col,
 			ERROR_LABEL, ERROR_LABEL_TOO_MANY_ARGS);
 		for (size_t i_error = 1; i_error < (size_t)i; i_error++)
 		{
-			fprintf(stderr, "\"%s\"", ((t_token *)tokens->content)->str);
+			fprintf(stderr, "\"%s\"", ((token_t *)tokens->content)->str);
 			if (i_error + 1 < (size_t)i)
 				fprintf(stderr, ", ");
 			tokens = tokens->next;

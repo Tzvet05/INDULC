@@ -5,7 +5,7 @@
 #include "blueprint.h"
 #include "signals.h"
 
-static bool	get_types(t_blueprint *blueprint, const cJSON *types)
+static bool	get_types(blueprint_t *blueprint, const cJSON *types)
 {
 	if (cJSON_GetArraySize(types) == 0)
 		return (0);
@@ -32,7 +32,7 @@ static bool	get_types(t_blueprint *blueprint, const cJSON *types)
 	return (0);
 }
 
-static bool	get_qualities(t_blueprint *blueprint, const cJSON *qualities)
+static bool	get_qualities(blueprint_t *blueprint, const cJSON *qualities)
 {
 	if (cJSON_GetArraySize(qualities) == 0)
 		return (0);
@@ -60,14 +60,14 @@ static bool	get_qualities(t_blueprint *blueprint, const cJSON *qualities)
 	return (0);
 }
 
-static t_parr	init_counts(t_blueprint *blueprint, const cJSON *signals)
+static parr_t	init_counts(blueprint_t *blueprint, const cJSON *signals)
 {
-	t_parr	counts;
+	parr_t	counts;
 	counts.len = blueprint->types.len + 1;
 	counts.obj_size = sizeof(size_t);
 	counts.arr = calloc(counts.len, counts.obj_size);
 	if (counts.arr == NULL)
-		return ((t_parr){0});
+		return ((parr_t){0});
 	const cJSON	*signal;
 	cJSON_ArrayForEach(signal, signals)
 	{
@@ -92,11 +92,11 @@ static t_parr	init_counts(t_blueprint *blueprint, const cJSON *signals)
 	return (counts);
 }
 
-static bool	get_signals(t_blueprint *blueprint, const cJSON *signals)
+static bool	get_signals(blueprint_t *blueprint, const cJSON *signals)
 {
-	t_parr	counts = init_counts(blueprint, signals);
+	parr_t	counts = init_counts(blueprint, signals);
 	blueprint->signals.len = (size_t)cJSON_GetArraySize(signals);
-	blueprint->signals.obj_size = sizeof(t_signal);
+	blueprint->signals.obj_size = sizeof(signal_t);
 	blueprint->signals.arr = calloc(blueprint->signals.len, blueprint->signals.obj_size);
 	if (blueprint->signals.arr == NULL || counts.arr == NULL)
 	{
@@ -120,15 +120,15 @@ static bool	get_signals(t_blueprint *blueprint, const cJSON *signals)
 		size_t	i_insert = ((size_t *)counts.arr)[i_count];
 		((size_t *)counts.arr)[i_count]++;
 		item_signal = cJSON_GetObjectItemCaseSensitive(signal, JSON_SIGNAL_NAME);
-		((t_signal *)blueprint->signals.arr)[i_insert].name
+		((signal_t *)blueprint->signals.arr)[i_insert].name
 			= strdup(cJSON_GetStringValue(item_signal));
 		if (cJSON_HasObjectItem(signal, JSON_SIGNAL_TYPE) != 0)
 		{
 			item_signal = cJSON_GetObjectItemCaseSensitive(signal, JSON_SIGNAL_TYPE);
-			((t_signal *)blueprint->signals.arr)[i_insert].type
+			((signal_t *)blueprint->signals.arr)[i_insert].type
 				= get_type(&blueprint->types, cJSON_GetStringValue(item_signal));
 		}
-		if (((t_signal *)blueprint->signals.arr)[i_insert].name == NULL)
+		if (((signal_t *)blueprint->signals.arr)[i_insert].name == NULL)
 		{
 			free(counts.arr);
 			return (1);
@@ -139,7 +139,7 @@ static bool	get_signals(t_blueprint *blueprint, const cJSON *signals)
 	return (0);
 }
 
-static bool	init_blueprint_text(t_blueprint *blueprint, t_pstr *input_name)
+static bool	init_blueprint_text(blueprint_t *blueprint, pstr_t *input_name)
 {
 	if (blueprint->text[LABEL] == NULL)
 		blueprint->text[LABEL] = strndup(input_name->str, input_name->len);
@@ -148,7 +148,7 @@ static bool	init_blueprint_text(t_blueprint *blueprint, t_pstr *input_name)
 	return (blueprint->text[LABEL] == NULL || blueprint->text[DESCRIPTION] == NULL);
 }
 
-bool	init_blueprint(t_blueprint *blueprint, t_pstr *input_name, const cJSON *json_blueprint)
+bool	init_blueprint(blueprint_t *blueprint, pstr_t *input_name, const cJSON *json_blueprint)
 {
 	if (init_blueprint_text(blueprint, input_name) == 1)
 		return (1);

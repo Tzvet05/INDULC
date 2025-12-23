@@ -4,12 +4,12 @@
 #include "data.h"
 #include "error.h"
 
-bool	check_files(t_data *data)
+bool	check_files(data_t *data)
 {
 	bool	error = 0;
 	for (size_t i = 0; i < data->files.len; i++)
 	{
-		t_file	*file = &((t_file *)data->files.arr)[i];
+		file_t	*file = &((file_t *)data->files.arr)[i];
 		if (GET_REQUIREMENT(file->info) == UNUSED)
 			continue;
 		if (access(file->name, F_OK) != 0)

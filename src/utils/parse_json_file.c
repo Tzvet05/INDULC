@@ -4,7 +4,7 @@
 #include "file.h"
 #include "error.h"
 
-const cJSON	*parse_json_file(t_file *file)
+const cJSON	*parse_json_file(file_t *file)
 {
 	struct stat	file_status;
 	if (stat(file->name, &file_status) != 0)

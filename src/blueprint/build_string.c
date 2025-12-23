@@ -4,7 +4,7 @@
 #include "data.h"
 #include "error.h"
 
-bool	build_string_blueprint(t_data *data)
+bool	build_string_blueprint(data_t *data)
 {
 	char	*json = cJSON_PrintUnformatted(data->output.json);
 	if (json == NULL)
@@ -22,7 +22,7 @@ bool	build_string_blueprint(t_data *data)
 			EXECUTABLE_NAME, ERROR_LIBRARY, LIB_BLUEPRINT, ERROR_LIBRARY_LOG);
 		return (1);
 	}
-	data->output.string = (t_parr){.len = strlen(string), .obj_size = sizeof(*string),
+	data->output.string = (parr_t){.len = strlen(string), .obj_size = sizeof(*string),
 		.arr = string};
 	return (0);
 }

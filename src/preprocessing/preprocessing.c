@@ -8,25 +8,25 @@
 #include "is.h"
 #include "error.h"
 
-static bool	add_macro(t_lst *tokens, t_lst **macro_table)
+static bool	add_macro(lst_t *tokens, lst_t **macro_table)
 {
-	t_lst	*macro = lst_find(*macro_table, ((t_token *)tokens->next->content)->str, cmp_macro);
+	lst_t	*macro = lst_find(*macro_table, ((token_t *)tokens->next->content)->str, cmp_macro);
 	if (macro != NULL)
 	{
-		if (((t_macro *)macro->content)->n_uses == 0)
+		if (((macro_t *)macro->content)->n_uses == 0)
 			fprintf(stderr, "%s: %s (%zu:%zu): %s: %s: \"%s\"\n",
 				EXECUTABLE_NAME, WARNING_SYNTAX,
-				((t_macro *)macro->content)->identifier->lin,
-				((t_macro *)macro->content)->identifier->col, WARNING_DEFINE,
-				WARNING_DEFINE_UNUSED, ((t_token *)tokens->next->content)->str);
-		((t_macro *)macro->content)->identifier = tokens->next->content;
-		((t_macro *)macro->content)->substitute = tokens->next->next->content;
-		((t_macro *)macro->content)->n_uses = 0;
+				((macro_t *)macro->content)->identifier->lin,
+				((macro_t *)macro->content)->identifier->col, WARNING_DEFINE,
+				WARNING_DEFINE_UNUSED, ((token_t *)tokens->next->content)->str);
+		((macro_t *)macro->content)->identifier = tokens->next->content;
+		((macro_t *)macro->content)->substitute = tokens->next->next->content;
+		((macro_t *)macro->content)->n_uses = 0;
 	}
-	else if (strcmp(((t_token *)tokens->next->content)->str,
-		((t_token *)tokens->next->next->content)->str) != 0)
+	else if (strcmp(((token_t *)tokens->next->content)->str,
+		((token_t *)tokens->next->next->content)->str) != 0)
 	{
-		t_macro	*new_macro = malloc(sizeof(t_macro));
+		macro_t	*new_macro = malloc(sizeof(macro_t));
 		if (new_macro == NULL)
 			return (1);
 		new_macro->identifier = tokens->next->content;
@@ -41,29 +41,29 @@ static bool	add_macro(t_lst *tokens, t_lst **macro_table)
 	return (0);
 }
 
-static bool	substitute_macros(t_lst *macro_table, t_lst *tokens)
+static bool	substitute_macros(lst_t *macro_table, lst_t *tokens)
 {
 	while (tokens != NULL)
 	{
-		t_lst	*macro = lst_find(macro_table, ((t_token *)tokens->content)->str,
+		lst_t	*macro = lst_find(macro_table, ((token_t *)tokens->content)->str,
 			cmp_macro);
 		if (macro != NULL)
 		{
-			free(((t_token *)tokens->content)->str);
-			((t_token *)tokens->content)->str
-				= strdup(((t_macro *)macro->content)->substitute->str);
-			if (((t_token *)tokens->content)->str == NULL)
+			free(((token_t *)tokens->content)->str);
+			((token_t *)tokens->content)->str
+				= strdup(((macro_t *)macro->content)->substitute->str);
+			if (((token_t *)tokens->content)->str == NULL)
 				return (1);
-			((t_macro *)macro->content)->n_uses++;
+			((macro_t *)macro->content)->n_uses++;
 		}
 		tokens = tokens->next;
 	}
 	return (0);
 }
 
-bool	preprocess(t_data *data)
+bool	preprocess(data_t *data)
 {
-	t_lst	*tokens = data->tokens;
+	lst_t	*tokens = data->tokens;
 	while (tokens != NULL)
 	{
 		if (is_define(tokens->content) == 1)

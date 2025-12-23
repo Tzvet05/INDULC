@@ -44,11 +44,11 @@ typedef enum	bitfield_type
 	IMMEDIATE,
 	FLAG,
 	CONSTANT
-}	t_bitfield_type;
+}	bitfield_type_t;
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	data	t_data;
+typedef struct	data	data_t;
 
 /* ----- STRUCTURES ----- */
 
@@ -56,51 +56,51 @@ typedef struct	data	t_data;
 typedef struct	bitfield
 {
 	size_t		len;//		Length of the bitfield (in bits)
-	t_bitfield_type	type;//		Type of the bitfield
+	bitfield_type_t	type;//		Type of the bitfield
 	ssize_t		value;//	Stored value (if type == CONSTANT)
-}	t_bitfield;
+}	bitfield_t;
 
 // Instruction
 typedef struct	instruction
 {
-	t_parr	mnemonics;//	Array of mnemonic strings
+	parr_t	mnemonics;//	Array of mnemonic strings
 	size_t	n_opwords;//	Number of words in the instruction (opcode + operands)
-	t_parr	bitfields;//	Array of bitfields
-}	t_instruction;
+	parr_t	bitfields;//	Array of bitfields
+}	instruction_t;
 
 // Flag
 typedef struct	flag
 {
-	t_parr	mnemonics;//	Array of mnemonic strings
+	parr_t	mnemonics;//	Array of mnemonic strings
 	size_t	code;//		Flag code
-}	t_flag;
+}	flag_t;
 
 // Register
 typedef struct	_register
 {
-	t_parr	mnemonics;//	Array of mnemonic strings
+	parr_t	mnemonics;//	Array of mnemonic strings
 	size_t	index;//	Register index
-}	t_register;
+}	_register_t;
 
 // ISA
 typedef struct	isa
 {
 	size_t	instruction_length;//	Length of the instructions (in bits)
-	t_parr	registers;//		Array of supported registers
-	t_parr	instructions;//		Array of supported instructions
-	t_parr	flags;//		Array of supported flags
-}	t_isa;
+	parr_t	registers;//		Array of supported registers
+	parr_t	instructions;//		Array of supported instructions
+	parr_t	flags;//		Array of supported flags
+}	isa_t;
 
 /* ----- PROTOTYPES ----- */
 
 // isa/
 //	load.c
-bool	load_isa(t_data *data);
+bool	load_isa(data_t *data);
 //	check.c
 bool	check_isa_syntax(const cJSON *isa);
 //	get.c
-bool	init_isa(t_isa *isa, const cJSON *json_isa);
+bool	init_isa(isa_t *isa, const cJSON *json_isa);
 //	utils.c
 ssize_t	get_bitfield_type(char *str);
 //	free.c
-void	free_isa(t_isa *isa);
+void	free_isa(isa_t *isa);

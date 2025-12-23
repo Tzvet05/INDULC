@@ -3,7 +3,7 @@
 
 void	file_free(void *file)
 {
-	free(((t_file *)file)->name);
-	if (((t_file *)file)->stream != NULL)
-		fclose(((t_file *)file)->stream);
+	free(((file_t *)file)->name);
+	if (((file_t *)file)->stream != NULL)
+		fclose(((file_t *)file)->stream);
 }

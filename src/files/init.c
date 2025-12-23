@@ -5,7 +5,7 @@
 #include "data.h"
 #include "error.h"
 
-static char	*prepend(char *str, t_pstr *pre)
+static char	*prepend(char *str, pstr_t *pre)
 {
 	size_t	len = strlen(str);
 	char	*prepended = malloc((len + pre->len + 1) * sizeof(char));
@@ -16,15 +16,15 @@ static char	*prepend(char *str, t_pstr *pre)
 	return (prepended);
 }
 
-bool	init_files(t_data *data)
+bool	init_files(data_t *data)
 {
-	t_pstr	input_name = file_get_name(((t_file *)data->files.arr)[INPUT_CODE].name);
-	const t_parr	files = DEFAULT_FILES;
+	pstr_t	input_name = file_get_name(((file_t *)data->files.arr)[INPUT_CODE].name);
+	const parr_t	files = DEFAULT_FILES;
 	for (size_t i = 0; i < files.len; i++)
 	{
 		char	*name;
-		t_file	*file = &((t_file *)data->files.arr)[i],
-			*default_file = &((t_file *)files.arr)[i];
+		file_t	*file = &((file_t *)data->files.arr)[i],
+			*default_file = &((file_t *)files.arr)[i];
 		if (file->name != NULL)
 		{
 			if (GET_INFO(file->info, PREPEND) != 0)

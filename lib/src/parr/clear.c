@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "parr.h"
 
-void	parr_clear(t_parr *parr, void (*del)(void*))
+void	parr_clear(parr_t *parr, void (*del)(void*))
 {
 	if (del != NULL)
 	{
@@ -14,5 +14,5 @@ void	parr_clear(t_parr *parr, void (*del)(void*))
 		}
 	}
 	free(parr->arr);
-	*parr = (t_parr){0};
+	*parr = (parr_t){0};
 }

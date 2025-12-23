@@ -6,8 +6,8 @@
 
 /* ----- TYPES DECLARATIONS ----- */
 
-typedef struct	file	t_file;
+typedef struct	file	file_t;
 
 /* ----- PROTOTYPES ----- */
 
-const cJSON	*parse_json_file(t_file *file);
+const cJSON	*parse_json_file(file_t *file);

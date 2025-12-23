@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "file.h"
 
-bool	file_get_next_line(t_file *file, char **line)
+bool	file_get_next_line(file_t *file, char **line)
 {
 	*line = NULL;
 	size_t	_ = 0;
