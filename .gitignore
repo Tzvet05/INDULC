@@ -13,3 +13,4 @@ isa_test.json
 *.swp
 *.o
 .nfs*
+build/
